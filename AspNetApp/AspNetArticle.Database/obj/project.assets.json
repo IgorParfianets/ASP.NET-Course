@@ -782,6 +782,16 @@
             "rid": "win"
           }
         }
+      },
+      "AspNetArticle.Core/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "compile": {
+          "bin/placeholder/AspNetArticle.Core.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AspNetArticle.Core.dll": {}
+        }
       }
     }
   },
@@ -2003,10 +2013,16 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "AspNetArticle.Core/1.0.0": {
+      "type": "project",
+      "path": "../AspNetArticle.Core/AspNetArticle.Core.csproj",
+      "msbuildProject": "../AspNetArticle.Core/AspNetArticle.Core.csproj"
     }
   },
   "projectFileDependencyGroups": {
     "net6.0": [
+      "AspNetArticle.Core >= 1.0.0",
       "Microsoft.EntityFrameworkCore >= 6.0.9",
       "Microsoft.EntityFrameworkCore.Design >= 6.0.9",
       "Microsoft.EntityFrameworkCore.SqlServer >= 6.0.9",
@@ -2019,11 +2035,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\AspNetArticle.MvcApp.csproj",
-      "projectName": "AspNetArticle.MvcApp",
-      "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\AspNetArticle.MvcApp.csproj",
+      "projectUniqueName": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Database\\AspNetArticle.Database.csproj",
+      "projectName": "AspNetArticle.Database",
+      "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Database\\AspNetArticle.Database.csproj",
       "packagesPath": "C:\\Users\\Igor\\.nuget\\packages\\",
-      "outputPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\obj\\",
+      "outputPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Database\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\Igor\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -2038,7 +2054,11 @@
       "frameworks": {
         "net6.0": {
           "targetAlias": "net6.0",
-          "projectReferences": {}
+          "projectReferences": {
+            "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Core\\AspNetArticle.Core.csproj": {
+              "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Core\\AspNetArticle.Core.csproj"
+            }
+          }
         }
       },
       "warningProperties": {
@@ -2084,9 +2104,6 @@
         "assetTargetFallback": true,
         "warn": true,
         "frameworkReferences": {
-          "Microsoft.AspNetCore.App": {
-            "privateAssets": "none"
-          },
           "Microsoft.NETCore.App": {
             "privateAssets": "all"
           }
