@@ -1,11 +1,13 @@
 {
   "version": 2,
-  "dgSpecHash": "aWeKhUMJYRl2oVBqG6kJKQyVPXiMTj2Ci5Zcc7n6bki7Gi3x4u5LlyM8YwPw2ywPiCXUbMqkqyI7NnvMOHehZw==",
+  "dgSpecHash": "4p/C2M9BVl4JekvexTtRwYfXmM0V7+SyYomETtPhR4U4DrMnZGlQ5dAXUOlRQ9kjPDBgUcMl8SzFteZhB3MijA==",
   "success": true,
   "projectFilePath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\AspNetArticle.MvcApp.csproj",
   "expectedPackageFiles": [
+    "C:\\Users\\Igor\\.nuget\\packages\\automapper\\11.0.1\\automapper.11.0.1.nupkg.sha512",
+    "C:\\Users\\Igor\\.nuget\\packages\\automapper.extensions.microsoft.dependencyinjection\\11.0.0\\automapper.extensions.microsoft.dependencyinjection.11.0.0.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\humanizer.core\\2.8.26\\humanizer.core.2.8.26.nupkg.sha512",
-    "C:\\Users\\Igor\\.nuget\\packages\\microsoft.csharp\\4.5.0\\microsoft.csharp.4.5.0.nupkg.sha512",
+    "C:\\Users\\Igor\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\microsoft.data.sqlclient\\2.1.4\\microsoft.data.sqlclient.2.1.4.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\microsoft.data.sqlclient.sni.runtime\\2.1.1\\microsoft.data.sqlclient.sni.runtime.2.1.1.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\microsoft.entityframeworkcore\\6.0.9\\microsoft.entityframeworkcore.6.0.9.nupkg.sha512",

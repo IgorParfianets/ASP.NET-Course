@@ -1,3 +1,6 @@
+using AspNetArticle.Database;
+using Microsoft.EntityFrameworkCore;
+
 namespace AspNet.MvcApp
 {
     public class Program
@@ -8,6 +11,11 @@ namespace AspNet.MvcApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+
+            builder.Services.AddDbContext<AggregatorContext>(optionBuilder =>
+            optionBuilder.UseSqlServer());
+
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 
             var app = builder.Build();
 
