@@ -8,6 +8,7 @@ public class ViewProfile : Profile
 {
     public ViewProfile()
     {
+        // For Entity -> Dto & Dto -> Entity
         CreateMap<View, ViewDto>()
             .ForMember(dto => dto.Id, opt => opt.MapFrom(view => view.Id))
             .ForMember(dto => dto.IpAddress, opt => opt.MapFrom(view => view.IpAddress))

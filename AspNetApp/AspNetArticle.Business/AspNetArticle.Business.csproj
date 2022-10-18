@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AspNetArticle.Core\AspNetArticle.Core.csproj" />
+    <ProjectReference Include="..\AspNetArticle.Data.Abstraction\AspNetArticle.Data.Abstractions.csproj" />
     <ProjectReference Include="..\AspNetArticle.Database\AspNetArticle.Database.csproj" />
   </ItemGroup>
 

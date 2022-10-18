@@ -8,6 +8,7 @@ public class ArticleProfile : Profile //to do     ещё не закончено
 {
     public ArticleProfile()
     {
+        // For Entity -> Dto & Dto -> Entity
         CreateMap<Article, ArticleDto>()
             .ForMember(dto => dto.Id, opt => opt.MapFrom(article => article.Id))
             .ForMember(dto => dto.Title, opt => opt.MapFrom(article => article.Title))

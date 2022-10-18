@@ -1,8 +1,8 @@
-﻿using AspNetArticle.Core.Abstractions;
+﻿using AspNetArticle.Core;
 
 namespace AspNetArticle.Database.Entities;
 
-public class Source
+public class Source : IBaseEntity
 {
     public Guid Id { get; set; }
     public string Name { get; set; }

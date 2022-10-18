@@ -8,6 +8,7 @@ public class SourceProfile : Profile
 {
     public SourceProfile()
     {
+        // For Entity -> Dto & Dto -> Entity
         CreateMap<Source, SourceDto>()
             .ForMember(dto => dto.Id, opt => opt.MapFrom(source => source.Id))
             .ForMember(dto => dto.Name, opt => opt.MapFrom(source => source.Name))

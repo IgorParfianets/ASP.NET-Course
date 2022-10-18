@@ -33,6 +33,12 @@
               "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Core\\AspNetArticle.Core.csproj": {
                 "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Core\\AspNetArticle.Core.csproj"
               },
+              "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Abstraction\\AspNetArticle.Data.Abstractions.csproj": {
+                "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Abstraction\\AspNetArticle.Data.Abstractions.csproj"
+              },
+              "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Repositories\\AspNetArticle.Data.Repositories.csproj": {
+                "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Repositories\\AspNetArticle.Data.Repositories.csproj"
+              },
               "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Database\\AspNetArticle.Database.csproj": {
                 "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Database\\AspNetArticle.Database.csproj"
               }
@@ -76,6 +82,14 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[6.0.9, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[6.0.9, )"
+            },
+            "bootstrap": {
+              "target": "Package",
+              "version": "[5.2.1, )"
             }
           },
           "imports": [
@@ -126,6 +140,9 @@
             "projectReferences": {
               "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Core\\AspNetArticle.Core.csproj": {
                 "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Core\\AspNetArticle.Core.csproj"
+              },
+              "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Abstraction\\AspNetArticle.Data.Abstractions.csproj": {
+                "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Abstraction\\AspNetArticle.Data.Abstractions.csproj"
               },
               "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Database\\AspNetArticle.Database.csproj": {
                 "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Database\\AspNetArticle.Database.csproj"
@@ -195,6 +212,122 @@
           "net6.0": {
             "targetAlias": "net6.0",
             "projectReferences": {}
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Abstraction\\AspNetArticle.Data.Abstractions.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Abstraction\\AspNetArticle.Data.Abstractions.csproj",
+        "projectName": "AspNetArticle.Data.Abstractions",
+        "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Abstraction\\AspNetArticle.Data.Abstractions.csproj",
+        "packagesPath": "C:\\Users\\Igor\\.nuget\\packages\\",
+        "outputPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Abstraction\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Igor\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://nuget.org/api/v2/": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Database\\AspNetArticle.Database.csproj": {
+                "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Database\\AspNetArticle.Database.csproj"
+              }
+            }
+          }
+        },
+        "warningProperties": {
+          "warnAsError": [
+            "NU1605"
+          ]
+        }
+      },
+      "frameworks": {
+        "net6.0": {
+          "targetAlias": "net6.0",
+          "imports": [
+            "net461",
+            "net462",
+            "net47",
+            "net471",
+            "net472",
+            "net48",
+            "net481"
+          ],
+          "assetTargetFallback": true,
+          "warn": true,
+          "frameworkReferences": {
+            "Microsoft.NETCore.App": {
+              "privateAssets": "all"
+            }
+          },
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\6.0.400\\RuntimeIdentifierGraph.json"
+        }
+      }
+    },
+    "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Repositories\\AspNetArticle.Data.Repositories.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Repositories\\AspNetArticle.Data.Repositories.csproj",
+        "projectName": "AspNetArticle.Data.Repositories",
+        "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Repositories\\AspNetArticle.Data.Repositories.csproj",
+        "packagesPath": "C:\\Users\\Igor\\.nuget\\packages\\",
+        "outputPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Repositories\\obj\\",
+        "projectStyle": "PackageReference",
+        "configFilePaths": [
+          "C:\\Users\\Igor\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+        ],
+        "originalTargetFrameworks": [
+          "net6.0"
+        ],
+        "sources": {
+          "https://nuget.org/api/v2/": {}
+        },
+        "frameworks": {
+          "net6.0": {
+            "targetAlias": "net6.0",
+            "projectReferences": {
+              "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Abstraction\\AspNetArticle.Data.Abstractions.csproj": {
+                "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Abstraction\\AspNetArticle.Data.Abstractions.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

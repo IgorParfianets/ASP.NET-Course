@@ -1,0 +1,37 @@
+﻿@using AspNetArticle.MvcApp.Models
+@model UserLoginModel
+
+@{
+    ViewData["Title"] = "Login";
+}
+
+
+
+<div class="mt-5 border-1 col-md-3 offset-md-4">
+   
+
+    <div class="border border-secondary row text-center">
+        <h1 class="mt-4 mb-4">Login</h1>
+        <form asp-controller="Account" asp-action="Login" method="post" class="form">
+            <div class="form-group mb-2">
+                <input asp-for="Email" class="form-control border-secondary" placeholder="name@email.com" />
+                <span asp-validation-for="Email"class="text-danger"></span>
+            </div>
+            <div class="form-group mb-2">
+                <input asp-for="Password" class="form-control border-secondary" placeholder="Password" />
+                <span asp-validation-for="Password" class="text-danger"></span>
+            </div>
+            <button class="btn btn-primary mb-2" type="submit">Submit</button>
+        </form>
+    </div>
+</div>
+
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
+
+
+
+
+

@@ -1,6 +1,4 @@
-﻿using AspNetArticle.Core.Abstractions;
-
-namespace AspNetArticle.Core.DataTransferObjects;
+﻿namespace AspNetArticle.Core.DataTransferObjects;
 
 public class SourceDto
 {

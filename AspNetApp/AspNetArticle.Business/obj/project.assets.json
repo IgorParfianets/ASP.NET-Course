@@ -777,6 +777,19 @@
           "bin/placeholder/AspNetArticle.Core.dll": {}
         }
       },
+      "AspNetArticle.Data.Abstractions/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "AspNetArticle.Database": "1.0.0"
+        },
+        "compile": {
+          "bin/placeholder/AspNetArticle.Data.Abstractions.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AspNetArticle.Data.Abstractions.dll": {}
+        }
+      },
       "AspNetArticle.Database/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
@@ -1992,6 +2005,11 @@
       "path": "../AspNetArticle.Core/AspNetArticle.Core.csproj",
       "msbuildProject": "../AspNetArticle.Core/AspNetArticle.Core.csproj"
     },
+    "AspNetArticle.Data.Abstractions/1.0.0": {
+      "type": "project",
+      "path": "../AspNetArticle.Data.Abstraction/AspNetArticle.Data.Abstractions.csproj",
+      "msbuildProject": "../AspNetArticle.Data.Abstraction/AspNetArticle.Data.Abstractions.csproj"
+    },
     "AspNetArticle.Database/1.0.0": {
       "type": "project",
       "path": "../AspNetArticle.Database/AspNetArticle.Database.csproj",
@@ -2001,6 +2019,7 @@
   "projectFileDependencyGroups": {
     "net6.0": [
       "AspNetArticle.Core >= 1.0.0",
+      "AspNetArticle.Data.Abstractions >= 1.0.0",
       "AspNetArticle.Database >= 1.0.0",
       "AutoMapper >= 11.0.1",
       "AutoMapper.Extensions.Microsoft.DependencyInjection >= 11.0.0"
@@ -2034,6 +2053,9 @@
           "projectReferences": {
             "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Core\\AspNetArticle.Core.csproj": {
               "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Core\\AspNetArticle.Core.csproj"
+            },
+            "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Abstraction\\AspNetArticle.Data.Abstractions.csproj": {
+              "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Data.Abstraction\\AspNetArticle.Data.Abstractions.csproj"
             },
             "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Database\\AspNetArticle.Database.csproj": {
               "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Database\\AspNetArticle.Database.csproj"

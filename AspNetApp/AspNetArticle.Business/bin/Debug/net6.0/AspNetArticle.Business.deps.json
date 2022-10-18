@@ -9,6 +9,7 @@
       "AspNetArticle.Business/1.0.0": {
         "dependencies": {
           "AspNetArticle.Core": "1.0.0",
+          "AspNetArticle.Data.Abstractions": "1.0.0",
           "AspNetArticle.Database": "1.0.0",
           "AutoMapper": "11.0.1",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "11.0.0"
@@ -487,6 +488,14 @@
           "AspNetArticle.Core.dll": {}
         }
       },
+      "AspNetArticle.Data.Abstractions/1.0.0": {
+        "dependencies": {
+          "AspNetArticle.Database": "1.0.0"
+        },
+        "runtime": {
+          "AspNetArticle.Data.Abstractions.dll": {}
+        }
+      },
       "AspNetArticle.Database/1.0.0": {
         "dependencies": {
           "AspNetArticle.Core": "1.0.0",
@@ -800,6 +809,11 @@
       "hashPath": "system.windows.extensions.4.7.0.nupkg.sha512"
     },
     "AspNetArticle.Core/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "AspNetArticle.Data.Abstractions/1.0.0": {
       "type": "project",
       "serviceable": false,
       "sha512": ""

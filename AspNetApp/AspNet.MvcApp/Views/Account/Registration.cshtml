@@ -1,0 +1,90 @@
+﻿@using AspNetArticle.MvcApp.Models
+@model UserRegistrationModel
+
+@{
+    ViewData["Title"] = "Registration";
+}
+
+
+
+
+<form asp-controller="Account" asp-action="Registration" method="post">
+    <div class="border col-md-4 offset-md-4 mt-5">
+        <div class="row">
+            <div class="mb-5">
+                <h1 class="text-center">Registration</h1>
+            </div>
+
+            <!-- For Email -->
+            <div class="form-group row mb-3">
+                <div class="col-5">
+                    <label asp-for="Email">Email address</label>
+
+                </div>
+                <div class="col-7">
+                    <input asp-for="Email">
+                    <span asp-validation-for="Email" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- For Password -->
+            <div class="form-group row mb-3">
+                <div class="col-5">
+                    <label asp-for="Password">Password</label>
+
+                </div>
+                <div class="col-7">
+                    <input asp-for="Password">
+                    <span asp-validation-for="Password" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <!-- For UserName -->
+            <div class="mb-3 form-group row">
+                <div class="col-5">
+                    <label asp-for="UserName">Username</label>
+
+                </div>
+                <div class="col-7">
+                    <input asp-for="UserName">
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+
+            </div>
+            <!-- For ConfirmPassword -->
+            <div class="mb-3 form-group row">
+                <div class="col-5">
+                    <label asp-for="ConfirmPassword">Confirm Password</label>
+
+                </div>
+                <div class="col-7">
+                    <input asp-for="ConfirmPassword">
+                    <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+                </div>
+
+            </div>
+            <!-- For Spam -->
+            <div class="mb-3 form-group row">
+
+                <label asp-for="Spam">Spam</label>
+                <input type="checkbox" asp-for="Spam" />
+            </div>
+            <!-- Button Submit -->
+            <div class="text-center row">
+
+                <button type="submit" class="btn btn-primary" style="width: 100px">Submit</button>
+                <a asp-controller="Test" asp-action="MyIndex" class="btn btn-secondary" style="width: 100px">
+                    Back
+                </a>
+            </div>
+        </div>
+        
+        
+    </div>
+    
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

@@ -8,6 +8,7 @@ public class CommentProfile : Profile
 {
     public CommentProfile()
     {
+        // For Entity -> Dto & Dto -> Entity
         CreateMap<Comment, CommentDto>()
             .ForMember(dto => dto.Id, opt => opt.MapFrom(comment => comment.Id))
             .ForMember(dto => dto.Description, opt => opt.MapFrom(comment => comment.Description))

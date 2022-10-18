@@ -1,6 +1,6 @@
 ﻿namespace AspNetArticle.Database.Entities;
 
-public class View
+public class View : IBaseEntity
 {
     public Guid Id { get; set; }
     public string IpAddress { get; set; }

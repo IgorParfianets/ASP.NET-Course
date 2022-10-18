@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32811.315
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetArticle.MvcApp", "AspNet.MvcApp\AspNetArticle.MvcApp.csproj", "{7AA275D4-21D9-4AE0-9020-2D020372BAED}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetArticle.MvcApp", "AspNet.MvcApp\AspNetArticle.MvcApp.csproj", "{7AA275D4-21D9-4AE0-9020-2D020372BAED}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetArticle.Database", "AspNetArticle.Database\AspNetArticle.Database.csproj", "{4C208A32-6012-46FC-AF87-948834F33467}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetArticle.Database", "AspNetArticle.Database\AspNetArticle.Database.csproj", "{4C208A32-6012-46FC-AF87-948834F33467}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetArticle.Business", "AspNetArticle.Business\AspNetArticle.Business.csproj", "{02B1E19B-85FA-4926-9641-F8B73468CAF0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetArticle.Business", "AspNetArticle.Business\AspNetArticle.Business.csproj", "{02B1E19B-85FA-4926-9641-F8B73468CAF0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetArticle.Core", "AspNetArticle.Core\AspNetArticle.Core.csproj", "{3B99C290-3BF6-483E-8174-2BA6F5249E31}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetArticle.Core", "AspNetArticle.Core\AspNetArticle.Core.csproj", "{3B99C290-3BF6-483E-8174-2BA6F5249E31}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetArticle.Data.Abstractions", "AspNetArticle.Data.Abstraction\AspNetArticle.Data.Abstractions.csproj", "{8617E960-F3A6-480F-AD32-145975C20A43}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetArticle.Data.Repositories", "AspNetArticle.Data.Repositories\AspNetArticle.Data.Repositories.csproj", "{8BA3B42C-CCA3-4624-A013-253E2A020F75}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -33,6 +37,14 @@ Global
 		{3B99C290-3BF6-483E-8174-2BA6F5249E31}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B99C290-3BF6-483E-8174-2BA6F5249E31}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B99C290-3BF6-483E-8174-2BA6F5249E31}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8617E960-F3A6-480F-AD32-145975C20A43}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8617E960-F3A6-480F-AD32-145975C20A43}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8617E960-F3A6-480F-AD32-145975C20A43}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8617E960-F3A6-480F-AD32-145975C20A43}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8BA3B42C-CCA3-4624-A013-253E2A020F75}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8BA3B42C-CCA3-4624-A013-253E2A020F75}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8BA3B42C-CCA3-4624-A013-253E2A020F75}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8BA3B42C-CCA3-4624-A013-253E2A020F75}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
