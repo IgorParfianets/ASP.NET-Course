@@ -10,5 +10,4 @@ public class Source : IBaseEntity
     public SourceType SourceType { get; set; }
 
     public List<Article> Articles { get; set; }
-
 }

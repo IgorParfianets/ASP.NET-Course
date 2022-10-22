@@ -1,0 +1,90 @@
+﻿@using AspNetArticle.MvcApp.Models
+@model UserEditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+
+<form asp-controller="Account" asp-action="Edit" method="post">
+    <input asp-for="Id" hidden/>
+    <div class="border col-md-4 offset-md-4 mt-5">
+        <div class="row">
+            <div class="mb-5">
+                <h1 class="text-center">Edit</h1>
+            </div>
+
+
+            <!-- For UserName -->
+            <div class="form-group row mb-3">
+                <div class="col-5">
+                    <label asp-for="UserName">UserName</label>
+
+                </div>
+                <div class="col-7">
+                    <input asp-for="UserName">
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- For Password -->
+            <div class="form-group row mb-3">
+                <div class="col-5">
+                    <label asp-for="OldPassword">Password</label>
+
+                </div>
+                <div class="col-7">
+                    <input asp-for="OldPassword">
+                    <span asp-validation-for="OldPassword" class="text-danger"></span>
+                </div>
+
+            </div>
+
+            <!-- For Email -->
+            <div class="form-group row mb-3">
+                <div class="col-5">
+                    <label asp-for="NewPassword">Email</label>
+
+                </div>
+                <div class="col-7">
+                    <input asp-for="NewPassword">
+                    <span asp-validation-for="NewPassword" class="text-danger"></span>
+                </div>
+            </div>
+
+            <!-- For ConfirmPassword -->
+            <div class="mb-3 form-group row">
+                <div class="col-5">
+                    <label asp-for="ConfirmNewPassword">Confirm Password</label>
+
+                </div>
+                <div class="col-7">
+                    <input asp-for="ConfirmNewPassword">
+                    <span asp-validation-for="ConfirmNewPassword" class="text-danger"></span>
+                </div>
+
+            </div>
+            <!-- For Spam -->
+            <div class="mb-3 form-group gap-3">
+
+                <label asp-for="Spam">Spam</label>
+                <input type="checkbox" asp-for="Spam"/>
+            </div>
+            <!-- Button Submit -->
+            <div class="text-center row">
+
+                <button type="submit" class="btn btn-primary" style="width: 100px">Submit</button>
+                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary" style="width: 100px">
+                    Back
+                </a>
+            </div>
+        </div>
+
+
+    </div>
+
+</form>
+
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

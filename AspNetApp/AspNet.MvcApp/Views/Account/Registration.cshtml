@@ -14,11 +14,24 @@
             <div class="mb-5">
                 <h1 class="text-center">Registration</h1>
             </div>
+            
+            
+            <!-- For UserName -->
+            <div class="form-group row mb-3">
+                <div class="col-5">
+                    <label asp-for="UserName">UserName</label>
+
+                </div>
+                <div class="col-7">
+                    <input asp-for="UserName">
+                    <span asp-validation-for="UserName" class="text-danger"></span>
+                </div>
+            </div>
 
             <!-- For Email -->
             <div class="form-group row mb-3">
                 <div class="col-5">
-                    <label asp-for="Email">Email address</label>
+                    <label asp-for="Email">Email</label>
 
                 </div>
                 <div class="col-7">
@@ -40,18 +53,7 @@
 
             </div>
 
-            <!-- For UserName -->
-            <div class="mb-3 form-group row">
-                <div class="col-5">
-                    <label asp-for="UserName">Username</label>
-
-                </div>
-                <div class="col-7">
-                    <input asp-for="UserName">
-                    <span asp-validation-for="UserName" class="text-danger"></span>
-                </div>
-
-            </div>
+            
             <!-- For ConfirmPassword -->
             <div class="mb-3 form-group row">
                 <div class="col-5">
@@ -65,7 +67,7 @@
 
             </div>
             <!-- For Spam -->
-            <div class="mb-3 form-group row">
+            <div class="mb-3 form-group gap-3">
 
                 <label asp-for="Spam">Spam</label>
                 <input type="checkbox" asp-for="Spam" />
@@ -74,7 +76,7 @@
             <div class="text-center row">
 
                 <button type="submit" class="btn btn-primary" style="width: 100px">Submit</button>
-                <a asp-controller="Test" asp-action="MyIndex" class="btn btn-secondary" style="width: 100px">
+                <a asp-controller="Account" asp-action="Login" class="btn btn-secondary" style="width: 100px">
                     Back
                 </a>
             </div>

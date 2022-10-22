@@ -9,5 +9,7 @@ public class UserDto   // Можно отказаться от некоторы�
     public string Password { get; set; }
     public string Email { get; set; }
     public bool Spam { get; set; }
-    
+    public Guid RoleId { get; set; }
+    public string RoleName { get; set; }
+
 }

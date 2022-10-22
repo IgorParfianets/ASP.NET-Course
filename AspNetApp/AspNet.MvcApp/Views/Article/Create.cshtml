@@ -1,0 +1,70 @@
+﻿@using AspNetArticle.MvcApp.Models
+@model ArticleModel
+
+<form asp-controller="Article" asp-action="Create" class="form" method="post" >
+    <div class="border p-3">
+
+        <!-- Валидация только для модели-->
+        <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+        <div class="form-group row">
+            <h2 class="text-info pl-3">Create Article</h2>
+        </div>
+
+        <div class="row">
+            <div class="col-8">
+                <!--Поле Title-->
+                <div class="form-group row mb-2">
+                    <div class="col-4">
+                        <label asp-for="Title">Title</label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="Title" class="form-control" />
+                        <span asp-validation-for="Title" class="text-danger"></span>
+                    </div>
+                </div>
+                <!-- Поле ShortDescription -->
+                <div class="form-group row mb-2">
+                    <div class="col-4">
+                        <label asp-for="ShortDescription">Short Description</label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="ShortDescription" class="form-control" />
+                        <span asp-validation-for="ShortDescription" class="text-danger"></span>
+                    </div>
+                </div>
+
+                <!-- Поле FullText -->
+                <div class="form-group row mb-2">
+                    <div class="col-4">
+                        <label asp-for="FullText">Full Text</label>
+                    </div>
+                    <div class="col-8">
+                        <input asp-for="FullText" class="form-control" />
+                        <span asp-validation-for="FullText" class="text-danger"></span>
+                    </div>
+                </div>
+                <!-- Кнопки Create и Back-->
+                <div class="form-group row">
+                    <div class="col-8 offset-4 row">
+                        <div class="col-6">
+                            <input type="submit" class="btn btn-primary w-100" value="Create" />
+                        </div>
+                        <div class="col-6">
+                            <a asp-action="Index" class="btn btn-secondary w-100">Back</a>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-4">
+                @* Keep this Empty*@
+            </div>
+        </div>
+    </div>
+</form>
+
+@section Scripts{
+
+    <partial name="_ValidationScriptsPartial" />
+}                           

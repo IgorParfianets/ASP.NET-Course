@@ -1,15 +1,18 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
-using RequiredAttribute = System.ComponentModel.DataAnnotations.RequiredAttribute;
 
 namespace AspNetArticle.MvcApp.Models;
 
 public class UserRegistrationModel
 {
     [Required(ErrorMessage = "Input your name")]
-    [MaxLength(12, ErrorMessage = "You inputed too long name")]
-    [MinLength(2, ErrorMessage = "You inputed too short name")]
+    [MaxLength(12, ErrorMessage = "You entered long name")]
+    [MinLength(2, ErrorMessage = "You entered too short name")]
+    [Remote("CheckUserName",
+        "Account",
+        HttpMethod = WebRequestMethods.Http.Post,
+        ErrorMessage = "Username is already exists")]
     public string UserName { get; set; }
 
     [EmailAddress]
@@ -19,7 +22,7 @@ public class UserRegistrationModel
         ErrorMessage = "Email is already exists")]
     public string Email { get; set; }
 
-    [Required(ErrorMessage = "Input your email")]
+    [Required(ErrorMessage = "Input your password")]
     [DataType(DataType.Password)]
     public string Password { get; set; }
 

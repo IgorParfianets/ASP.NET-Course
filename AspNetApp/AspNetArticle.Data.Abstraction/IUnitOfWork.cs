@@ -8,5 +8,6 @@ public interface IUnitOfWork
 {
     IRepository<Article> Articles { get; }
     IRepository<User> Users { get; }
+    IRepository<Role> Roles { get; }
     Task<int> Commit();
 }

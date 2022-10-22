@@ -12,7 +12,7 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace AspNetArticle.Database.Migrations
 {
     [DbContext(typeof(AggregatorContext))]
-    [Migration("20221004125307_Init")]
+    [Migration("20221022213530_Init")]
     partial class Init
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -83,6 +83,21 @@ namespace AspNetArticle.Database.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("AspNetArticle.Database.Entities.Role", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Roles");
+                });
+
             modelBuilder.Entity("AspNetArticle.Database.Entities.Source", b =>
                 {
                     b.Property<Guid>("Id")
@@ -125,6 +140,9 @@ namespace AspNetArticle.Database.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<Guid>("RoleId")
+                        .HasColumnType("uniqueidentifier");
+
                     b.Property<bool>("Spam")
                         .HasColumnType("bit");
 
@@ -133,6 +151,8 @@ namespace AspNetArticle.Database.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("RoleId");
 
                     b.ToTable("Users");
                 });
@@ -195,6 +215,17 @@ namespace AspNetArticle.Database.Migrations
                     b.Navigation("User");
                 });
 
+            modelBuilder.Entity("AspNetArticle.Database.Entities.User", b =>
+                {
+                    b.HasOne("AspNetArticle.Database.Entities.Role", "Role")
+                        .WithMany("Users")
+                        .HasForeignKey("RoleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Role");
+                });
+
             modelBuilder.Entity("AspNetArticle.Database.Entities.View", b =>
                 {
                     b.HasOne("AspNetArticle.Database.Entities.Article", "Article")
@@ -219,6 +250,11 @@ namespace AspNetArticle.Database.Migrations
                     b.Navigation("Comments");
 
                     b.Navigation("Views");
+                });
+
+            modelBuilder.Entity("AspNetArticle.Database.Entities.Role", b =>
+                {
+                    b.Navigation("Users");
                 });
 
             modelBuilder.Entity("AspNetArticle.Database.Entities.Source", b =>

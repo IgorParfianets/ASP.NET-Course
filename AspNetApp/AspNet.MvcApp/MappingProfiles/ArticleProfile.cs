@@ -1,5 +1,6 @@
 ﻿using AspNetArticle.Core.DataTransferObjects;
 using AspNetArticle.Database.Entities;
+using AspNetArticle.MvcApp.Models;
 using AutoMapper;
 
 namespace AspNetArticle.MvcApp.MappingProfiles;
@@ -27,5 +28,20 @@ public class ArticleProfile : Profile //to do     ещё не закончено
             .ForMember(article => article.Views, opt => opt.MapFrom(dto => dto.Views))
             .ForMember(article => article.Comments, opt => opt.MapFrom(dto => dto.Comments));
 
+        // For ArticleDto -> ArticleModel 
+
+        CreateMap<ArticleDto, ArticleModel>()
+            .ForMember(article => article.Id, opt => opt.MapFrom(dto => dto.Id))
+            .ForMember(article => article.Title, opt => opt.MapFrom(dto => dto.Title))
+            .ForMember(article => article.ShortDescription, opt => opt.MapFrom(dto => dto.ShortDescription))
+            .ForMember(article => article.FullText, opt => opt.MapFrom(dto => dto.FullText))
+            .ForMember(article => article.PublicationDate, opt => opt.MapFrom(dto => dto.PublicationDate));
+
+        CreateMap<ArticleModel,ArticleDto>()
+            .ForMember(article => article.Id, opt => opt.MapFrom(dto => dto.Id))
+            .ForMember(article => article.Title, opt => opt.MapFrom(dto => dto.Title))
+            .ForMember(article => article.ShortDescription, opt => opt.MapFrom(dto => dto.ShortDescription))
+            .ForMember(article => article.FullText, opt => opt.MapFrom(dto => dto.FullText))
+            .ForMember(article => article.PublicationDate, opt => opt.MapFrom(dto => DateTime.Now));
     }
 }

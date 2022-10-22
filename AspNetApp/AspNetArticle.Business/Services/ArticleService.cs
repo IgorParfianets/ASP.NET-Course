@@ -1,39 +1,51 @@
 ﻿using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Core.DataTransferObjects;
+using AspNetArticle.Data.Abstractions;
 using AspNetArticle.Database;
 using AspNetArticle.Database.Entities;
 using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 
 namespace AspNetArticle.Business.Services;
 
 public class ArticleService : IArticleService
 {
-    private readonly AggregatorContext _context;
+    private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
 
-    public ArticleService(AggregatorContext context, IMapper mapper)
+    public ArticleService(IMapper mapper, IUnitOfWork unitOfWork)
     {
-        _context = context;
         _mapper = mapper;
+        _unitOfWork = unitOfWork;
     }
 
     public async Task<ArticleDto> GetArticleByIdAsync(Guid id)
     {
-        var article = _context.Articles.FirstOrDefault(x => x.Id == id);
 
-        if (article != null)
-        {
-            var result = _mapper.Map<ArticleDto>(article);
-            return result;
-        }
         throw new Exception("User not found");
     }
 
     public async Task<int> CreateArticleAsync(ArticleDto article)
     {
-        var user = _mapper.Map<Article>(article);
-        await _context.Articles.AddAsync(user);
-
-        return await _context.SaveChangesAsync();
+       var entity = _mapper.Map<Article>(article);
+       await _unitOfWork.Articles.AddAsync(entity);
+        
+       return await _unitOfWork.Commit();
     }
+
+    public Task<int> UpdateArticleAsync(Guid id, ArticleDto? patchList)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<IEnumerable<ArticleDto>> GetAllArticlesAsync() // for Home / Index
+    {
+        var articleDto = await _unitOfWork.Articles
+            .Get()
+            .Select(entity => _mapper.Map<ArticleDto>(entity))
+            .ToListAsync();
+        
+        return articleDto;
+    }
+
 }

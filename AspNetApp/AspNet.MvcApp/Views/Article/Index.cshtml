@@ -1,0 +1,19 @@
+﻿@using AspNetArticle.Core.DataTransferObjects
+@model IEnumerable<ArticleDto>
+
+@{
+    ViewData["Title"] = "Article Home Page";
+}
+
+<h1>Articles</h1>
+<a class="btn btn-primary" href="~/Article/Create">Create Article</a>
+@if(Model.Any()){
+
+    foreach(var article in Model){
+        @Html.RenderPartialAsync("ShowAllArticles", article);
+    }
+
+}
+else{
+    <h2>Articles are not exist</h2>
+}
