@@ -19,11 +19,12 @@ public class AccountController : Controller
     private readonly IRoleService _roleService;
     private readonly IConfiguration _configuration;
 
-    public AccountController(IMapper mapper, IUserService userService, IRoleService roleService)
+    public AccountController(IMapper mapper, IUserService userService, IRoleService roleService, IConfiguration configuration)
     {
         _mapper = mapper;
         _userService = userService;
         _roleService = roleService;
+        _configuration = configuration;
     }
 
     //------------------------------------------  Login
@@ -78,7 +79,7 @@ public class AccountController : Controller
                 if (userRoleId != Guid.Empty && userDto != null)
                 {
                     userDto.RoleId = userRoleId;
-                    var result = await _userService.RegisterUser(userDto);
+                    var result = await _userService.RegisterUserAsync(userDto);
 
                     if (result > 0)
                     {
@@ -94,7 +95,7 @@ public class AccountController : Controller
             return StatusCode(500);
         }
     }
-    //------------------------------------------  Edit
+    //------------------------------------------  Edit //todo Repair doesn't work
     [HttpPost]
     public async Task<IActionResult> Edit(UserEditModel user)
     {
@@ -106,7 +107,7 @@ public class AccountController : Controller
                 
                 if (userDto != null)
                 {
-                    await _userService.UpdateUser(user.Id, userDto);
+                    await _userService.UpdateUserAsync(user.Id, userDto);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -124,7 +125,7 @@ public class AccountController : Controller
     {
         if (id != Guid.Empty)
         {
-            var user = await _userService.GetUser(id);
+            var user = await _userService.GetUserAsync(id);
 
             if (user == null)
                 return BadRequest();
@@ -134,6 +135,7 @@ public class AccountController : Controller
         }
         return View();
     }
+
     //------------------------------------------  Logout
     [HttpGet]
     public async Task<IActionResult> Logout()
@@ -143,8 +145,8 @@ public class AccountController : Controller
 
 
     }
-    //------------------------------------------  [Remote] Check UserName and Email при Registration
 
+    //------------------------------------------  [Remote] Check UserName and Email при Registration
     [HttpPost]
     public async Task<IActionResult> CheckEmail(string email)   
     {
@@ -170,6 +172,7 @@ public class AccountController : Controller
         }
         return Ok(true);
     }
+
     //------------------------------------------  Authenticate
     private async Task Authenticate(string email)
     {
@@ -191,6 +194,7 @@ public class AccountController : Controller
             new ClaimsPrincipal(identity));
     }
 
+    //------------------------------------------ Data for Authorize User
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> GetUserData()
@@ -204,6 +208,24 @@ public class AccountController : Controller
 
         var user = _mapper.Map<UserDataModel>(await _userService.GetUserByEmailAsync(userEmail));
         return Ok(user);
+    }
+
+    [HttpGet]
+    public async Task<IActionResult> LoginLogoutPreview()
+    {
+        if (User.Identities.Any(identity => identity.IsAuthenticated))
+        {
+            var userEmail = User.Identity?.Name ;
+            if (string.IsNullOrEmpty(userEmail))
+            {
+                return BadRequest();
+            }
+
+            var user = _mapper.Map<UserDataModel>(await _userService.GetUserByEmailAsync(userEmail));
+            return View(user);
+        }
+
+        return View();
     }
 }
  

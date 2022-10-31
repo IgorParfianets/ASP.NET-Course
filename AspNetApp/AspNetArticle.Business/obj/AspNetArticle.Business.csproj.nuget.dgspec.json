@@ -56,6 +56,22 @@
             "AutoMapper.Extensions.Microsoft.DependencyInjection": {
               "target": "Package",
               "version": "[11.0.0, )"
+            },
+            "HtmlAgilityPack": {
+              "target": "Package",
+              "version": "[1.11.46, )"
+            },
+            "HtmlAgilityPack.CssSelectors.NetCore": {
+              "target": "Package",
+              "version": "[1.2.1, )"
+            },
+            "HtmlAgilityPack.NetCore": {
+              "target": "Package",
+              "version": "[1.5.0.1, )"
+            },
+            "System.ServiceModel.Syndication": {
+              "target": "Package",
+              "version": "[6.0.0, )"
             }
           },
           "imports": [

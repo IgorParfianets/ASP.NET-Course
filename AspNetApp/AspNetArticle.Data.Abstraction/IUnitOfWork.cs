@@ -6,7 +6,8 @@ namespace AspNetArticle.Data.Abstractions;
 
 public interface IUnitOfWork
 {
-    IRepository<Article> Articles { get; }
+    IExtendedArticleRepository Articles { get; }
+    IRepository<Source> Sources { get; }
     IRepository<User> Users { get; }
     IRepository<Role> Roles { get; }
     Task<int> Commit();

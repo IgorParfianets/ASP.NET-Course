@@ -8,16 +8,23 @@ using AspNetArticle.Database.Entities;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging.Core;
+using Serilog;
+using Serilog.Events;
 
 namespace AspNet.MvcApp
 {
-    public class Program
+    public class Program //todo in Automapper to fix problem with Models
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
             // For Logger Serilog !!!
+            builder.Host.UseSerilog((ctx, lc) =>
+                lc.WriteTo.File(
+                        @"C:\Users\Igor\Desktop\data.log",
+                        LogEventLevel.Information)
+                    .WriteTo.Console(LogEventLevel.Verbose));
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -26,10 +33,12 @@ namespace AspNet.MvcApp
             builder.Services.AddScoped<IArticleService, ArticleService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IRoleService, RoleService>();
+            builder.Services.AddScoped<ISourceService, SourceService>();
 
             builder.Services.AddScoped<IRepository<Article>, Repository<Article>>();
             builder.Services.AddScoped<IRepository<User>, Repository<User>>();
             builder.Services.AddScoped<IRepository<Role>, Repository<Role>>();
+            builder.Services.AddScoped<IRepository<Source>, Repository<Source>>();
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             //------------------------------------------------------------
@@ -43,6 +52,8 @@ namespace AspNet.MvcApp
                     options.LogoutPath = new PathString(@"/Account/Logout");
                     options.AccessDeniedPath = new PathString(@"/Account/Login");
                 });
+
+            builder.Services.AddAuthorization(); // Test Remove Or Not
 
             // Db Context
             builder.Services.AddDbContext<AggregatorContext>(optionBuilder =>

@@ -17,7 +17,7 @@ namespace AspNetArticle.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.9")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
@@ -28,19 +28,24 @@ namespace AspNetArticle.Database.Migrations
                         .ValueGeneratedOnAdd()
                         .HasColumnType("uniqueidentifier");
 
-                    b.Property<string>("FullText")
-                        .IsRequired()
+                    b.Property<string>("Category")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("PublicationDate")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("ShortDescription")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<Guid>("SourceId")
                         .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("SourceUrl")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("Text")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Title")
                         .IsRequired()
@@ -104,6 +109,9 @@ namespace AspNetArticle.Database.Migrations
 
                     b.Property<string>("Name")
                         .IsRequired()
+                        .HasColumnType("nvarchar(max)");
+
+                    b.Property<string>("RssUrl")
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<int>("SourceType")

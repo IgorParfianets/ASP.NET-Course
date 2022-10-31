@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "hlVj/U2jkWYedwUjE0tYdltJ4TdbrRvL277tHqWVcsc=",
+  "Hash": "KsyvqzHhZqcc2SLqiux1hBur8puUHVZUrjejUvFHhSg=",
   "Source": "AspNetArticle.MvcApp",
   "BasePath": "_content/AspNetArticle.MvcApp",
   "Mode": "Default",
@@ -848,6 +848,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\js\\authentication.js",
+      "SourceId": "AspNetArticle.MvcApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\",
+      "BasePath": "_content/AspNetArticle.MvcApp",
+      "RelativePath": "js/authentication.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\authentication.js"
     },
     {
       "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\js\\site.js",

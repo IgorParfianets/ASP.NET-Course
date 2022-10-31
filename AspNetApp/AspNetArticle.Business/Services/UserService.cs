@@ -23,7 +23,7 @@ public class UserService : IUserService
     }
 
     //------------------------------------------  Registration
-    public async Task<int> RegisterUser(UserDto userDto) 
+    public async Task<int> RegisterUserAsync(UserDto userDto) 
     {
         var entity = _mapper.Map<User>(userDto);
         entity.PasswordHash = CreateMd5(userDto.Password); 
@@ -35,7 +35,7 @@ public class UserService : IUserService
     }
 
     //------------------------------------------  Get User
-    public async Task<UserDto?> GetUser(Guid id)
+    public async Task<UserDto?> GetUserAsync(Guid id)
     {
         var entity = await _unitOfWork.Users.GetByIdAsync(id);
         var user = _mapper.Map<UserDto>(entity);
@@ -44,7 +44,7 @@ public class UserService : IUserService
     }
 
     //------------------------------------------  Edit
-    public async Task<int> UpdateUser(Guid id, UserDto userDto) 
+    public async Task<int> UpdateUserAsync(Guid id, UserDto userDto) 
     {
         var entity = await _unitOfWork.Users.GetByIdAsync(id);
 

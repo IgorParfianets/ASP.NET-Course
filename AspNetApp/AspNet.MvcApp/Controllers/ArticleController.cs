@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetArticle.MvcApp.Controllers
 {
-    [Authorize(Roles = "User")]
+    [Authorize(Roles = "User")] //todo remove after
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;

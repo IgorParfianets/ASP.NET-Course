@@ -11,9 +11,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetArticle.Business", "A
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetArticle.Core", "AspNetArticle.Core\AspNetArticle.Core.csproj", "{3B99C290-3BF6-483E-8174-2BA6F5249E31}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetArticle.Data.Abstractions", "AspNetArticle.Data.Abstraction\AspNetArticle.Data.Abstractions.csproj", "{8617E960-F3A6-480F-AD32-145975C20A43}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetArticle.Data.Abstractions", "AspNetArticle.Data.Abstraction\AspNetArticle.Data.Abstractions.csproj", "{8617E960-F3A6-480F-AD32-145975C20A43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetArticle.Data.Repositories", "AspNetArticle.Data.Repositories\AspNetArticle.Data.Repositories.csproj", "{8BA3B42C-CCA3-4624-A013-253E2A020F75}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetArticle.Data.Repositories", "AspNetArticle.Data.Repositories\AspNetArticle.Data.Repositories.csproj", "{8BA3B42C-CCA3-4624-A013-253E2A020F75}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetArticle.Api", "AspNetArticle.Api\AspNetArticle.Api.csproj", "{D0D6EBAF-E920-4DD4-AE3C-8FCA84AC86EA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetArticle.Mappers", "AspNetArticle.Mappers\AspNetArticle.Mappers.csproj", "{0D292F28-9B79-4CE0-B315-8512CC5D4083}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -45,6 +49,14 @@ Global
 		{8BA3B42C-CCA3-4624-A013-253E2A020F75}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8BA3B42C-CCA3-4624-A013-253E2A020F75}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8BA3B42C-CCA3-4624-A013-253E2A020F75}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0D6EBAF-E920-4DD4-AE3C-8FCA84AC86EA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0D6EBAF-E920-4DD4-AE3C-8FCA84AC86EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0D6EBAF-E920-4DD4-AE3C-8FCA84AC86EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0D6EBAF-E920-4DD4-AE3C-8FCA84AC86EA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0D292F28-9B79-4CE0-B315-8512CC5D4083}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0D292F28-9B79-4CE0-B315-8512CC5D4083}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0D292F28-9B79-4CE0-B315-8512CC5D4083}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0D292F28-9B79-4CE0-B315-8512CC5D4083}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

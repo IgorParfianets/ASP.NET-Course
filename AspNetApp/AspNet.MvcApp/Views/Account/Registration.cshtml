@@ -73,12 +73,16 @@
                 <input type="checkbox" asp-for="Spam" />
             </div>
             <!-- Button Submit -->
-            <div class="text-center row">
-
-                <button type="submit" class="btn btn-primary" style="width: 100px">Submit</button>
-                <a asp-controller="Account" asp-action="Login" class="btn btn-secondary" style="width: 100px">
-                    Back
-                </a>
+            <div class="text-center row col-12">
+                <div class="col-4 w-50">
+                    <button type="submit" class="btn btn-primary w-50" >Submit</button>
+                </div>
+                <div class="offset-4 col-4 w-50">
+                    <a asp-controller="Account" asp-action="Login" class="btn btn-secondary w-50" >
+                        Back
+                    </a>
+                </div>
+                
             </div>
         </div>
         
