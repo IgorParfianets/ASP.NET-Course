@@ -23,7 +23,7 @@ namespace AspNetArticle.Api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddArticles()
+        public async Task<IActionResult> AddArticles() //todo rework with last lecture
         {
             try
             {

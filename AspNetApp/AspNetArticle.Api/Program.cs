@@ -5,6 +5,7 @@ using AspNetArticle.Data.Abstractions;
 using AspNetArticle.Data.Repositories;
 using AspNetArticle.Database;
 using AspNetArticle.Database.Entities;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
@@ -30,12 +31,14 @@ namespace AspNetArticle.Api
             builder.Services.AddScoped<ISourceService, SourceService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IRoleService, RoleService>();
+            builder.Services.AddScoped<ICommentaryService, CommentaryService>();
 
             builder.Services.AddScoped<IExtendedArticleRepository, ExtendedArticleRepository>();
             builder.Services.AddScoped<IRepository<User>, Repository<User>>();
             builder.Services.AddScoped<IRepository<Role>, Repository<Role>>();
             builder.Services.AddScoped<IRepository<Source>, Repository<Source>>();
-            
+            builder.Services.AddScoped<IRepository<Comment>, Repository<Comment>>();
+
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
@@ -48,6 +51,7 @@ namespace AspNetArticle.Api
 
             // Mapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // For Mapping to collect all profiles
+  
 
             // Configuration
             builder.Configuration.AddJsonFile("hashingsalt.json"); // for custom configuration

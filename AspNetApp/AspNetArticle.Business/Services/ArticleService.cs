@@ -1,7 +1,6 @@
 ﻿using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Core.DataTransferObjects;
 using AspNetArticle.Data.Abstractions;
-using AspNetArticle.Database;
 using AspNetArticle.Database.Entities;
 using AutoMapper;
 using HtmlAgilityPack;
@@ -24,8 +23,7 @@ public class ArticleService : IArticleService
 
     public async Task<ArticleDto> GetArticleByIdAsync(Guid id)
     {
-
-        throw new Exception("User not found");
+        return _mapper.Map<ArticleDto>(await _unitOfWork.Articles.GetByIdAsync(id));
     }
 
     public async Task<int> CreateArticleAsync(ArticleDto article)
@@ -70,6 +68,15 @@ public class ArticleService : IArticleService
             .ToList();
 
         return result;
+    }
+
+    public async Task RemoveArticleByIdSourceAsync(Guid id)
+    {
+        var entities = await  _unitOfWork.Articles.Get().Where(ent => ent.SourceId == id).ToListAsync();
+        
+        _unitOfWork.Articles.RemoveRange(entities);
+        
+        await _unitOfWork.Commit();
     }
 
     //---------------------------------------------------------- for controllerInitializer
@@ -142,44 +149,46 @@ public class ArticleService : IArticleService
 
             var articleSourceUrl = article.SourceUrl;
 
-            //var web = new HtmlWeb();
-            //var htmlDoc = web.Load(articleSourceUrl);
-            //var nodes =
-            //    htmlDoc.DocumentNode.Descendants(0)
-            //        .Where(n => n.HasClass("news-text"));
             var web = new HtmlWeb();
             var htmlDoc = web.Load(articleSourceUrl);
             var nodes =
                 htmlDoc.DocumentNode.Descendants(0)
-                    .Where(n => n.HasClass("se-material-page__body"));
+                    .Where(n => n.HasClass("news-text"));
+
+            //var web = new HtmlWeb();
+            //var htmlDoc = web.Load(articleSourceUrl);
+            //var nodes =
+            //    htmlDoc.DocumentNode.Descendants(0)
+            //        .Where(n => n.HasClass("se-material-page__body"));
 
             if (nodes.Any())
             {
-                //var articleText = nodes.FirstOrDefault()?
-                //    .ChildNodes
-                //    .Where(node => (node.Name.Equals("p") || node.Name.Equals("div") || node.Name.Equals("h2"))
-                //                   && !node.HasClass("news-reference")
-                //                   && !node.HasClass("news-banner")
-                //                   && !node.HasClass("news-widget")
-                //                   && !node.HasClass("news-vote")
-                //                   && node.Attributes["style"] == null)
-                //    .Select(node => node.OuterHtml)
-                //    .Aggregate((i, j) => i + Environment.NewLine + j);
-
                 var articleText = nodes.FirstOrDefault()?
                     .ChildNodes
-                    .Where(node => (node.Name.Equals("p") || node.Name.Equals("div") || node.Name.Equals("h1"))
-                                && !node.HasClass("se-material-page__social")
-                                && !node.HasClass("se-material-page__authors")
-                                && !node.HasClass("e-material-page__blog-buttons")
-                                && !node.HasClass("se-material-page__zoomer")  
-                                && !node.HasClass("se-banner")
-                                && !node.HasClass("se-material-page__blog-buttons")
-                                && !node.Name.Equals("a")
-                                && !node.Name.Equals("script")
-                                )
+                    .Where(node => (node.Name.Equals("p") || node.Name.Equals("div") || node.Name.Equals("h2"))
+                                   && !node.HasClass("news-reference")
+                                   && !node.HasClass("news-banner")
+                                   && !node.HasClass("news-widget")
+                                   && !node.HasClass("news-vote")
+                                   && !node.HasClass("news-incut")
+                                   && node.Attributes["style"] == null)
                     .Select(node => node.OuterHtml)
                     .Aggregate((i, j) => i + Environment.NewLine + j);
+
+                //var articleText = nodes.FirstOrDefault()?
+                //    .ChildNodes
+                //    .Where(node => (node.Name.Equals("p") || node.Name.Equals("div") || node.Name.Equals("h1"))
+                //                && !node.HasClass("se-material-page__social")
+                //                && !node.HasClass("se-material-page__authors")
+                //                && !node.HasClass("e-material-page__blog-buttons")
+                //                && !node.HasClass("se-material-page__zoomer")  
+                //                && !node.HasClass("se-banner")
+                //                && !node.HasClass("se-material-page__blog-buttons")
+                //                && !node.Name.Equals("a")
+                //                && !node.Name.Equals("script")
+                //                )
+                //    .Select(node => node.OuterHtml)
+                //    .Aggregate((i, j) => i + Environment.NewLine + j);
 
 
                 await _unitOfWork.Articles.UpdateArticleTextAsync(articleId, articleText); 

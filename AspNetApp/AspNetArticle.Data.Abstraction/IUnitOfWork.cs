@@ -10,5 +10,6 @@ public interface IUnitOfWork
     IRepository<Source> Sources { get; }
     IRepository<User> Users { get; }
     IRepository<Role> Roles { get; }
+    IRepository<Comment> Comments { get; }
     Task<int> Commit();
 }

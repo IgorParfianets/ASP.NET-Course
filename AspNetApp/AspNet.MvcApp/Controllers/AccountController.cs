@@ -13,7 +13,6 @@ namespace AspNetArticle.MvcApp.Controllers;
 
 public class AccountController : Controller
 {
-    // какой то сервис
     private readonly IMapper _mapper;
     private readonly IUserService _userService;
     private readonly IRoleService _roleService;

@@ -31,7 +31,6 @@
     <ProjectReference Include="..\AspNetArticle.Data.Abstraction\AspNetArticle.Data.Abstractions.csproj" />
     <ProjectReference Include="..\AspNetArticle.Data.Repositories\AspNetArticle.Data.Repositories.csproj" />
     <ProjectReference Include="..\AspNetArticle.Database\AspNetArticle.Database.csproj" />
-    <ProjectReference Include="..\AspNetArticle.Mappers\AspNetArticle.Mappers.csproj" />
   </ItemGroup>
 
   <ItemGroup>

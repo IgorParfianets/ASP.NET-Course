@@ -7,5 +7,7 @@ namespace AspNetArticle.Core.Abstractions
         Task<List<SourceDto>> GetSourcesAsync();
 
         Task<SourceDto> GetSourcesByIdAsync(Guid id);
+
+        Task RemoveSourceById(Guid id);
     }
 }

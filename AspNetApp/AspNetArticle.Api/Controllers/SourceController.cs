@@ -50,5 +50,19 @@ namespace AspNetArticle.Api.Controllers
             }
             return BadRequest();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<IActionResult> DeleteSourceById(Guid id)
+        {
+            try
+            {
+                await _sourceService.RemoveSourceById(id);
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                throw;
+            }
+        }
     }
 }

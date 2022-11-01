@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetArticle.MvcApp.Controllers
 {
-    [Authorize(Roles = "User")] //todo remove after
+    //[Authorize(Roles = "User")] //todo remove after
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
@@ -19,6 +19,7 @@ namespace AspNetArticle.MvcApp.Controllers
             _articleService = articleService;
         }
 
+        [HttpGet]
         public async Task<IActionResult> Index()
         {
             var articles = await _articleService.GetAllArticlesAsync();
@@ -48,6 +49,18 @@ namespace AspNetArticle.MvcApp.Controllers
                 return NotFound(); //todo переделать
             }
             return View(article);
-        } 
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Details(Guid id)
+        {
+            var article = await _articleService.GetArticleByIdAsync(id);
+            if (article != null)
+            {
+                return View(article);
+            }
+
+            return View();
+        }
     }
 }

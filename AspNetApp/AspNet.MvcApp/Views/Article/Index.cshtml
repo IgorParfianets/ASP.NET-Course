@@ -6,17 +6,26 @@
 }
 
 @{
-    ViewData["Title"] = "Article Home Page";
+    ViewData["Title"] = "Article Page";
 }
 
 <h1>Articles</h1>
-<a class="btn btn-primary" href="~/Article/Create">Create Article</a>
+<a class="btn btn-primary" asp-controller="Article" asp-action="Create">Create Article</a>
+
 @if(Model.Any()){
 
-    foreach(var article in Model){
-        @Html.RenderPartialAsync("ShowAllArticles", article);
+    foreach (var art in Model)
+    {
+        @*<div class="col-12 col-sm-10 col-md-6 col-lg-4 col-xl-3">
+            <article-fix article="art"></article-fix>
+        </div>*@
+        <div class="container-sm">
+            <article-fix article="art"></article-fix>
+        </div>
+        <div class="row m-0" >
+            <a class="col-12 col-sm-10 btn btn-primary" asp-controller="Article" asp-action="Details" asp-route-id="@art.Id">Read details</a>
+        </div>
     }
-
 }
 else{
     <h2>Articles are not exist</h2>

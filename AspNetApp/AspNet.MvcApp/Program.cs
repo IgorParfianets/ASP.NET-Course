@@ -30,15 +30,18 @@ namespace AspNet.MvcApp
             builder.Services.AddControllersWithViews();
 
             //------------------------------------------------------------
+
             builder.Services.AddScoped<IArticleService, ArticleService>();
+            builder.Services.AddScoped<ISourceService, SourceService>();
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IRoleService, RoleService>();
-            builder.Services.AddScoped<ISourceService, SourceService>();
+            builder.Services.AddScoped<ICommentaryService, CommentaryService>();
 
-            builder.Services.AddScoped<IRepository<Article>, Repository<Article>>();
+            builder.Services.AddScoped<IExtendedArticleRepository, ExtendedArticleRepository>();
             builder.Services.AddScoped<IRepository<User>, Repository<User>>();
             builder.Services.AddScoped<IRepository<Role>, Repository<Role>>();
             builder.Services.AddScoped<IRepository<Source>, Repository<Source>>();
+            builder.Services.AddScoped<IRepository<Comment>, Repository<Comment>>();
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             //------------------------------------------------------------
@@ -90,12 +93,17 @@ namespace AspNet.MvcApp
 
         /*
          * todo add Authenticate => Claims => Roles
-         * todo add Identity?
+         * todo add Identity? (SignInManager and UserManager)
          * todo implement Edit for user ( private room ) => add Image/Ava
          * todo refactor names / ASYNC / try-catch in controllers
          * todo edit entities some add/some remove
          *
          * todo implement Logger Serilog
+         *
+         *
+         *
+         * todo Fix Onliner news remove incut + reduce images in all news
+         * todo watch lecture JS Web and make something with Authentication
          */
     }
 }

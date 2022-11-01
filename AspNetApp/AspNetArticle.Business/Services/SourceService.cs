@@ -33,5 +33,15 @@ namespace AspNetArticle.Business.Services
         {
             return _mapper.Map<SourceDto>(await _unitOfWork.Sources.GetByIdAsync(id));
         }
+
+        public async Task RemoveSourceById(Guid id)
+        {
+            var source = await _unitOfWork.Sources.GetByIdAsync(id);
+
+            if(source != null)
+                _unitOfWork.Sources.Remove(source);
+
+            await _unitOfWork.Commit();
+        }
     }
 }

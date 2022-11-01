@@ -4069,7 +4069,6 @@
         "dependencies": {
           "AspNetArticle.Core": "1.0.0",
           "AspNetArticle.Data.Abstractions": "1.0.0",
-          "AspNetArticle.Database": "1.0.0",
           "AutoMapper": "11.0.1",
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "11.0.0",
           "HtmlAgilityPack": "1.11.46",

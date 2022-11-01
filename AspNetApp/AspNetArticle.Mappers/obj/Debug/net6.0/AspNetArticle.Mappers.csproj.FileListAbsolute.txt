@@ -30,3 +30,9 @@ D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\o
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\obj\Debug\net6.0\refint\AspNetArticle.Mappers.dll
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\obj\Debug\net6.0\AspNetArticle.Mappers.pdb
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\obj\Debug\net6.0\ref\AspNetArticle.Mappers.dll
+D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\bin\Debug\net6.0\AspNetArticle.Api.deps.json
+D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\bin\Debug\net6.0\AspNetArticle.Api.runtimeconfig.json
+D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\bin\Debug\net6.0\AspNetArticle.Api.staticwebassets.runtime.json
+D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\bin\Debug\net6.0\AspNetArticle.Api.exe
+D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\bin\Debug\net6.0\AspNetArticle.Api.dll
+D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\bin\Debug\net6.0\AspNetArticle.Api.pdb

@@ -10,6 +10,8 @@ public interface IArticleService
     Task<IEnumerable<ArticleDto>> GetAllArticlesAsync();
     Task<List<ArticleDto>> GetArticlesByNameAndSourcesAsync(string? name, Guid? category);
 
+    Task RemoveArticleByIdSourceAsync(Guid id);
+
     Task GetAllArticleDataFromRssAsync(Guid sourceId, string? sourceRssUrl);
     Task AddArticleTextToArticlesAsync();
 }

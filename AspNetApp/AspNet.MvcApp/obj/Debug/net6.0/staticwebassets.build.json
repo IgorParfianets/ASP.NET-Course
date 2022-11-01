@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "KsyvqzHhZqcc2SLqiux1hBur8puUHVZUrjejUvFHhSg=",
+  "Hash": "1dTFxVZTIgqmOfPmjb6qD2gPUExuCPfh9OuKOhtewU8=",
   "Source": "AspNetArticle.MvcApp",
   "BasePath": "_content/AspNetArticle.MvcApp",
   "Mode": "Default",
@@ -848,6 +848,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\favicon.ico"
+    },
+    {
+      "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\image\\world-news.png",
+      "SourceId": "AspNetArticle.MvcApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\",
+      "BasePath": "_content/AspNetArticle.MvcApp",
+      "RelativePath": "image/world-news.png",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\image\\world-news.png"
     },
     {
       "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\js\\authentication.js",

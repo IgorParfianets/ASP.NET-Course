@@ -87,5 +87,8 @@ public class Repository<T> : IRepository<T> where T : class, IBaseEntity
         DbSet.Remove(entity);
     }
 
-   
+    public virtual void RemoveRange(IEnumerable<T> entities)
+    {
+       DbSet.RemoveRange(entities);
+    }
 }

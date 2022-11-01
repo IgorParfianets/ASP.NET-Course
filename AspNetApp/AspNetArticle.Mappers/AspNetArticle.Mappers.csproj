@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\AspNet.MvcApp\AspNetArticle.MvcApp.csproj" />
+    <ProjectReference Include="..\AspNetArticle.Api\AspNetArticle.Api.csproj" />
     <ProjectReference Include="..\AspNetArticle.Database\AspNetArticle.Database.csproj" />
   </ItemGroup>
 

@@ -23,4 +23,5 @@ public interface IRepository<T> where T : IBaseEntity // CRUD
 
     //Delete
     void Remove(T entity);
+    void RemoveRange(IEnumerable<T> entities);
 }
