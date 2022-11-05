@@ -1,8 +1,56 @@
-﻿*{
-    box-sizing:border-box;
+﻿@import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@400;700&display=swap');
+
+:root {
+    --textColor: #DFDFDF;
+    --textLinkHover: #FFFFFF;
+    --bgColorMain: #E4EBF2;
+    --bgColorHeader: #6C7073;
+}
+* {
+    /*box-sizing: border-box;*/
+    font-family: 'Playfair Display SC', serif;
 }
 
-a {
+ul,li, a {
     text-decoration: none;
-    color: slategrey;
+    list-style-type: none;
 }
+a {
+    color: var(--textColor);
+    transition: color 100ms;
+}
+
+a:hover {
+    color: var(--textLinkHover);
+}     
+
+body {
+    margin: 20px 5rem;
+    background-color: var(--bgColorMain);
+}
+
+
+header {
+    background-color: var(--bgColorHeader);
+}
+
+/*.nav__container {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    flex-flow: row nowrap;
+}
+.nav__partial {
+    justify-content: flex-end;
+    flex-flow: row nowrap;
+}
+.nav__container_item {
+    justify-content: space-around;
+    display: flex;
+    padding: 0 30px;
+    width: 30%;
+}
+.nav__item {
+
+}*/

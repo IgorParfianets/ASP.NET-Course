@@ -94,46 +94,6 @@ public class AccountController : Controller
             return StatusCode(500);
         }
     }
-    //------------------------------------------  Edit //todo Repair doesn't work
-    [HttpPost]
-    public async Task<IActionResult> Edit(UserEditModel user)
-    {
-        try
-        {
-            if (ModelState.IsValid)
-            {
-                var userDto = _mapper.Map<UserDto>(user);
-                
-                if (userDto != null)
-                {
-                    await _userService.UpdateUserAsync(user.Id, userDto);
-
-                    return RedirectToAction("Index", "Home");
-                }
-            }
-            return View(user);
-        }
-        catch (Exception)
-        {
-            return StatusCode(500);
-        }
-    }
-
-    [HttpGet]
-    public async Task<IActionResult> Edit(Guid id)
-    {
-        if (id != Guid.Empty)
-        {
-            var user = await _userService.GetUserAsync(id);
-
-            if (user == null)
-                return BadRequest();
-
-            var userEdit = _mapper.Map<UserEditModel>(user);
-            return View(userEdit);
-        }
-        return View();
-    }
 
     //------------------------------------------  Logout
     [HttpGet]
@@ -180,7 +140,8 @@ public class AccountController : Controller
         var claims = new List<Claim>()
         {
             new Claim(ClaimsIdentity.DefaultNameClaimType, userDto.Email),
-            new Claim(ClaimsIdentity.DefaultRoleClaimType, userDto.RoleName)
+            new Claim(ClaimsIdentity.DefaultRoleClaimType, userDto.RoleName),
+            new Claim(ClaimsIdentity.DefaultRoleClaimType, userDto.UserName)
         };
 
         var identity = new ClaimsIdentity(claims,
@@ -194,9 +155,10 @@ public class AccountController : Controller
     }
 
     //------------------------------------------ Data for Authorize User
+
     [HttpGet]
     [Authorize]
-    public async Task<IActionResult> GetUserData()
+    public async Task<IActionResult> Edit()  
     {
         var userEmail = User.Identity?.Name;
 
@@ -205,12 +167,37 @@ public class AccountController : Controller
             return BadRequest();
         }
 
-        var user = _mapper.Map<UserDataModel>(await _userService.GetUserByEmailAsync(userEmail));
-        return Ok(user);
+        var user = _mapper.Map<UserEditModel>(await _userService.GetUserByEmailAsync(userEmail));
+        //var user = _mapper.Map<UserEditModel>(await _userService.GetUserAsync(id));
+        return View(user);
+    }
+
+    [HttpPost]
+    [Authorize]
+    public async Task<IActionResult> Edit(UserEditModel model) // todo not fully works need to create POST version
+    {
+        var userEmail = User.Identity?.Name;
+
+        if (ModelState.IsValid && userEmail != null)
+        {
+            var dto = _mapper.Map<UserDto>(model);
+            dto.Email = userEmail;
+            dto.RoleName = await _roleService.GetRoleNameByIdAsync(model.RoleId);
+
+            if (dto != null)
+            {
+                var result = await _userService.UpdateUserAsync(model.Id, dto);
+                
+                return result > 0 
+                    ? RedirectToAction("Index", "Home") 
+                    : BadRequest();
+            }
+        }
+        return BadRequest();
     }
 
     [HttpGet]
-    public async Task<IActionResult> LoginLogoutPreview()
+    public async Task<IActionResult> LoginLogoutUser()
     {
         if (User.Identities.Any(identity => identity.IsAuthenticated))
         {

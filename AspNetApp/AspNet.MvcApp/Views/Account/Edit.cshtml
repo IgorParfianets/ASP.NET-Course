@@ -8,12 +8,12 @@
 
 <form asp-controller="Account" asp-action="Edit" method="post">
     <input asp-for="Id" hidden/>
+    <input asp-for="RoleId" hidden />
     <div class="border col-md-4 offset-md-4 mt-5">
         <div class="row">
             <div class="mb-5">
                 <h1 class="text-center">Edit</h1>
             </div>
-
 
             <!-- For UserName -->
             <div class="form-group row mb-3">
@@ -27,23 +27,10 @@
                 </div>
             </div>
 
-            <!-- For Password -->
-            <div class="form-group row mb-3">
-                <div class="col-5">
-                    <label asp-for="OldPassword">Password</label>
-
-                </div>
-                <div class="col-7">
-                    <input asp-for="OldPassword">
-                    <span asp-validation-for="OldPassword" class="text-danger"></span>
-                </div>
-
-            </div>
-
             <!-- For Email -->
             <div class="form-group row mb-3">
                 <div class="col-5">
-                    <label asp-for="NewPassword">Email</label>
+                    <label asp-for="NewPassword">New Password</label>
 
                 </div>
                 <div class="col-7">

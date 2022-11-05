@@ -1,6 +1,6 @@
 ﻿const navBar = document.getElementById('user-info');
 
-const url = `${window.location.origin}/Account/LoginLogoutPreview`; // todo rework incorrect working 
+const url = `${window.location.origin}/Account/LoginLogoutUser`; // todo rework incorrect working 
 
 fetch(url)
     .then(function(response) {

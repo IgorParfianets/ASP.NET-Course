@@ -88,10 +88,21 @@ public class UserProfile : Profile
             .ForMember(user => user.UserName,
                 opt =>
                     opt.MapFrom(dto => dto.UserName))
-            .ForMember(user => user.OldPassword,
-                opt =>
-                    opt.MapFrom(dto => dto.Password))
             .ForMember(user => user.Spam, opt
+                => opt.MapFrom(dto => dto.Spam));
+
+        CreateMap<UserEditModel, UserDto>()
+            .ForMember(user => user.Id,
+                opt =>
+                    opt.MapFrom(dto => dto.Id))
+            .ForMember(user => user.UserName,
+                opt =>
+                    opt.MapFrom(dto => dto.UserName))
+            .ForMember(user => user.Password,
+                opt =>
+                    opt.MapFrom(dto => dto.NewPassword))
+            .ForMember(user => user.Spam, 
+                opt
                 => opt.MapFrom(dto => dto.Spam));
 
         CreateMap<UserDto, UserDataModel>()

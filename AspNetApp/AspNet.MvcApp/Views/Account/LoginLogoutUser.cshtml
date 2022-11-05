@@ -1,0 +1,24 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model AspNetArticle.MvcApp.Models.UserDataModel?
+
+@{
+    Layout = null;
+}
+
+@if (Model != null)
+{
+    <div>
+        <a class="py-2 d-none d-md-inline-block" asp-action="Edit" asp-controller="Account">Hello @Model.UserName</a>
+        <a class="py-2 d-none d-md-inline-block" asp-controller="Account" asp-action="Logout">Logout</a>
+    </div>
+}
+else
+{
+    <div>
+        <a class="py-2 d-none d-md-inline-block" asp-action="Login" asp-controller="Account">Login</a>
+        <a class="py-2 d-none d-md-inline-block" asp-action="Registration" asp-controller="Account">Sign In</a>
+    </div>
+}
+
+
+<script src="js/authentication.js"></script>

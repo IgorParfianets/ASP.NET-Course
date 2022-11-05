@@ -11,33 +11,54 @@
     <link rel="stylesheet" href="~/css/bootstrap.css" asp-append-version="true" />
     <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/product/">
     <link rel="stylesheet" href="~/css/MyStyle.css" asp-append-version="true" />
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@400;700&display=swap" rel="stylesheet">
     <meta name="theme-color" content="#712cf9">
 </head>
-    <body>
-    <header class="site-header sticky-top py-1">
-        <nav class="container d-flex flex-column flex-md-row nav-justified gap-3 pt-1">
 
-            <a class="py-2" asp-controller="Home" asp-action="Index" aria-label="Product">
-                <img src="image/world-news.png" width="30" height="30" alt="news">
-            </a>
-            <a class="py-2 d-none d-md-inline-block" href="#">Archiv</a>
-            <a class="py-2 d-none d-md-inline-block" href="#">Product</a>
-            <a class="py-2 d-none d-md-inline-block" href="#">Features</a>
-            <a class="py-2 d-none d-md-inline-block" href="#">Enterprise</a>
-            <a class="py-2 d-none d-md-inline-block" href="#">Support</a>
-            <a class="py-2 d-none d-md-inline-block" href="#">Pricing</a>
-            <a class="py-2 d-none d-md-inline-block" href="#">Cart</a>
+<body>
+@*<header>
+        <nav class="nav__container">
+            <div class="nav__container_item">
+                <a class="nav__item" style="" href="#">Latest News</a>
+                <a class="nav__item" href="#">New</a>
+                <a class="nav__item" href="#">Archiv</a>
+            </div>
+        <a class="py-2" asp-controller="Home" asp-action="Index" aria-label="Product">
+            <img src="image/world-news.png" width="30" height="30" alt="news"> <!-- logo doesn't match-->
+        </a>
+            
+            <div class="nav__partial">
+                <partial name="_LoginPartial" />
+            </div>
+        </nav>
+</header>*@
+<header class="py-1">
+        <nav class="container d-flex flex-column flex-md-row nav-justified gap-5 pt-1">
+            <div>
+                <a class="py-2 d-none d-md-inline-block" asp-controller="Article" asp-action="Index">Articles</a>
+                <a class="py-2 d-none d-md-inline-block" href="#">New</a>
+                <a class="py-2 d-none d-md-inline-block" href="#">Archiv</a>
+            </div>
+            @*<a class="py-2" asp-controller="Home" asp-action="Index" aria-label="Product">
+                <img src="image/world-news.png" width="30" height="30" alt="news"> <!-- logo doesn't match-->
+            </a>*@
+            
+            <div>
+                <partial name="_LoginLogoutSectionPartial" />
+            </div>
         </nav>
     </header>
 
-    <div>
-        <main role="main">
-            @RenderBody()
-        </main>
-    </div>
+<div>
+    <main role="main">
+        @RenderBody()
+    </main>
+</div>
 
 
-    <footer class="container py-5">
+<footer class="container py-5">
     <div class="row">
         <div class="col-12 col-md">
             <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" class="d-block mb-2" role="img" viewBox="0 0 24 24"><title>Product</title><circle cx="12" cy="12" r="10"></circle><path d="M14.31 8l5.74 9.94M9.69 8h11.48M7.38 12l5.74-9.94M9.69 16L3.95 6.06M14.31 16H2.83m13.79-4l-5.74 9.94"></path></svg>
@@ -85,11 +106,11 @@
 </footer>
 
 
-    <script src="~/lib/jquery/dist/jquery.min.js"></script>
-    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-    <script src="~/js/site.js" asp-append-version="true"></script>
-    <script src="~/js/bootstrap.js"></script>
-    @* <script scr="~/js/authentication.js" asp-append-version="true"></script>*@
-    @await RenderSectionAsync("Scripts", required: false)
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+<script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/js/site.js" asp-append-version="true"></script>
+<script src="~/js/bootstrap.js"></script>
+@* <script scr="~/js/authentication.js" asp-append-version="true"></script>*@
+@await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>

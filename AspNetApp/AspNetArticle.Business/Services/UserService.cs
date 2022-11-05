@@ -52,11 +52,12 @@ public class UserService : IUserService
 
         if (userDto != null)
         {
-            if (!userDto.UserName.Equals(entity.UserName))
+            if (!userDto.UserName
+                    .Equals(entity.UserName))
             {
                 patchList.Add(new PatchModel()
                 {
-                    PropertyName = nameof(userDto.UserName),
+                    PropertyName = nameof(entity.UserName),
                     PropertyValue = userDto.UserName
                 });
             }
@@ -66,8 +67,8 @@ public class UserService : IUserService
             {
                 patchList.Add(new PatchModel()
                 {
-                    PropertyName = nameof(userDto.Password),
-                    PropertyValue = userDto.Password
+                    PropertyName = nameof(entity.PasswordHash),
+                    PropertyValue = CreateMd5(userDto.Password)
                 });
             }
 
@@ -75,12 +76,12 @@ public class UserService : IUserService
             {
                 patchList.Add(new PatchModel()
                 {
-                    PropertyName = nameof(userDto.Spam),
+                    PropertyName = nameof(entity.Spam),
                     PropertyValue = userDto.Spam
                 });
             }
         }
-        await _unitOfWork.Articles.PatchAsync(id, patchList);
+        await _unitOfWork.Users.PatchAsync(id, patchList);
         return await _unitOfWork.Commit();
     }
 

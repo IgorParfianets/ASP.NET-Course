@@ -15,12 +15,7 @@ public class UserEditModel
         "Account",
         HttpMethod = WebRequestMethods.Http.Post,
         ErrorMessage = "Username is already exists")]
-    public string UserName { get; set; }
-
-    [Required(ErrorMessage = "Input your email")] //todo implementation [Remote] compare OldPass with entered Pass
-    [DataType(DataType.Password)]
-    public string OldPassword { get; set; }
-
+    public string UserName { get; set; } //todo Need to come up with own Username
 
     [DataType(DataType.Password)]
     public string NewPassword { get; set; }
@@ -29,6 +24,6 @@ public class UserEditModel
         ErrorMessage = "Passwords mismatch")]
     [DataType(DataType.Password)]
     public string ConfirmNewPassword { get; set; }
-
+    public Guid RoleId { get; set; }
     public bool Spam { get; set; }
 }
