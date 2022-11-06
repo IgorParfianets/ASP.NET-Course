@@ -1,3 +1,4 @@
+using AspNetArticle.Api.Utils;
 using AspNetArticle.Business.Services;
 using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Data.Abstractions.Repositories;
@@ -9,6 +10,9 @@ using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.IdentityModel.Tokens;
+using System.Text;
 
 namespace AspNetArticle.Api
 {
@@ -39,23 +43,48 @@ namespace AspNetArticle.Api
             builder.Services.AddScoped<IRepository<Source>, Repository<Source>>();
             builder.Services.AddScoped<IRepository<Comment>, Repository<Comment>>();
 
-
+            builder.Services.AddScoped<IJwtUtil, JwtUtil>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
-            builder.Services.AddSwaggerGen();
+            builder.Services.AddSwaggerGen(options =>
+            {
+                options.IncludeXmlComments(builder.Configuration["XmlDoc"]);
+            });
 
             builder.Services.AddDbContext<AggregatorContext>(optionBuilder =>
                 optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("Default"))); // For DB (connectionString in config files)
 
             // Mapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // For Mapping to collect all profiles
-  
 
+            builder.Services
+                .AddAuthentication(options =>
+                {
+                    options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultScheme = JwtBearerDefaults.AuthenticationScheme;
+                    options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
+                })
+                .AddJwtBearer(opt =>
+                {
+                    opt.RequireHttpsMetadata = false;
+                    opt.SaveToken = true;
+                    opt.TokenValidationParameters = new TokenValidationParameters()
+                    {
+                        ValidIssuer = builder.Configuration["Token:Issuer"],
+                        ValidAudience = builder.Configuration["Token:Issuer"],
+                        IssuerSigningKey =
+                            new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Token:JwtSecret"])),
+                        ClockSkew = TimeSpan.Zero
+                    };
+                });
             // Configuration
-            builder.Configuration.AddJsonFile("hashingsalt.json"); // for custom configuration
+            //builder.Configuration.AddJsonFile("hashingsalt.json"); //todo remove for custom configuration
             var app = builder.Build();
+
+            app.UseStaticFiles();
+            app.UseRouting();
 
             // Configure the HTTP request pipeline.
             if (app.Environment.IsDevelopment())
@@ -66,6 +95,7 @@ namespace AspNetArticle.Api
 
             app.UseHttpsRedirection();
 
+            app.UseAuthentication();
             app.UseAuthorization();
 
 

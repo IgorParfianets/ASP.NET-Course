@@ -1,4 +1,5 @@
-﻿using AspNetArticle.Core.DataTransferObjects;
+﻿using AspNetArticle.Api.Models.Request;
+using AspNetArticle.Core.DataTransferObjects;
 using AspNetArticle.Database.Entities;
 using AutoMapper;
 
@@ -11,10 +12,10 @@ public class UserProfile : Profile
         // For Entity -> Dto & Dto -> Entity
         CreateMap<User, UserDto>()
             .ForMember(dto => dto.Id,
-                opt => 
+                opt =>
                     opt.MapFrom(user => user.Id))
-            .ForMember(dto => dto.UserName, 
-                opt => 
+            .ForMember(dto => dto.UserName,
+                opt =>
                     opt.MapFrom(user => user.UserName))
             .ForMember(dto => dto.Password,
                 opt =>
@@ -25,14 +26,19 @@ public class UserProfile : Profile
             .ForMember(dto => dto.Spam,
                 opt =>
                     opt.MapFrom(user => user.Spam))
+            .ForMember(dto => dto.RoleId,
+                opt =>
+                    opt.MapFrom(user => user.RoleId))
             .ForMember(dto => dto.RoleName,
                 opt =>
                     opt.MapFrom(user => user.Role.Name));
 
+
+
         CreateMap<UserDto, User>() // FROM dto TO entity
             .ForMember(user => user.Id, 
                 opt => 
-                    opt.MapFrom(dto => dto.Id))
+                    opt.MapFrom(dto => Guid.NewGuid()))
             .ForMember(user => user.UserName, 
                 opt => 
                     opt.MapFrom(dto => dto.UserName))
@@ -54,5 +60,16 @@ public class UserProfile : Profile
             .ForMember(user => user.RoleId, 
                 opt
                 => opt.MapFrom(dto => dto.RoleId));
+
+        CreateMap<RegisterUserRequestModel, UserDto>()
+            .ForMember(user => user.UserName,
+                opt =>
+                    opt.MapFrom(dto => dto.Username))
+            .ForMember(user => user.Email,
+                opt =>
+                    opt.MapFrom(dto => dto.Email))
+            .ForMember(user => user.Password,
+                opt =>
+                    opt.MapFrom(dto => dto.Password));
     }
 }

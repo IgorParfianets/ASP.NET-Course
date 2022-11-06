@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>AspNetArticle.Api</name>
+    </assembly>
+    <members>
+        <member name="M:AspNetArticle.Api.Controllers.UserController.Get">
+            <summary>
+            Returns all users.
+            Works only for authorized users
+            </summary>
+            <returns>List of users</returns>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.UserController.Create(AspNetArticle.Api.Models.Request.RegisterUserRequestModel)">
+            <summary>
+            Register user
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+    </members>
+</doc>

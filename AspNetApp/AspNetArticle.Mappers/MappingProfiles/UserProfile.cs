@@ -81,14 +81,14 @@ public class UserProfile : Profile
                opt =>
                    opt.MapFrom(user => user.Email));
 
-        CreateMap<UserDto, UserEditModel>()
+        CreateMap<UserDto, UserEditViewModel>()
             .ForMember(user => user.Id,
                 opt =>
                     opt.MapFrom(dto => dto.Id))
             .ForMember(user => user.UserName,
                 opt =>
                     opt.MapFrom(dto => dto.UserName))
-            .ForMember(user => user.OldPassword,
+            .ForMember(user => user.NewPassword,
                 opt =>
                     opt.MapFrom(dto => dto.Password))
             .ForMember(user => user.Spam, opt

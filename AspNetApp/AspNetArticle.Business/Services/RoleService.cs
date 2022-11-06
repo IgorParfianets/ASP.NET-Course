@@ -22,7 +22,7 @@ namespace AspNetArticle.Business.Services
                 : string.Empty;
         }
 
-        public async Task<Guid> GetRoleIdByNameAsync(string name)
+        public async Task<Guid?> GetRoleIdByNameAsync(string name)
         {
             var role = await _unitOfWork.Roles
                 .FindBy(role => 

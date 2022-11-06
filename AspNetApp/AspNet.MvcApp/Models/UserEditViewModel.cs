@@ -4,7 +4,7 @@ using System.Net;
 
 namespace AspNetArticle.MvcApp.Models;
 
-public class UserEditModel
+public class UserEditViewModel
 {
     public Guid Id { get; set; }
 

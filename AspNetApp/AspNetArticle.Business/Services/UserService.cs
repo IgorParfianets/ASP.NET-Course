@@ -35,7 +35,7 @@ public class UserService : IUserService
     }
 
     //------------------------------------------  Get User
-    public async Task<UserDto?> GetUserAsync(Guid id)
+    public async Task<UserDto?> GetUserByIdTaskAsync(Guid id)
     {
         var entity = await _unitOfWork.Users.GetByIdAsync(id);
         var user = _mapper.Map<UserDto>(entity);
@@ -134,7 +134,7 @@ public class UserService : IUserService
     //---------------------------------- For Hashing Password
     private string CreateMd5(string password)
     {
-        var passwordSalt = _configuration["SaltForHashing"];
+        var passwordSalt = _configuration["Secrets:PasswordSalt"];
 
         using (System.Security.Cryptography.MD5 md5 = System.Security.Cryptography.MD5.Create())
         {
@@ -143,5 +143,19 @@ public class UserService : IUserService
 
             return Convert.ToHexString(hashBytes);
         }
+    }
+
+    public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
+    {
+        var users = await _unitOfWork.Users
+            .Get()
+            .Include(dto => dto.Role)
+            .Select(user => _mapper.Map<UserDto>(user))
+            .ToListAsync();
+
+            //.Select(user => _mapper.Map<UserDto>(user))
+            //.ToArray();
+
+        return users;
     }
 }

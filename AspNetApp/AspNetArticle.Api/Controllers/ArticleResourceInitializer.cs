@@ -21,7 +21,11 @@ namespace AspNetArticle.Api.Controllers
             _mapper = mapper;
             _sourceService = sourceService;
         }
-
+        /// <summary>
+        /// Initialize adding articles
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
         [HttpPost]
         public async Task<IActionResult> AddArticles() //todo rework with last lecture
         {

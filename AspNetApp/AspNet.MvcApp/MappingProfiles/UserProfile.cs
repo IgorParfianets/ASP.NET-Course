@@ -81,7 +81,7 @@ public class UserProfile : Profile
                opt =>
                    opt.MapFrom(user => user.Email));
 
-        CreateMap<UserDto, UserEditModel>()
+        CreateMap<UserDto, UserEditViewModel>()
             .ForMember(user => user.Id,
                 opt =>
                     opt.MapFrom(dto => dto.Id))
@@ -91,7 +91,7 @@ public class UserProfile : Profile
             .ForMember(user => user.Spam, opt
                 => opt.MapFrom(dto => dto.Spam));
 
-        CreateMap<UserEditModel, UserDto>()
+        CreateMap<UserEditViewModel, UserDto>()
             .ForMember(user => user.Id,
                 opt =>
                     opt.MapFrom(dto => dto.Id))

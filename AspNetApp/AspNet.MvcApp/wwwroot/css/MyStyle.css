@@ -6,12 +6,8 @@
     --bgColorMain: #E4EBF2;
     --bgColorHeader: #6C7073;
 }
-* {
-    /*box-sizing: border-box;*/
-    font-family: 'Playfair Display SC', serif;
-}
 
-ul,li, a {
+ a {
     text-decoration: none;
     list-style-type: none;
 }
@@ -25,7 +21,7 @@ a:hover {
 }     
 
 body {
-    margin: 20px 5rem;
+   /* margin: 20px;*/
     background-color: var(--bgColorMain);
 }
 
@@ -34,23 +30,72 @@ header {
     background-color: var(--bgColorHeader);
 }
 
-/*.nav__container {
-    display: flex;
-    align-items: center;
-    height: 100%;
-    width: 100%;
-    flex-flow: row nowrap;
-}
-.nav__partial {
-    justify-content: flex-end;
-    flex-flow: row nowrap;
-}
-.nav__container_item {
-    justify-content: space-around;
-    display: flex;
-    padding: 0 30px;
-    width: 30%;
-}
-.nav__item {
 
+input {
+    color: #022255 !important;
+}
+
+input[type="email"]:focus,
+input[type="password"]:focus,
+input[type="text"]:focus {
+    box-shadow: 0 0 5px rgba(255, 228, 235, 242);
+    border: 1px solid rgba(255, 108, 112, 115);
+}
+
+/*.container {
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }*/
+
+/*.form-horizontal {
+    width: 320px;
+    background-color: #ffffff;
+    padding: 25px 38px;
+    border-radius: 12px;
+    box-shadow: 2px 2px 15px rgba(0, 0, 0, 0.5);
+}*/
+
+
+.progress {
+    height: 3px !important;
+}
+
+
+.show-pass {
+    position: absolute;
+    top: 5%;
+    right: 8%;
+}
+
+.progress-bar-danger {
+    background-color: #e90f10;
+}
+
+.progress-bar-warning {
+    background-color: #ffc038;
+}
+
+.progress-bar-success {
+    background-color: #dfff29;
+}
+
+.progress-bar-great {
+    background-color: #00ef00;
+}
+
+
+.fa-eye {
+    color: #022255;
+    cursor: pointer;
+}
+
+.fa-circle {
+    font-size: 6px;
+}
+
+.fa-check {
+    color: #02b502;
+}

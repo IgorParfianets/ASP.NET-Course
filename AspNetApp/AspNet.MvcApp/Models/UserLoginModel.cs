@@ -6,7 +6,6 @@ namespace AspNetArticle.MvcApp.Models
 {
     public class UserLoginModel
     {
-        // [Remote] Is Exist Email
         [EmailAddress]
         public string Email { get; set; }
 

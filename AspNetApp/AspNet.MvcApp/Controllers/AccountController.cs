@@ -75,9 +75,9 @@ public class AccountController : Controller
                 var userRoleId = await _roleService.GetRoleIdByNameAsync(_configuration["DefaultRole"]);
                 var userDto = _mapper.Map<UserDto>(user);
 
-                if (userRoleId != Guid.Empty && userDto != null)
+                if (userRoleId != null && userDto != null)
                 {
-                    userDto.RoleId = userRoleId;
+                    userDto.RoleId = userRoleId.Value;
                     var result = await _userService.RegisterUserAsync(userDto);
 
                     if (result > 0)
@@ -167,14 +167,14 @@ public class AccountController : Controller
             return BadRequest();
         }
 
-        var user = _mapper.Map<UserEditModel>(await _userService.GetUserByEmailAsync(userEmail));
+        var user = _mapper.Map<UserEditViewModel>(await _userService.GetUserByEmailAsync(userEmail));
         //var user = _mapper.Map<UserEditModel>(await _userService.GetUserAsync(id));
         return View(user);
     }
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> Edit(UserEditModel model) // todo not fully works need to create POST version
+    public async Task<IActionResult> Edit(UserEditViewModel model) // todo not fully works need to create POST version
     {
         var userEmail = User.Identity?.Name;
 
@@ -211,6 +211,13 @@ public class AccountController : Controller
             return View(user);
         }
 
+        return View();
+    }
+
+    // Удалить после теста
+    [HttpGet]
+    public async Task<IActionResult> NewRegistration()
+    {
         return View();
     }
 }

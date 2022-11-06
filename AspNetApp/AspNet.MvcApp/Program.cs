@@ -66,7 +66,7 @@ namespace AspNet.MvcApp
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // For Mapping to collect all profiles
 
             // Configuration
-            builder.Configuration.AddJsonFile("hashingsalt.json"); // for custom configuration
+            //builder.Configuration.AddJsonFile("hashingsalt.json"); //todo remove!!! for custom configuration 
 
             var app = builder.Build();
 
