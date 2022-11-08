@@ -8,6 +8,7 @@ public class UserEditViewModel
 {
     public Guid Id { get; set; }
 
+    public string? Avatar { get; set; }
     [Required(ErrorMessage = "Input your name")]
     [MaxLength(12, ErrorMessage = "You entered long name")]
     [MinLength(2, ErrorMessage = "You entered too short name")]
@@ -17,6 +18,7 @@ public class UserEditViewModel
     //    ErrorMessage = "Username is already exists")]
     public string UserName { get; set; } //todo Need to come up with own Username
 
+    public string Email { get; set; }
     [DataType(DataType.Password)]
     public string NewPassword { get; set; }
 
@@ -26,4 +28,5 @@ public class UserEditViewModel
     public string ConfirmNewPassword { get; set; }
     public Guid RoleId { get; set; }
     public bool Spam { get; set; }
+    public string? AboutSelf { get; set; }
 }

@@ -24,16 +24,26 @@ a {
 
 a:hover {
     color: var(--textLinkHover);
-}     
-
-body {
-   /* margin: 20px;*/
-    background-color: var(--bgColorMain);
 }
 
+body {
+    /* margin: 20px;*/
+    background-color: var(--bgColorMain);
+    margin: 0 7rem;
+}
+
+img {
+    border-radius: 5px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 100%;
+}
 
 header {
     background-color: var(--bgColorHeader);
+    margin-right: 16px;
+    margin-left: 16px;
 }
 
 
@@ -86,7 +96,7 @@ input[type="text"]:focus {
 }
 
 .progress-bar-success {
-    background-color: #FFFF00;
+    background-color: #40E0D0;
 }
 
 .progress-bar-great {
@@ -98,4 +108,11 @@ input[type="text"]:focus {
     font-size: 10px;
     font-weight: lighter;
     text-align: end;
+}
+
+/*For Validation*/
+
+.validate {
+    font-size: 10px;
+    color: #e90f10;
 }

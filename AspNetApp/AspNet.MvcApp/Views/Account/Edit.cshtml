@@ -6,6 +6,54 @@
 }
 
 
+<div class="col-auto container text-center w-25 mt-5 mb-5">
+
+    <h1 class="row-auto mt-5 mb-4">Профиль</h1>
+    <hr/>
+        <div class="position-relative d-block col-2 col-md-12 mr-3 mr-md-0 flex-shrink-0 mb-3" style="z-index:4;">
+            <a class="tooltipped tooltipped-s d-block">
+                <img style="height: auto; width: 50%;" alt="" width="260" height="260"  src="~/image/DefaultAvatar.png">
+            <span class="position-absolute bottom-25 start-75 translate-middle badge rounded-pill bg-warning" data-bs-html="true" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Изменить аватар">
+                    +
+                    <span class="visually-hidden">непрочитанные сообщения</span>
+                </span>
+            </a>
+        </div>
+
+    <div class="user-status-container position-relative hide-sm hide-md"></div>
+    <div class="row container m-0 gy-1">
+        
+       
+        <div class="form-group">
+            <input asp-for="UserName" type="image" class="form-control form-control-sm"/>
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <input asp-for="Email" placeholder="Ваш e-mail" class="form-control form-control-sm" disabled/>
+        </div>
+
+
+        <div class="form-group">
+            <input asp-for="UserName" placeholder="Повторите пароль" class="form-control form-control-sm"/>
+            <span asp-validation-for="UserName" class="text-danger"></span>
+        </div>
+
+        <div class="form-group">
+            <label asp-for="Spam" class="form-check-label form-control-sm">Рассылка свежих новостей</label>
+            <input type="checkbox" asp-for="Spam" class="form-check-input mt-2" checked/>
+        </div>
+        <hr/>
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-sm w-100">Зарегистрироваться</button>
+        </div>
+        <div class="mt-2">
+            Уже есть аккаунт? Нажми <a asp-controller="Account" asp-action="Login" style="color: darkred">сюда</a>
+        </div>
+    </div>
+</div>
+
+
 <form asp-controller="Account" asp-action="Edit" method="post">
     <input asp-for="Id" hidden/>
     <input asp-for="RoleId" hidden />

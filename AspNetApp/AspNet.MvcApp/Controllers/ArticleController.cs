@@ -7,7 +7,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetArticle.MvcApp.Controllers
 {
-    //[Authorize(Roles = "User")] //todo remove after
+    [Authorize(Roles = "User")] //todo remove after
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
@@ -62,5 +62,11 @@ namespace AspNetArticle.MvcApp.Controllers
 
             return View();
         }
+
+        //[HttpGet]
+        //public async Task<IActionResult> Search()
+        //{
+
+        //}
     }
 }

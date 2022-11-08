@@ -13,20 +13,28 @@
     <form asp-controller="Account" asp-action="Registration" method="post" class="row container m-0 gy-1">
 
         <div class="form-group">
-            <input asp-for="UserName" placeholder="Имя или ник" placeholder="Username" class="form-control form-control-sm" />
-            <span asp-validation-for="UserName" class="text-danger"></span>
+            <input asp-for="UserName" placeholder="Имя или ник" class="form-control form-control-sm" />
+            <span asp-validation-for="UserName" class="validate"></span>
         </div>
+        
+
+@*        <div class="form-floating mb-3">
+            <input type="email" class="form-control validate" id="floatingInput" placeholder="name@example.com">
+            <label for="floatingInput" class="validate">Email address</label>
+        </div>
+        
+*@
 
         <div class="form-group">
             <input asp-for="Email" placeholder="Ваш e-mail" class="form-control form-control-sm" />
-            <span asp-validation-for="Email" class="text-danger"></span>
+            <span asp-validation-for="Email" class="validate"></span>
         </div>
         
         <!--Here will be toggle-->
         <div class="form-group">
             <input asp-for="Password" id="password" placeholder="Придумайте пароль"class="form-control form-control-sm" />
-            <span asp-validation-for="Password" class="text-danger"></span>
-            
+            <span asp-validation-for="Password" class="validate"></span>
+
             <p class="degree" id="test">Минимум 4 символа</p>
 
             <div id="popover-password">
@@ -37,11 +45,11 @@
                 </div>
             </div>
         </div>
-        <small style="font-weight: lighter; font-size: 10px;">1-9 A-a !#$%& больше 8</small>
+        <small style="font-weight: lighter; font-size: 10px;">1-9 Aa !#$%& больше 8</small>
 
         <div class="form-group">
             <input asp-for="ConfirmPassword" placeholder="Повторите пароль" class="form-control form-control-sm" />
-            <span asp-validation-for="ConfirmPassword" class="text-danger"></span>
+            <span asp-validation-for="ConfirmPassword" class="validate"></span>
         </div>
         
         <div class="form-group">
@@ -64,3 +72,4 @@
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
 }
+<!-- Можно попробовать вместо form-group потестить form-floating ->

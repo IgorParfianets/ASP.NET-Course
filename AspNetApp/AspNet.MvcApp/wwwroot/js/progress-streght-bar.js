@@ -44,7 +44,7 @@ function checkStrength(password) {
     }
 
     //If password is greater than 7
-    if (password.length > 9) {
+    if (password.length > 8) {
         strength += 1;
 
     }
@@ -56,7 +56,7 @@ function checkStrength(password) {
     // If value is less than 2
     if (strength == 1) {
 
-        problem.textContent = "Слабо";
+        problem.textContent = "Слабый";
         problem.style.color = "#e90f10";
         passwordStrength.classList.remove("progress-bar-warning");
         passwordStrength.classList.remove("progress-bar-success");
@@ -65,8 +65,8 @@ function checkStrength(password) {
         passwordStrength.style = "width: 25%";
     } else if (strength == 2) {
 
-        problem.textContent = "Терпимо";
-        problem.style.color = "#B8860B";
+        problem.textContent = "Средний";
+        problem.style.color = "#FF8C00";
         passwordStrength.classList.remove("progress-bar-success");
         passwordStrength.classList.remove("progress-bar-danger");
         passwordStrength.classList.remove("progress-bar-great");
@@ -74,8 +74,8 @@ function checkStrength(password) {
         passwordStrength.style = "width: 50%";
     } else if (strength == 3) {
 
-        problem.textContent = "Хорошо";
-        problem.style.color = "#dfff29";
+        problem.textContent = "Сильный";
+        problem.style.color = "#40E0D0";
         passwordStrength.classList.remove("progress-bar-warning");
         passwordStrength.classList.remove("progress-bar-danger");
         passwordStrength.classList.remove("progress-bar-great");
@@ -83,7 +83,7 @@ function checkStrength(password) {
         passwordStrength.style = "width: 75%";
     } else if (strength == 4) {
 
-        problem.textContent = "Отлично";
+        problem.textContent = "Очень сильный";
         problem.style.color = "#00ef00";
         passwordStrength.classList.remove("progress-bar-warning");
         passwordStrength.classList.remove("progress-bar-danger");

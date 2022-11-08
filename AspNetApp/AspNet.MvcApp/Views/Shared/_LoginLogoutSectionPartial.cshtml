@@ -4,19 +4,25 @@
 <div>
     @if (User.Identity.IsAuthenticated)
     {
-        <div>
-            <a class="py-2 d-none d-md-inline-block" asp-action="Edit" asp-controller="Account">
+        <div class="d-inline-flex">
+            <form class="d-flex me-3 ms-5">
+                <input class="form-control form-control-sm me-2" type="search" placeholder="Search" aria-label="Search">
+                <button class="btn btn-outline-success btn-sm" type="submit">Search</button>
+            </form>
+        </div>
+
+        <div class="d-inline-flex gap-3">
+            <a class="py-2 d-none d-md-inline-block ms-3" asp-action="Edit" asp-controller="Account">
                 Hello @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value
             </a>
 
-            <a class="py-2 d-none d-md-inline-block" asp-controller="Account" asp-action="Logout">Logout</a>
+            <a class="py-2 d-none d-md-inline-block me-3 " asp-controller="Account" asp-action="Logout">Logout</a>
         </div>
     }
     else
     {
-        <div>
-            <a class="py-2 d-none d-md-inline-block" asp-action="Login" asp-controller="Account">Login</a>
-            <a class="py-2 d-none d-md-inline-block" asp-action="Registration" asp-controller="Account">Sign In</a>
+        <div class="d-inline-flex me-5">
+            <a class="py-2 d-none d-md-inline-block" asp-action="Login" asp-controller="Account">Вход</a>
         </div>
     }
 </div>
