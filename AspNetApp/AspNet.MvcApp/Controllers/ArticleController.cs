@@ -1,6 +1,6 @@
 ﻿using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Core.DataTransferObjects;
-using AspNetArticle.MvcApp.Models;
+using AspNetArticle.MvcApp.Models.ArticleModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

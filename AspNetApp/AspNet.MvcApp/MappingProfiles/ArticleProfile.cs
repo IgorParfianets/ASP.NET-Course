@@ -1,6 +1,6 @@
 ﻿using AspNetArticle.Core.DataTransferObjects;
 using AspNetArticle.Database.Entities;
-using AspNetArticle.MvcApp.Models;
+using AspNetArticle.MvcApp.Models.ArticleModels;
 using AutoMapper;
 
 namespace AspNetArticle.MvcApp.MappingProfiles;

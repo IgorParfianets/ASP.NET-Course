@@ -1,7 +1,7 @@
 ﻿using System.Security.Claims;
 using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Core.DataTransferObjects;
-using AspNetArticle.MvcApp.Models;
+using AspNetArticle.MvcApp.Models.UserModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -18,7 +18,10 @@ public class AccountController : Controller
     private readonly IRoleService _roleService;
     private readonly IConfiguration _configuration;
 
-    public AccountController(IMapper mapper, IUserService userService, IRoleService roleService, IConfiguration configuration)
+    public AccountController(IMapper mapper, 
+        IUserService userService, 
+        IRoleService roleService, 
+        IConfiguration configuration)
     {
         _mapper = mapper;
         _userService = userService;
@@ -35,14 +38,14 @@ public class AccountController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Login(UserLoginModel loginModel)
+    public async Task<IActionResult> Login(UserLoginViewModel loginModel)
     {
         try
         {
             if (ModelState.IsValid)
             {
                 var isCorrectPassword = await _userService.CheckUserByEmailAndPasswordAsync(loginModel.Email, loginModel.Password);
-
+                
                 if (isCorrectPassword)
                 {
                     await Authenticate(loginModel.Email);
@@ -66,7 +69,7 @@ public class AccountController : Controller
 
     [HttpPost]
     [ValidateAntiForgeryToken]
-    public async Task<IActionResult> Registration(UserRegistrationModel user)
+    public async Task<IActionResult> Registration(UserRegistrationViewModel user)
     {
         try
         {  
@@ -78,7 +81,7 @@ public class AccountController : Controller
                 if (userRoleId != null && userDto != null)
                 {
                     userDto.RoleId = userRoleId.Value;
-                    var result = await _userService.RegisterUserAsync(userDto);
+                    var result = await _userService.RegisterUserAsync(userDto, user.Password);
 
                     if (result > 0)
                     {
@@ -141,8 +144,10 @@ public class AccountController : Controller
         {
             new Claim(ClaimsIdentity.DefaultNameClaimType, userDto.Email),
             new Claim(ClaimsIdentity.DefaultRoleClaimType, userDto.RoleName),
-            new Claim(ClaimsIdentity.DefaultRoleClaimType, userDto.UserName)
+            new Claim(ClaimTypes.Actor, userDto.UserName)
+            
         };
+
 
         var identity = new ClaimsIdentity(claims,
             "ApplicationCookie",
@@ -196,29 +201,25 @@ public class AccountController : Controller
         return BadRequest();
     }
 
-    [HttpGet]
-    public async Task<IActionResult> LoginLogoutUser()
-    {
-        if (User.Identities.Any(identity => identity.IsAuthenticated))
-        {
-            var userEmail = User.Identity?.Name ;
-            if (string.IsNullOrEmpty(userEmail))
-            {
-                return BadRequest();
-            }
+    //[HttpGet]
+    //public async Task<IActionResult> LoginLogoutUser()
+    //{
+    //    if (User.Identities.Any(identity => identity.IsAuthenticated))
+    //    {
+    //        var userEmail = User.Identity?.Name ;
+    //        if (string.IsNullOrEmpty(userEmail))
+    //        {
+    //            return BadRequest();
+    //        }
 
-            var user = _mapper.Map<UserDataModel>(await _userService.GetUserByEmailAsync(userEmail));
-            return View(user);
-        }
+    //        var user = _mapper.Map<UserDisplayDataViewModel>(await _userService.GetUserByEmailAsync(userEmail));
+    //        return View(user);
+    //    }
 
-        return View();
-    }
+    //    return View();
+    //}
 
     // Удалить после теста
-    [HttpGet]
-    public async Task<IActionResult> NewRegistration()
-    {
-        return View();
-    }
+
 }
  

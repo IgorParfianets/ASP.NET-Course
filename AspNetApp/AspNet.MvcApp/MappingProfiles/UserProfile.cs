@@ -1,6 +1,6 @@
 ﻿using AspNetArticle.Core.DataTransferObjects;
 using AspNetArticle.Database.Entities;
-using AspNetArticle.MvcApp.Models;
+using AspNetArticle.MvcApp.Models.UserModels;
 using AutoMapper;
 
 namespace AspNetArticle.MvcApp.MappingProfiles;
@@ -57,14 +57,14 @@ public class UserProfile : Profile
                 => opt.MapFrom(dto => dto.RoleId));
 
         // For Dto -> Model & Model -> Dto
-        CreateMap<UserRegistrationModel, UserDto>()                        //todo Можно отказаться от некоторых полей
+        CreateMap<UserRegistrationViewModel, UserDto>()                        //todo Можно отказаться от некоторых полей
            .ForMember(dto => dto.Id, opt => opt.MapFrom(user => Guid.NewGuid()))
            .ForMember(dto => dto.UserName, opt => opt.MapFrom(user => user.UserName))
            .ForMember(dto => dto.Password, opt => opt.MapFrom(user => user.Password))
            .ForMember(dto => dto.Email, opt => opt.MapFrom(user => user.Email))
            .ForMember(dto => dto.Spam, opt => opt.MapFrom(user => user.Spam));
 
-        CreateMap<UserDto, UserRegistrationModel>()
+        CreateMap<UserDto, UserRegistrationViewModel>()
             .ForMember(user => user.UserName, opt => opt.MapFrom(dto => dto.UserName))
             .ForMember(user => user.Password, opt => opt.MapFrom(dto => dto.Password))
             .ForMember(user => user.Email, opt => opt.MapFrom(dto => dto.Email))
@@ -73,7 +73,7 @@ public class UserProfile : Profile
 
 
         //todo For UserLoginModel -> Dto НАДО ОНО ИЛИ НЕТ ???
-        CreateMap<UserLoginModel, UserDto>()
+        CreateMap<UserLoginViewModel, UserDto>()
            .ForMember(dto => dto.Password,
                opt =>
                    opt.MapFrom(user => user.Password))
@@ -105,9 +105,5 @@ public class UserProfile : Profile
                 opt
                 => opt.MapFrom(dto => dto.Spam));
 
-        CreateMap<UserDto, UserDataModel>()
-            .ForMember(user => user.RoleName,
-                opt =>
-                    opt.MapFrom(dto => dto.RoleName));
     }
 }

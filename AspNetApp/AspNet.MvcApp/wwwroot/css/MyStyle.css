@@ -7,6 +7,12 @@
     --bgColorHeader: #6C7073;
 }
 
+h1 {
+    color: var(--bgColorHeader);
+}
+p {
+    margin-bottom: 0;
+}
  a {
     text-decoration: none;
     list-style-type: none;
@@ -39,7 +45,7 @@ input[type="email"]:focus,
 input[type="password"]:focus,
 input[type="text"]:focus {
     box-shadow: 0 0 5px rgba(255, 228, 235, 242);
-    border: 1px solid rgba(255, 108, 112, 115);
+    border: 1px solid rgba(115, 84, 108, 115);
 }
 
 /*.container {
@@ -61,6 +67,7 @@ input[type="text"]:focus {
 
 .progress {
     height: 3px !important;
+    background-color:#ffffff
 }
 
 
@@ -79,7 +86,7 @@ input[type="text"]:focus {
 }
 
 .progress-bar-success {
-    background-color: #dfff29;
+    background-color: #FFFF00;
 }
 
 .progress-bar-great {
@@ -87,15 +94,8 @@ input[type="text"]:focus {
 }
 
 
-.fa-eye {
-    color: #022255;
-    cursor: pointer;
-}
-
-.fa-circle {
-    font-size: 6px;
-}
-
-.fa-check {
-    color: #02b502;
+.degree {
+    font-size: 10px;
+    font-weight: lighter;
+    text-align: end;
 }

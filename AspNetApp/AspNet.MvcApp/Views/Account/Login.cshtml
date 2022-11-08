@@ -1,32 +1,39 @@
-﻿@using AspNetArticle.MvcApp.Models
-@model UserLoginModel
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@model AspNetArticle.MvcApp.Models.UserModels.UserLoginViewModel
 
 @{
     ViewData["Title"] = "Login";
 }
 
-<div class="mt-5 border-1 col-md-3 offset-md-4">
-    <div class="border border-secondary row text-center">
-        <h1 class="mt-4 mb-4">Login</h1>
-        <form asp-controller="Account" asp-action="Login" method="post" class="form-control">
-            <div class="form-group m-2">
-                <input asp-for="Email" class="form-control border-secondary" placeholder="Name@email.com" />
-                <span asp-validation-for="Email"class="text-danger"></span>
-            </div>
-            <div class="form-group m-2">
-                <input asp-for="Password" class="form-control border-secondary" placeholder="Password" />
-                <span asp-validation-for="Password" class="text-danger"></span>
-            </div>
-            <div class="row">
-                <div class="row">
-                    <button class="btn btn-primary m-2" type="submit">Submit</button>
-                </div>
-                <div class="row">
-                    <a asp-controller="Account" asp-action="Registration" class="btn btn-success m-2">Registration</a>
-                </div>
-            </div>
-        </form>
-    </div>
+<div class="col-auto container text-center w-25 mt-5 mb-5">
+
+    <h1 class="row-auto mt-5 mb-4">Вход</h1>
+
+    <form asp-controller="Account" asp-action="Login" method="post" class="row container m-0 gy-1">
+
+
+        <div class="form-group">
+            <input asp-for="Email" placeholder="Ваш e-mail" class="form-control form-control-sm" />
+            <span asp-validation-for="Email" class="text-danger"></span>
+        </div>
+
+        <!--Here will be toggle-->
+        <div class="form-group mb-2">
+            <input asp-for="Password" id="password" placeholder="Пароль" class="form-control form-control-sm" />
+            <span asp-validation-for="Password" class="text-danger"></span>
+        </div>
+
+        <hr />
+        <div class="form-group">
+            <button type="submit" class="btn btn-primary btn-sm w-100">Войти</button>
+        </div>
+
+        <div class="mt-2">
+            Нет аккаунта? Нажми <a asp-controller="Account" asp-action="Registration" style="color:darkred">сюда</a>
+        </div>
+    </form>
+
+
 </div>
 
 @section Scripts{

@@ -23,10 +23,10 @@ public class UserService : IUserService
     }
 
     //------------------------------------------  Registration
-    public async Task<int> RegisterUserAsync(UserDto userDto) 
+    public async Task<int> RegisterUserAsync(UserDto userDto, string password) 
     {
         var entity = _mapper.Map<User>(userDto);
-        entity.PasswordHash = CreateMd5(userDto.Password); 
+        entity.PasswordHash = CreateMd5(password); 
 
         await _unitOfWork.Users.AddAsync(entity);
         var result = _unitOfWork.Commit();

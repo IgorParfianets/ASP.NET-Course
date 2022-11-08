@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "8snQD34d8oNDEgmattnJWoAAJEtqWp2OwRLwtSv4OxA=",
+  "Hash": "DEszA9qXU0iMR64XvsGnEamWNrLkk/9YQelX4hJTklc=",
   "Source": "AspNetArticle.MvcApp",
   "BasePath": "_content/AspNetArticle.MvcApp",
   "Mode": "Default",
@@ -935,12 +935,12 @@
       "OriginalItemSpec": "wwwroot\\js\\authentication.js"
     },
     {
-      "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\js\\registrationProgress.js",
+      "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\js\\progress-streght-bar.js",
       "SourceId": "AspNetArticle.MvcApp",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\",
       "BasePath": "_content/AspNetArticle.MvcApp",
-      "RelativePath": "js/registrationProgress.js",
+      "RelativePath": "js/progress-streght-bar.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -949,7 +949,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\js\\registrationProgress.js"
+      "OriginalItemSpec": "wwwroot\\js\\progress-streght-bar.js"
     },
     {
       "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\js\\site.js",

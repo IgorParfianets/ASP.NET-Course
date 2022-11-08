@@ -273,7 +273,6 @@ D:\Программирование\ArticleApp\AspNetApp\AspNet.MvcApp\bin\Debug
 D:\Программирование\ArticleApp\AspNetApp\AspNet.MvcApp\bin\Debug\net6.0\AspNetArticle.Data.Repositories.dll
 D:\Программирование\ArticleApp\AspNetApp\AspNet.MvcApp\bin\Debug\net6.0\AspNetArticle.Data.Abstractions.pdb
 D:\Программирование\ArticleApp\AspNetApp\AspNet.MvcApp\bin\Debug\net6.0\AspNetArticle.Data.Repositories.pdb
-D:\Программирование\ArticleApp\AspNetApp\AspNet.MvcApp\bin\Debug\net6.0\hashingsalt.json
 D:\Программирование\ArticleApp\AspNetApp\AspNet.MvcApp\bin\Debug\net6.0\Microsoft.Extensions.DependencyModel.dll
 D:\Программирование\ArticleApp\AspNetApp\AspNet.MvcApp\bin\Debug\net6.0\Serilog.dll
 D:\Программирование\ArticleApp\AspNetApp\AspNet.MvcApp\bin\Debug\net6.0\Serilog.AspNetCore.dll

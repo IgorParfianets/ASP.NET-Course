@@ -19,16 +19,17 @@ namespace AspNetArticle.Api.Controllers
         private readonly IRoleService _roleService;
         private readonly IJwtUtil _jwtUtil;
         private readonly IMapper _mapper;
-
+        private readonly IConfiguration _configuration;
         public UserController(IUserService userService,
             IRoleService roleService,
             IMapper mapper,
-            IJwtUtil jwtUtil)
+            IJwtUtil jwtUtil, IConfiguration configuration)
         {
             _userService = userService;
             _roleService = roleService;
             _mapper = mapper;
             _jwtUtil = jwtUtil;
+            _configuration = configuration;
         }
 
         /// <summary>
@@ -56,7 +57,7 @@ namespace AspNetArticle.Api.Controllers
         {
             try
             {
-                var userRoleId = await _roleService.GetRoleIdByNameAsync("User");
+                var userRoleId = await _roleService.GetRoleIdByNameAsync(_configuration["DefaultRole"]);
                 var dto = _mapper.Map<UserDto>(model);
                 var userWIthSameEmailExists = await _userService.IsExistUserEmailAsync(model.Email);
                 if (userRoleId != null
@@ -65,7 +66,7 @@ namespace AspNetArticle.Api.Controllers
                     && model.Password.Equals(model.PasswordConfirmation))
                 {
                     dto.RoleId = userRoleId.Value;
-                    var result = await _userService.RegisterUserAsync(dto);
+                    var result = await _userService.RegisterUserAsync(dto, model.Password);
 
                     if (result > 0)
                     {
