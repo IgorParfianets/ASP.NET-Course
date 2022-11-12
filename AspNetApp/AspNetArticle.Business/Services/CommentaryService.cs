@@ -20,7 +20,10 @@ namespace AspNetArticle.Business.Services
             _mapper = mapper;
         }
 
-
+        //public async Task<List<CommentDto> GetCommentByIdAsync(Guid id)
+        //{
+        //    return _mapper.Map<CommentDto>(await _unitOfWork.Comments.GetByIdAsync(id));
+        //}
         public async Task<CommentDto> GetCommentByIdAsync(Guid id)
         {
             return _mapper.Map<CommentDto>(await _unitOfWork.Comments.GetByIdAsync(id));
@@ -38,12 +41,20 @@ namespace AspNetArticle.Business.Services
             return result;
         }
 
-        public async Task<int> UpdateCommentAsync(CommentDto dto)
+        public async Task<int> UpdateCommentAsync(CommentDto dto) // Create method create ReNew Guid for Exist Entity
         {
-            var entity = _mapper.Map<Comment>(dto);
+            var entityModel = _mapper.Map<Comment>(dto);
 
-            if (entity != null)
-                _unitOfWork.Comments.Update(entity);
+            if (entityModel != null)
+            {
+                var entityOriginal = await _unitOfWork.Comments.GetByIdAsync(entityModel.Id);
+                if (entityOriginal != null)
+                {
+                    entityOriginal = entityModel;
+                    _unitOfWork.Comments.Update(entityOriginal);
+                }
+            }
+           
             
             return await _unitOfWork.Commit();
         }
@@ -61,14 +72,15 @@ namespace AspNetArticle.Business.Services
             return userAllComments;
         }
 
-        public async Task<IEnumerable<CommentDto>> GetAllCommentsByArticleIdAsync(Guid id)
+        public async Task<IEnumerable<CommentaryWithUserDto>> GetAllCommentsWithUsersByArticleIdAsync(Guid id) // For Details
         {
             var articleAllComments = await _unitOfWork.Comments
                 .Get()
                 .Where(article =>
-                    article.UserId.Equals(id))
+                    article.ArticleId.Equals(id))
+                .Include(com => com.User)
                 .Select(cmt =>
-                    _mapper.Map<CommentDto>(cmt))
+                    _mapper.Map<CommentaryWithUserDto>(cmt))
                 .ToListAsync();
 
             return articleAllComments;
@@ -84,7 +96,7 @@ namespace AspNetArticle.Business.Services
             await _unitOfWork.Commit();
         }
 
-        public async Task<IEnumerable<CommentDto>> GetCommentsByUserIdAndArticleName(Guid? article, Guid? user)
+        public async Task<IEnumerable<CommentDto>> GetCommentsByUserIdAndArticleIdTask(Guid? article, Guid? user)
         {
             var entities = _unitOfWork.Comments.Get();
 

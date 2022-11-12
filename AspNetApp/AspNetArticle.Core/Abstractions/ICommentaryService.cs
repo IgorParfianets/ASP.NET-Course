@@ -8,10 +8,10 @@ namespace AspNetArticle.Core.Abstractions
         Task<int> CreateCommentAsync(CommentDto dto); 
         Task<int> UpdateCommentAsync(CommentDto dto);
         Task<IEnumerable<CommentDto>> GetAllCommentsByUserIdAsync(Guid id);
-        Task<IEnumerable<CommentDto>> GetAllCommentsByArticleIdAsync(Guid id);
+        Task<IEnumerable<CommentaryWithUserDto>> GetAllCommentsWithUsersByArticleIdAsync(Guid id);
         Task DeleteCommentById(Guid id);
 
         //specific methods
-        Task<IEnumerable<CommentDto>> GetCommentsByUserIdAndArticleName(Guid? article, Guid? user);
+        Task<IEnumerable<CommentDto>> GetCommentsByUserIdAndArticleIdTask(Guid? article, Guid? user);
     }
 }

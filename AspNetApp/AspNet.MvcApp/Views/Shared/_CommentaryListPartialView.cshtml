@@ -1,0 +1,104 @@
+﻿@using System.Security.Claims
+@using Microsoft.AspNetCore.Identity
+@model AspNetArticle.MvcApp.Models.ArticleWIthCommentaryViewModel
+
+@{
+    Layout = null;
+}
+
+@if (Model.ExistComments.Any())
+{
+    int order = 0;
+    @foreach (var comment in Model.ExistComments.OrderBy(com => com.PublishedDate))
+    {
+        if (order % 2 == 0)
+        {
+            <div class="bg-light offset-1 col-10 p-3 mt-2" style="border-radius: 6px;">
+                <!-- Раставить поля все -->
+                <div class="container-sm">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <strong>Автор: @comment.Username</strong>
+                        </div>
+
+                        <div class="">
+                            <small>E-mail: @comment.Email</small>
+                        </div>
+
+                        <div class="">
+                            <small>Дата публикации: @comment.PublishedDate.ToString("g")</small>
+                        </div>
+                        
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @if (User.Identity.Name.Equals(comment.Email))
+                            {
+                                <div>
+                                    <a asp-controller="Commentary" asp-action="Update" asp-route-id="@comment.CommentId" class="btn-sm btn-outline-success"><small>Редактировать</small></a>
+                                </div>
+                                <div>
+                                    <a asp-controller="Commentary" asp-action="Delete" asp-route-id="@comment.CommentId" class="btn-sm btn-outline-danger"><small>Удалить</small></a>
+                                </div>
+                            }
+                        }
+                    </div>
+                </div>
+
+                <hr/>
+
+                <div class="container-sm">
+                    <div>
+                        @comment.CommentDescription
+                    </div>
+                </div>
+            </div>
+        }
+        else
+        {
+            <div class="bg-light offset-2 col-10 p-3 mt-2" style="border-radius: 6px;">
+                
+                <div class="container-sm">
+                    <div class="d-flex justify-content-between">
+                        <div>
+                            <strong>Автор: @comment.Username</strong>
+                        </div>
+
+                        <div class="">
+                            <small>E-mail: @comment.Email</small>
+                        </div>
+
+                        <div class="">
+                            <small>Дата публикации: @comment.PublishedDate.ToString("g")</small>
+                        </div>
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            @if (User.Identity.Name.Equals(comment.Email))
+                            {
+                                <div>
+                                    <a asp-controller="Commentary" asp-action="Update" asp-route-id="@comment.CommentId" class="btn-sm btn-outline-success"><small>Редактировать</small></a>
+                                </div>
+                                <div>
+                                    <a asp-controller="Commentary" asp-action="Delete" asp-route-id="@comment.CommentId" class="btn-sm btn-outline-danger"><small>Удалить</small></a>
+                                </div>
+                            }
+                        }
+
+                    </div>
+                </div>
+
+                <hr/>
+
+                <div class="container-sm">
+                    <div>
+                        @comment.CommentDescription
+                    </div>
+                </div>
+            </div>
+        }
+        ++order;
+    }
+}
+else
+{
+    <h4>Комментариев нет</h4>
+}

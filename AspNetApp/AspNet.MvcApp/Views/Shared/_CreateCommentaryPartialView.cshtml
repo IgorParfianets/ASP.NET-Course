@@ -1,0 +1,40 @@
+﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using System.Security.Claims
+@model AspNetArticle.MvcApp.Models.CommentaryModel
+@{
+    Layout = null;
+}
+@if (string.IsNullOrEmpty(Model.Description))
+{
+    <form asp-controller="Commentary" asp-action="Create" method="post">
+        <input asp-for="ArticleId" hidden/>
+        <strong>Автор: @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value</strong>
+
+        <hr/>
+
+        <div class="form-floating">
+            <textarea asp-for="@Model.Description" placeholder="Комментарий" class="form-control" id="floatingTextarea2" style="height: 100px"></textarea>
+            <label for="floatingTextarea2"><small>Ваш комментарий:</small></label>
+        </div>
+        <div class="form-group mt-2 p-3">
+            <button type="submit" class="btn btn-sm btn-primary">Отправить</button>
+        </div>
+    </form>
+}
+else
+{
+    <form asp-controller="Commentary" asp-action="Update" method="post">
+        <input asp-for="ArticleId" hidden/>
+        <strong>Автор: @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value</strong>
+
+        <hr/>
+
+        <div class="form-floating">
+            <textarea asp-for="@Model.Description" placeholder="Комментарий" class="form-control" id="floatingTextarea2" style="height: 100px"></textarea>
+            <label for="floatingTextarea2"><small>Ваш комментарий:</small></label>
+        </div>
+        <div class="form-group mt-2 p-3">
+            <button type="submit" class="btn btn-sm btn-primary">Обновить</button>
+        </div>
+    </form>
+}

@@ -1,5 +1,6 @@
 ﻿using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Core.DataTransferObjects;
+using AspNetArticle.MvcApp.Models;
 using AspNetArticle.MvcApp.Models.ArticleModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -7,16 +8,20 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetArticle.MvcApp.Controllers
 {
-    [Authorize(Roles = "User")] //todo remove after
+    /*[Authorize(Roles = "User")]*/ //todo remove after
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
+        private readonly ICommentaryService _commentaryService;
         private readonly IMapper _mapper;
 
-        public ArticleController(IMapper mapper, IArticleService articleService)
+        public ArticleController(IMapper mapper, 
+            IArticleService articleService, 
+            ICommentaryService commentaryService)
         {
             _mapper = mapper;
             _articleService = articleService;
+            _commentaryService = commentaryService;
         }
 
         [HttpGet]
@@ -51,18 +56,80 @@ namespace AspNetArticle.MvcApp.Controllers
             return View(article);
         }
 
+        //[HttpGet]
+        //public async Task<IActionResult> Details(Guid id)
+        //{
+        //    var article = await _articleService.GetArticleByIdAsync(id);
+        //    if (article != null)
+        //    {
+        //        return View(article);
+        //    }
+
+        //    return View();
+        //}
+
         [HttpGet]
-        public async Task<IActionResult> Details(Guid id)
+        public async Task<IActionResult> Details(Guid id, CommentaryModel? model) // todo Кривой до невозможности метод
         {
-            var article = await _articleService.GetArticleByIdAsync(id);
-            if (article != null)
+            if (model != null && !string.IsNullOrEmpty(model.Description))
             {
-                return View(article);
+                var article = await _articleService.GetArticleByIdAsync(model.ArticleId);
+
+                if (article != null)
+                {
+                    var articleWithUsersComments = new ArticleWIthCommentaryViewModel
+                    {
+                        Article = article,
+                        ExistComments = await _commentaryService.GetAllCommentsWithUsersByArticleIdAsync(model.ArticleId),
+                        Comment = model
+
+                    };
+
+                    return View(articleWithUsersComments); 
+                }
             }
+            else
+            {
+                var article = await _articleService.GetArticleByIdAsync(id);
+
+                if (article != null)
+                {
+
+                    var articleWithUsersComments = new ArticleWIthCommentaryViewModel
+                    {
+                        Article = article,
+                        ExistComments = await _commentaryService.GetAllCommentsWithUsersByArticleIdAsync(id),
+                        Comment = new CommentaryModel() { ArticleId = id }
+
+                    };
+
+                    return View(articleWithUsersComments);
+                }
+            }
+           
 
             return View();
         }
+        //[HttpGet]
+        //public async Task<IActionResult> Details(CommentaryModel model)
+        //{
+        //    var article = await _articleService.GetArticleByIdAsync(model.ArticleId);
 
+        //    if (article != null)
+        //    {
+        //        var articleWithUsersComments = new ArticleWIthCommentaryViewModel
+        //        {
+        //            Article = article,
+        //            ExistComments = await _commentaryService.GetAllCommentsWithUsersByArticleIdAsync(model.ArticleId),
+        //            Comment = model
+
+        //        };
+
+        //        return View(articleWithUsersComments); todo trouble multiple endpoints
+        //    }
+
+        //    return View();
+        //}
         //[HttpGet]
         //public async Task<IActionResult> Search()
         //{

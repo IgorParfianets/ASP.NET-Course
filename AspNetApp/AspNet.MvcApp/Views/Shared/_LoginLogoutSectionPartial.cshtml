@@ -6,8 +6,8 @@
     {
         <div class="d-inline-flex">
             <form class="d-flex me-3 ms-5">
-                <input class="form-control form-control-sm me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success btn-sm" type="submit">Search</button>
+                <input class="form-control form-control-sm me-2" type="search" placeholder="Поиск новостей" aria-label="Search">
+                <button class="btn btn-outline-success btn-sm" type="submit">Поиск</button>
             </form>
         </div>
 
@@ -16,7 +16,7 @@
                 Hello @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value
             </a>
 
-            <a class="py-2 d-none d-md-inline-block me-3 " asp-controller="Account" asp-action="Logout">Logout</a>
+            <a class="py-2 d-none d-md-inline-block me-3 " asp-controller="Account" asp-action="Logout">Выход</a>
         </div>
     }
     else

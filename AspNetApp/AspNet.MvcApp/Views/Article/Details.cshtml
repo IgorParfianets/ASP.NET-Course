@@ -1,12 +1,58 @@
-﻿@model AspNetArticle.Core.DataTransferObjects.ArticleDto
+﻿@using AspNetArticle.MvcApp.Helpers
+@using Microsoft.AspNetCore.Mvc.TagHelpers
+@using System.Security.Claims
+@model AspNetArticle.MvcApp.Models.ArticleWIthCommentaryViewModel
 
 @{
     Layout = "_MyLayoutBootStrap";
 }
+
 @{
     ViewData["Title"] = "Details";
 }
 
-<div>
-    <article-text article="Model"></article-text>
+<div class="container d-sm-flex col-10">
+    <div class="col w-75">
+        <article-detail article="Model.Article"></article-detail>
+    </div>
 </div>
+
+<hr />
+
+<p>
+    <button class="btn btn-sm btn-outline-secondary mb-2 ms-5" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        <h2>Комментарии: @Model.ExistComments?.Count()</h2>
+    </button>
+</p>
+
+<div class="collapse" id="collapseExample">
+    <div class="card card-body">
+        <div class="container d-flex col-8 p-3 flex-column">
+            <partial name="_CommentaryListPartialView" model="Model" />
+        </div>
+    </div>
+</div>
+<hr />
+@*<!-- Count Comments -->
+<div class="d-flex justify-content-start bg-white p-3" style="border-radius: 8px;">
+    <h2>Комментарии: (@Model.ExistComments?.Count())</h2>
+</div>
+
+<!-- For Commentary Partial View -->
+<div class="container d-flex col-8 p-3 flex-column">
+    <partial name="_CommentaryListPartialView" model="Model"/>
+</div>*@
+
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="d-flex justify-content-start bg-white p-3 col-auto mt-2" style="border-radius: 8px;">
+        <h2>Оставить свой комментарий:</h2>
+    </div>
+
+    <!-- Create Comment -->
+    <div class="container d-flex flex-column col-10 bg-light p-3 mt-2" style="border-radius: 6px;">
+         <partial name="_CreateCommentaryPartialView" model="Model.Comment"/>
+       
+    </div>
+}
+

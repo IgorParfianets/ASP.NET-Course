@@ -12,5 +12,5 @@ public class ArticleDto // Можно рабить на 2 класса ArticleAn
     public Guid SourceId { get; set; }
 
     public List<CommentDto> Comments { get; set; }
-    public List<ViewDto> Views { get; set; }
+    public List<ViewDto> Views { get; set; } //todo remove unnecessary field
 }

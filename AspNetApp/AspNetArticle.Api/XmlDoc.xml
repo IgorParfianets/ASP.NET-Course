@@ -4,6 +4,20 @@
         <name>AspNetArticle.Api</name>
     </assembly>
     <members>
+        <member name="M:AspNetArticle.Api.Controllers.ArticleResourceInitializer.AddArticles">
+            <summary>
+            Initialize adding articles
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.TokenController.CreateJwtToken(AspNetArticle.Api.Models.Request.AuthenticateRequestModel)">
+            <summary>
+            Create token
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
         <member name="M:AspNetArticle.Api.Controllers.UserController.Get">
             <summary>
             Returns all users.

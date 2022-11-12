@@ -9,15 +9,15 @@ namespace AspNetArticle.MvcApp.Helpers
     {
         public ArticleDto Article { get; set; }
 
-        public override void Process(TagHelperContext context, TagHelperOutput output)
+        public override void Process(TagHelperContext context, TagHelperOutput output) // px-3 pt-md-5 px-md-5
         {
             output.TagMode = TagMode.StartTagAndEndTag;
             output.TagName = "div";
 
             var sb = new StringBuilder();
             sb.Append(
-                "<div class= px-3 pt-md-5 px-md-5 text-center overflow-hidden col-sm>" +
-                "<div class=my-3 py-3>" +
+                "<div class= \"px-3 text-center overflow-hidden col-sm\">" +
+                "<div class=\"my-3\">" +
                 "<h3>");
             sb.Append(Article.Title);
 
@@ -25,7 +25,7 @@ namespace AspNetArticle.MvcApp.Helpers
             sb.Append(Article.PublicationDate.ToString("g"));
             
 
-            sb.Append("</p></div><div class= mx-auto style=width: 80%; height: 300px;>");
+            sb.Append("</p></div><div class = \"d-block overflow-hidden text-truncate\" style=width: 80%; height: 300px;>");
             sb.Append(Article.ShortDescription);
             sb.Append("</div></div>");
             output.PreContent.SetHtmlContent(sb.ToString());

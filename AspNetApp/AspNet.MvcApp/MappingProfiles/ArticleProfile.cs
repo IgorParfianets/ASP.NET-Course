@@ -1,5 +1,6 @@
 ﻿using AspNetArticle.Core.DataTransferObjects;
 using AspNetArticle.Database.Entities;
+using AspNetArticle.MvcApp.Models;
 using AspNetArticle.MvcApp.Models.ArticleModels;
 using AutoMapper;
 
@@ -62,5 +63,6 @@ public class ArticleProfile : Profile //to do     ещё не закончено
             .ForMember(article => article.ShortDescription, opt => opt.MapFrom(dto => dto.ShortDescription))
             .ForMember(article => article.Text, opt => opt.MapFrom(dto => dto.Text))
             .ForMember(article => article.PublicationDate, opt => opt.MapFrom(dto => DateTime.Now));
+
     }
 }

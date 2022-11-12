@@ -9,7 +9,7 @@
 <div class="col-auto container text-center w-25 mt-5 mb-5">
 
     <h1 class="row-auto mt-5 mb-4">Регистрация</h1>
-
+    <hr/>
     <form asp-controller="Account" asp-action="Registration" method="post" class="row container m-0 gy-1">
 
         <div class="form-group">
@@ -33,6 +33,11 @@
         <!--Here will be toggle-->
         <div class="form-group">
             <input asp-for="Password" id="password" placeholder="Придумайте пароль"class="form-control form-control-sm" />
+
+            <span class="show-pass" onclick="toggle()">
+                <i class="far fa-eye" onclick="myFunction(this)"></i>
+            </span>
+
             <span asp-validation-for="Password" class="validate"></span>
 
             <p class="degree" id="test">Минимум 4 символа</p>

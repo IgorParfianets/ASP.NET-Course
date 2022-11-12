@@ -2,7 +2,6 @@ D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\b
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\bin\Debug\net6.0\AspNetArticle.MvcApp.runtimeconfig.json
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\bin\Debug\net6.0\appsettings.Development.json
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\bin\Debug\net6.0\appsettings.json
-D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\bin\Debug\net6.0\hashingsalt.json
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\bin\Debug\net6.0\AspNetArticle.MvcApp.staticwebassets.runtime.json
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\bin\Debug\net6.0\AspNetArticle.MvcApp.exe
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Mappers\bin\Debug\net6.0\AspNetArticle.Mappers.deps.json
