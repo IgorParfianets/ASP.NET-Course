@@ -9,5 +9,6 @@
         public string Username { get; set; }
         public string Email { get; set; }
         public DateTime AccountCreated { get; set; }
+        public bool IsEdited { get; set; }
     }
 }

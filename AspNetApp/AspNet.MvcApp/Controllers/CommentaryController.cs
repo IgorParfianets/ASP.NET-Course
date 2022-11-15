@@ -1,5 +1,6 @@
 ﻿using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Core.DataTransferObjects;
+using AspNetArticle.Database.Entities;
 using AspNetArticle.MvcApp.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -48,6 +49,7 @@ namespace AspNetArticle.MvcApp.Controllers
             return BadRequest();
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Update(Guid id) //1
         {
@@ -59,19 +61,27 @@ namespace AspNetArticle.MvcApp.Controllers
             return BadRequest();
         }
 
+        [Authorize]
         [HttpPost]
-        public async Task<IActionResult> Update(CommentaryModel model) // не попадаем сюда потому что в partial стоит Create
+        public async Task<IActionResult> Update(CommentaryModel model) 
         {
             if (ModelState.IsValid)
             {
                 var userEmail = User.Identity.Name;
                 var userId = (await _userService.GetUserByEmailAsync(userEmail))?.Id;
 
-                var dto = _mapper.Map<CommentDto>(model);
-
-                if (dto != null && userId != null)
+                if (userId != null)
                 {
-                    dto.UserId = userId.Value;
+
+                    var dto = new CommentDto()  //todo should be refactored maybe create separate EditModel or UpdateModel
+                    {
+                        Id = model.Id,
+                        UserId = userId.Value,
+                        ArticleId = model.ArticleId,
+                        Description = model.Description,
+                        PublicationDate = DateTime.Now,
+                        IsEdited = true
+                    };
 
                     var result = await _commentaryService.UpdateCommentAsync(dto);
                     if (result > 0)
@@ -80,10 +90,10 @@ namespace AspNetArticle.MvcApp.Controllers
                     }
                 }
             }
-
-            return BadRequest();
+            return RedirectToAction("Details", "Article", model);
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {

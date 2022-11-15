@@ -5,7 +5,7 @@ using System.Text;
 namespace AspNetArticle.MvcApp.Helpers
 {
     [HtmlTargetElement("test-index")]
-    public class TestTagHelper : TagHelper
+    public class TestTagHelper : TagHelper  //todo remove doesn't need already
     {
         public ArticleDto Article { get; set; }
 
@@ -25,7 +25,7 @@ namespace AspNetArticle.MvcApp.Helpers
             sb.Append(Article.PublicationDate.ToString("g"));
             
 
-            sb.Append("</p></div><div class = \"d-block overflow-hidden text-truncate\" style=width: 80%; height: 300px;>");
+            sb.Append("</p></div><div class = \"d-block overflow-hidden\" style=width: 80%; height: 300px;>");
             sb.Append(Article.ShortDescription);
             sb.Append("</div></div>");
             output.PreContent.SetHtmlContent(sb.ToString());

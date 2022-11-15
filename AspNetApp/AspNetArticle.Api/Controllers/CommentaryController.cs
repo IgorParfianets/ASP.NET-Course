@@ -43,7 +43,7 @@ namespace AspNetArticle.Api.Controllers
         [HttpGet]
         public async Task<IActionResult> GetComments([FromQuery] GetCommentsRequestModel? model) // work like filter by user/article
         {
-            var articles = await _commentaryService.GetCommentsByUserIdAndArticleIdTask(model?.ArticleId, model?.UserId);
+            var articles = await _commentaryService.GetCommentsByUserIdAndArticleId(model?.ArticleId, model?.UserId);
 
             return Ok(articles);
         }

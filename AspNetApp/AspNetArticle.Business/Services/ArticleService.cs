@@ -7,6 +7,7 @@ using HtmlAgilityPack;
 using Microsoft.EntityFrameworkCore;
 using System.ServiceModel.Syndication;
 using System.Xml;
+using System.Xml.Linq;
 
 namespace AspNetArticle.Business.Services;
 
@@ -80,8 +81,10 @@ public class ArticleService : IArticleService
         await _unitOfWork.Commit();
     }
 
-    //---------------------------------------------------------- for controllerInitializer
-    public async Task GetAllArticleDataFromRssAsync(Guid sourceId, string? sourceRssUrl)
+
+    //Onliner
+    #region GetArticlesOnlinerRss
+    public async Task GetAllArticleDataFromOnlinerRssAsync(Guid sourceId, string? sourceRssUrl)
     {
         if (!string.IsNullOrEmpty(sourceRssUrl))
         {
@@ -91,11 +94,12 @@ public class ArticleService : IArticleService
             {
                 var feed = SyndicationFeed.Load(reader);
 
+
                 foreach (var item in feed.Items)
                 {
                     //should be checked for different rss sources 
-                    
-                    var articleDto = new ArticleDto() //todo I don't know is it correctly maybe need Mapper
+
+                    var articleDto = new ArticleDto() 
                     {
                         Id = Guid.NewGuid(),
                         Title = item.Title.Text,
@@ -105,6 +109,7 @@ public class ArticleService : IArticleService
                         SourceId = sourceId,
                         SourceUrl = item.Id
                     };
+
                     list.Add(articleDto);
                 }
             }
@@ -123,7 +128,10 @@ public class ArticleService : IArticleService
     }
 
 
-    public async Task AddArticleTextToArticlesAsync()
+    #endregion
+    #region FixArticleOnlinerTextAndShortDescriptionMethods
+
+    public async Task AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync()
     {
         var articlesWithEmptyTextIds = _unitOfWork.Articles.Get()
             .Where(article => string.IsNullOrEmpty(article.Text))
@@ -132,11 +140,204 @@ public class ArticleService : IArticleService
 
         foreach (var articleId in articlesWithEmptyTextIds)
         {
-            await AddArticleTextToArticleAsync(articleId);
+            await AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync(articleId);
         }
     }
 
-    private async Task AddArticleTextToArticleAsync(Guid articleId)
+    private async Task AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync(Guid articleId)
+    {
+        try
+        {
+            var article = await _unitOfWork.Articles.GetByIdAsync(articleId);
+
+            if (article == null)
+            {
+                throw new ArgumentException($"Article with id: {articleId} doesn't exists",
+                    nameof(articleId));
+            }
+
+            var articleSourceUrl = article.SourceUrl;
+            var shortDescription = article.ShortDescription;
+
+            var web = new HtmlWeb();
+            var htmlDoc = web.Load(articleSourceUrl);
+            var nodes =
+                htmlDoc.DocumentNode.Descendants(0)
+                    .Where(n => n.HasClass("news-text"));
+
+            shortDescription = FixArticleOnlinerShortDescription(shortDescription);
+
+            if (nodes.Any())
+            {
+                var articleText = nodes.FirstOrDefault()?
+                    .ChildNodes
+                    .Where(node => (node.Name.Equals("p") || node.Name.Equals("div") || node.Name.Equals("h2"))
+                                   && !node.HasClass("news-reference")
+                                   && !node.HasClass("news-banner")
+                                   && !node.HasClass("news-widget")
+                                   && !node.HasClass("news-vote")
+                                   && !node.HasClass("news-incut")
+                                   && node.Attributes["style"] == null)
+                    .Select(node => node.OuterHtml)
+                    .Aggregate((i, j) => i + Environment.NewLine + j);
+
+                await _unitOfWork.Articles.UpdateArticleTextAsync(articleId, articleText);
+                await _unitOfWork.Articles.UpdateArticleShortDescriptionAsync(articleId, shortDescription);
+
+                await _unitOfWork.Commit();
+            }
+
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }
+
+    private string FixArticleOnlinerShortDescription(string shortDescription)
+    {
+        if (!string.IsNullOrEmpty(shortDescription))
+        {
+
+            var htmlDoc = new HtmlDocument();
+            htmlDoc.LoadHtml(shortDescription);
+
+            var text = htmlDoc.DocumentNode.SelectNodes("p")[1].InnerText;
+
+            return text ?? string.Empty;
+        }
+        return string.Empty;
+    }
+    #endregion
+    #region FixArticleOnlinerImageMethod
+    public async Task AddArticleImageUrlToArticlesOnlinerAsync()
+    {
+        var articlesWithEmptyImageUrlIds = _unitOfWork.Articles.Get()
+            .Where(article => string.IsNullOrEmpty(article.ImageUrl))
+            .Select(article => article.Id)
+            .ToList();
+
+        foreach (var articleId in articlesWithEmptyImageUrlIds)
+        {
+            await AddArticleImageUrlToArticlesOnlinerAsync(articleId);
+        }
+    }
+
+    private async Task AddArticleImageUrlToArticlesOnlinerAsync(Guid articleId)
+    {
+        try
+        {
+            var article = await _unitOfWork.Articles.GetByIdAsync(articleId);
+
+            if (article == null)
+            {
+                throw new ArgumentException($"Article with id: {articleId} doesn't exists",
+                    nameof(articleId));
+            }
+
+            var articleSourceUrl = article.SourceUrl;
+
+            var web = new HtmlWeb();
+            var htmlDoc = web.Load(articleSourceUrl);
+            var nodes =
+                htmlDoc.DocumentNode.Descendants(0) 
+                    .Where(n => n.HasClass("news-header__image"));
+
+            if (nodes.Any())
+            {
+                var articleImageUrl = nodes.FirstOrDefault()?.GetAttributeValue("style", null);
+
+                if (!string.IsNullOrEmpty(articleImageUrl))
+                {
+                    articleImageUrl = FixArticleOnlinerStringUrl(articleImageUrl);
+
+                    await _unitOfWork.Articles.UpdateArticleImageUrlAsync(articleId, articleImageUrl);
+                    await _unitOfWork.Commit();
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            throw;
+        }
+    }                                                     
+    private string FixArticleOnlinerStringUrl(string url) 
+    {                                                    
+        if(url.StartsWith("background-image: url('") && url.EndsWith("');"))
+            return url
+                .Replace("background-image: url('", "")
+                .Replace("');", "");
+        
+        return url
+            .Replace("background-image: url(", "")
+            .Replace(");", "");
+    }
+    #endregion
+
+
+    //DevIo
+    #region GetArticleDevIoRss
+    public async Task GetAllArticleDataFromDevIoRssAsync(Guid sourceId, string? sourceRssUrl)
+    {
+        if (!string.IsNullOrEmpty(sourceRssUrl))
+        {
+            var list = new List<ArticleDto>();
+
+            using (var reader = XmlReader.Create(sourceRssUrl))
+            {
+                var feed = SyndicationFeed.Load(reader);
+
+                foreach (var item in feed.Items)
+                {
+                    //should be checked for different rss sources 
+
+                    var articleDto = new ArticleDto()
+                    {
+                        Id = Guid.NewGuid(),
+                        Title = item.Title.Text,
+                        PublicationDate = item.PublishDate.UtcDateTime,
+                        ShortDescription = item.Summary?.Text ?? string.Empty,
+                        Category = item.Categories.FirstOrDefault()?.Name ?? "Обо Всём",
+                        SourceId = sourceId,
+                        SourceUrl = item.Id,
+                        ImageUrl = item.Links[1]?.Uri.AbsoluteUri
+                    };
+
+                    if (!string.IsNullOrEmpty(articleDto.ShortDescription))
+                        list.Add(articleDto);
+                }
+            }
+
+            var oldArticleUrls = await _unitOfWork.Articles.Get()
+                .Select(article => article.SourceUrl)
+                .Distinct()
+                .ToArrayAsync();
+
+            var entities = list.Where(dto => !oldArticleUrls.Contains(dto.SourceUrl))
+                .Select(dto => _mapper.Map<Article>(dto)).ToArray();
+
+            await _unitOfWork.Articles.AddRangeAsync(entities);
+            await _unitOfWork.Commit();
+        }
+    }
+
+
+    #endregion
+    #region FixArticleDevIoTextMethods
+    public async Task AddArticleTextToArticlesDevIoAsync()
+    {
+        var articlesWithEmptyTextIds = _unitOfWork.Articles.Get()
+            .Where(article => string.IsNullOrEmpty(article.Text))
+            .Select(article => article.Id)
+            .ToList();
+
+        foreach (var articleId in articlesWithEmptyTextIds)
+        {
+            await AddArticleTextToArticleDevIoAsync(articleId);
+        }
+    }
+
+    private async Task AddArticleTextToArticleDevIoAsync(Guid articleId)
     {
         try
         {
@@ -154,45 +355,19 @@ public class ArticleService : IArticleService
             var htmlDoc = web.Load(articleSourceUrl);
             var nodes =
                 htmlDoc.DocumentNode.Descendants(0)
-                    .Where(n => n.HasClass("news-text"));
-
-            //var web = new HtmlWeb();
-            //var htmlDoc = web.Load(articleSourceUrl);
-            //var nodes =
-            //    htmlDoc.DocumentNode.Descendants(0)
-            //        .Where(n => n.HasClass("se-material-page__body"));
+                    .Where(n => n.HasClass("article__body"));
 
             if (nodes.Any())
             {
-                var articleText = nodes.FirstOrDefault()?
-                    .ChildNodes
-                    .Where(node => (node.Name.Equals("p") || node.Name.Equals("div") || node.Name.Equals("h2"))
-                                   && !node.HasClass("news-reference")
-                                   && !node.HasClass("news-banner")
-                                   && !node.HasClass("news-widget")
-                                   && !node.HasClass("news-vote")
-                                   && !node.HasClass("news-incut")
-                                   && node.Attributes["style"] == null)
+                var articleText = (nodes.FirstOrDefault()?.ChildNodes
+                        .Where(node => node.Name.Equals("div")))?
+                    .FirstOrDefault()?.ChildNodes
+                    .Where(node => node.Name.Equals("p"))
                     .Select(node => node.OuterHtml)
                     .Aggregate((i, j) => i + Environment.NewLine + j);
 
-                //var articleText = nodes.FirstOrDefault()?
-                //    .ChildNodes
-                //    .Where(node => (node.Name.Equals("p") || node.Name.Equals("div") || node.Name.Equals("h1"))
-                //                && !node.HasClass("se-material-page__social")
-                //                && !node.HasClass("se-material-page__authors")
-                //                && !node.HasClass("e-material-page__blog-buttons")
-                //                && !node.HasClass("se-material-page__zoomer")  
-                //                && !node.HasClass("se-banner")
-                //                && !node.HasClass("se-material-page__blog-buttons")
-                //                && !node.Name.Equals("a")
-                //                && !node.Name.Equals("script")
-                //                )
-                //    .Select(node => node.OuterHtml)
-                //    .Aggregate((i, j) => i + Environment.NewLine + j);
+                await _unitOfWork.Articles.UpdateArticleTextAsync(articleId, articleText);
 
-
-                await _unitOfWork.Articles.UpdateArticleTextAsync(articleId, articleText); 
                 await _unitOfWork.Commit();
             }
         }
@@ -201,4 +376,7 @@ public class ArticleService : IArticleService
             throw;
         }
     }
+
+
+    #endregion
 }

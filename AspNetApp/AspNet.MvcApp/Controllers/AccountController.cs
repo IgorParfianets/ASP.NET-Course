@@ -201,25 +201,5 @@ public class AccountController : Controller
         return BadRequest();
     }
 
-    //[HttpGet]
-    //public async Task<IActionResult> LoginLogoutUser()
-    //{
-    //    if (User.Identities.Any(identity => identity.IsAuthenticated))
-    //    {
-    //        var userEmail = User.Identity?.Name ;
-    //        if (string.IsNullOrEmpty(userEmail))
-    //        {
-    //            return BadRequest();
-    //        }
-
-    //        var user = _mapper.Map<UserDisplayDataViewModel>(await _userService.GetUserByEmailAsync(userEmail));
-    //        return View(user);
-    //    }
-
-    //    return View();
-    //}
-
-    // Удалить после теста
-
 }
  

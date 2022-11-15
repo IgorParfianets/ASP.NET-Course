@@ -8,7 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetArticle.MvcApp.Controllers
 {
-    /*[Authorize(Roles = "User")]*/ //todo remove after
+    
     public class ArticleController : Controller
     {
         private readonly IArticleService _articleService;
@@ -56,17 +56,6 @@ namespace AspNetArticle.MvcApp.Controllers
             return View(article);
         }
 
-        //[HttpGet]
-        //public async Task<IActionResult> Details(Guid id)
-        //{
-        //    var article = await _articleService.GetArticleByIdAsync(id);
-        //    if (article != null)
-        //    {
-        //        return View(article);
-        //    }
-
-        //    return View();
-        //}
 
         [HttpGet]
         public async Task<IActionResult> Details(Guid id, CommentaryModel? model) // todo Кривой до невозможности метод
@@ -84,7 +73,6 @@ namespace AspNetArticle.MvcApp.Controllers
                         Comment = model
 
                     };
-
                     return View(articleWithUsersComments); 
                 }
             }
@@ -94,20 +82,16 @@ namespace AspNetArticle.MvcApp.Controllers
 
                 if (article != null)
                 {
-
                     var articleWithUsersComments = new ArticleWIthCommentaryViewModel
                     {
                         Article = article,
                         ExistComments = await _commentaryService.GetAllCommentsWithUsersByArticleIdAsync(id),
                         Comment = new CommentaryModel() { ArticleId = id }
-
+                        
                     };
-
                     return View(articleWithUsersComments);
                 }
             }
-           
-
             return View();
         }
         //[HttpGet]

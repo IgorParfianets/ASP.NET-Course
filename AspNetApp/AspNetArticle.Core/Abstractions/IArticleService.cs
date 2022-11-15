@@ -12,6 +12,13 @@ public interface IArticleService
 
     Task RemoveArticleByIdSourceAsync(Guid id);
 
-    Task GetAllArticleDataFromRssAsync(Guid sourceId, string? sourceRssUrl);
-    Task AddArticleTextToArticlesAsync();
+
+    Task GetAllArticleDataFromOnlinerRssAsync(Guid sourceId, string? sourceRssUrl);
+    Task AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync();
+    Task AddArticleImageUrlToArticlesOnlinerAsync();
+
+    Task GetAllArticleDataFromDevIoRssAsync(Guid soirceId, string? sourceRssUrl);
+    Task AddArticleTextToArticlesDevIoAsync();
+    
+
 }

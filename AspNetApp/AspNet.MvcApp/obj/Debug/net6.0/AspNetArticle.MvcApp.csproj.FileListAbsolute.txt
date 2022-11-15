@@ -285,5 +285,4 @@ D:\Программирование\ArticleApp\AspNetApp\AspNet.MvcApp\bin\Debug
 D:\Программирование\ArticleApp\AspNetApp\AspNet.MvcApp\bin\Debug\net6.0\Serilog.Sinks.File.dll
 D:\Программирование\ArticleApp\AspNetApp\AspNet.MvcApp\bin\Debug\net6.0\HtmlAgilityPack.dll
 D:\Программирование\ArticleApp\AspNetApp\AspNet.MvcApp\bin\Debug\net6.0\HtmlAgilityPack.CssSelectors.NetCore.dll
-D:\Программирование\ArticleApp\AspNetApp\AspNet.MvcApp\bin\Debug\net6.0\HtmlAgilityPack.NetCore.dll
 D:\Программирование\ArticleApp\AspNetApp\AspNet.MvcApp\bin\Debug\net6.0\System.ServiceModel.Syndication.dll

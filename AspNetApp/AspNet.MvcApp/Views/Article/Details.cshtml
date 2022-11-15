@@ -12,16 +12,39 @@
 }
 
 <div class="container d-sm-flex col-10">
-    <div class="col w-75">
-        <article-detail article="Model.Article"></article-detail>
+    <div class="container d-sm-flex text-center w-100">
+        <div class="m-5 p-5 bg-white" style="border-radius: 8px;">
+           
+            @*<i class="fa-regular fa-star fa-2xl"></i>*@
+            <div class=" justify-content-end align-items-end align-content-end align-self-end text-end mb-3">
+
+                <span id="favourite" data-bs-toggle="tooltip" title="Добавить в избранное" onclick="addArticle()">
+                    <img id="star" class="d-inline-block" onclick="changeStar(this)" src="~/image/star_disable.png" style="width: 5%">
+                </span>
+
+            </div>
+
+            <h1>@Model.Article.Title</h1>
+            <hr/>
+            <div class="my-5">
+                <img src="@Model.Article.ImageUrl"/>
+            </div>
+            <div class="bg-light p-5 text-start" style="border-radius: 6px;">
+                <article-text article-text="@Model.Article.Text"></article-text>
+            </div>
+            <div class="d-flex justify-content-end me-4 mt-2 p-3">
+                Опубликовано: @Model.Article.PublicationDate.ToString("g")
+            </div>
+        </div>
+        
     </div>
 </div>
 
 <hr />
 
 <p>
-    <button class="btn btn-sm btn-outline-secondary mb-2 ms-5" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
-        <h2>Комментарии: @Model.ExistComments?.Count()</h2>
+    <button class="btn btn-sm btn-primary mb-2 ms-5" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+        <h3 class="mb-0">Комментарии: <span class="badge bg-danger rounded-pill">@Model.ExistComments?.Count()</span></h3>
     </button>
 </p>
 
@@ -32,16 +55,8 @@
         </div>
     </div>
 </div>
-<hr />
-@*<!-- Count Comments -->
-<div class="d-flex justify-content-start bg-white p-3" style="border-radius: 8px;">
-    <h2>Комментарии: (@Model.ExistComments?.Count())</h2>
-</div>
 
-<!-- For Commentary Partial View -->
-<div class="container d-flex col-8 p-3 flex-column">
-    <partial name="_CommentaryListPartialView" model="Model"/>
-</div>*@
+<hr />
 
 @if (User.Identity.IsAuthenticated)
 {
@@ -55,4 +70,7 @@
        
     </div>
 }
-
+<script src="~/js/add-favourite-article.js"></script>
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}

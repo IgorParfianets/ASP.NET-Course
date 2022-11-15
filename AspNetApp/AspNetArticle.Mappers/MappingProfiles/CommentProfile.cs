@@ -1,6 +1,7 @@
 ﻿using AspNetArticle.Api.Models.Request;
 using AspNetArticle.Core.DataTransferObjects;
 using AspNetArticle.Database.Entities;
+using AspNetArticle.MvcApp.Models;
 using AutoMapper;
 
 namespace AspNetArticle.MvcApp.MappingProfiles;
@@ -37,6 +38,15 @@ public class CommentProfile : Profile
             .ForMember(comment => comment.UserId,
                 opt
                     => opt.MapFrom(dto => dto.UserId));
+
+
+        CreateMap<CommentDto, CommentaryModel>()
+            .ForMember(comment => comment.Id,
+                opt
+                    => opt.MapFrom(dto => dto.Id))
+            .ForMember(comment => comment.Description,
+                opt
+                    => opt.MapFrom(dto => dto.Description));
 
     }
 }

@@ -72,25 +72,6 @@
           }
         }
       },
-      "HtmlAgilityPack.NetCore/1.5.0.1": {
-        "dependencies": {
-          "System.Collections": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.Linq": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.Extensions": "4.3.0",
-          "System.Runtime.InteropServices": "4.3.0",
-          "System.Text.RegularExpressions": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Xml.XPath": "4.0.1"
-        },
-        "runtime": {
-          "lib/netstandard1.3/HtmlAgilityPack.NetCore.dll": {
-            "assemblyVersion": "1.5.0.1",
-            "fileVersion": "1.5.0.1"
-          }
-        }
-      },
       "Humanizer.Core/2.8.26": {
         "runtime": {
           "lib/netstandard2.0/Humanizer.dll": {
@@ -2452,19 +2433,6 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
-      "System.Xml.XPath/4.0.1": {
-        "dependencies": {
-          "System.Collections": "4.3.0",
-          "System.Diagnostics.Debug": "4.3.0",
-          "System.Globalization": "4.3.0",
-          "System.IO": "4.3.0",
-          "System.Resources.ResourceManager": "4.3.0",
-          "System.Runtime": "4.3.0",
-          "System.Runtime.Extensions": "4.3.0",
-          "System.Threading": "4.3.0",
-          "System.Xml.ReaderWriter": "4.3.0"
-        }
-      },
       "AspNetArticle.Business/1.0.0": {
         "dependencies": {
           "AspNetArticle.Core": "1.0.0",
@@ -2473,7 +2441,6 @@
           "AutoMapper.Extensions.Microsoft.DependencyInjection": "11.0.0",
           "HtmlAgilityPack": "1.11.46",
           "HtmlAgilityPack.CssSelectors.NetCore": "1.2.1",
-          "HtmlAgilityPack.NetCore": "1.5.0.1",
           "System.ServiceModel.Syndication": "6.0.0"
         },
         "runtime": {
@@ -2553,13 +2520,6 @@
       "sha512": "sha512-ES2Ht+wpgaLmyyyCP9cl3AT5U2BtTOCZ2pdFL8GYa27V8IAD9U77KOcuvi61k+nDE4kpU+EjwaBJepVFqLpmGA==",
       "path": "htmlagilitypack.cssselectors.netcore/1.2.1",
       "hashPath": "htmlagilitypack.cssselectors.netcore.1.2.1.nupkg.sha512"
-    },
-    "HtmlAgilityPack.NetCore/1.5.0.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-UaLQtf8QMM1cxUDPMMBcrgX3A/56P+y4mHidgWaoiieaEG9eyODVRIKt6cQtBZaHLOVX3abGdMGVk2RnlWUAOw==",
-      "path": "htmlagilitypack.netcore/1.5.0.1",
-      "hashPath": "htmlagilitypack.netcore.1.5.0.1.nupkg.sha512"
     },
     "Humanizer.Core/2.8.26": {
       "type": "package",
@@ -3862,13 +3822,6 @@
       "sha512": "sha512-5zJ0XDxAIg8iy+t4aMnQAu0MqVbqyvfoUVl1yDV61xdo3Vth45oA2FoY4pPkxYAH5f8ixpmTqXeEIya95x0aCQ==",
       "path": "system.xml.xdocument/4.3.0",
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
-    },
-    "System.Xml.XPath/4.0.1": {
-      "type": "package",
-      "serviceable": true,
-      "sha512": "sha512-UWd1H+1IJ9Wlq5nognZ/XJdyj8qPE4XufBUkAW59ijsCPjZkZe0MUzKKJFBr+ZWBe5Wq1u1d5f2CYgE93uH7DA==",
-      "path": "system.xml.xpath/4.0.1",
-      "hashPath": "system.xml.xpath.4.0.1.nupkg.sha512"
     },
     "AspNetArticle.Business/1.0.0": {
       "type": "project",

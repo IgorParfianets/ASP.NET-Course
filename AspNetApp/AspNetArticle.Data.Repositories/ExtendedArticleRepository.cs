@@ -2,6 +2,7 @@
 using AspNetArticle.Database;
 using AspNetArticle.Database.Entities;
 using Microsoft.EntityFrameworkCore;
+using static System.Net.Mime.MediaTypeNames;
 
 namespace AspNetArticle.Data.Repositories
 {
@@ -18,6 +19,23 @@ namespace AspNetArticle.Data.Repositories
             if (article != null)
             {
                 article.Text = text;
+            }
+        }
+
+        public async Task UpdateArticleShortDescriptionAsync(Guid id, string shortDescription)
+        {
+            var article = await DbSet.FirstOrDefaultAsync(a => a.Id.Equals(id));
+            if (article != null)
+            {
+                article.ShortDescription = shortDescription;
+            }
+        }
+        public async Task UpdateArticleImageUrlAsync(Guid id, string imageUrl)
+        {
+            var article = await DbSet.FirstOrDefaultAsync(a => a.Id.Equals(id));
+            if (article != null)
+            {
+                article.ImageUrl = imageUrl;
             }
         }
     }

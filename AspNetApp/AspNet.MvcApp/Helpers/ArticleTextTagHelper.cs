@@ -1,5 +1,4 @@
-﻿using AspNetArticle.Core.DataTransferObjects;
-using Microsoft.AspNetCore.Razor.TagHelpers;
+﻿using Microsoft.AspNetCore.Razor.TagHelpers;
 using System.Text;
 
 namespace AspNetArticle.MvcApp.Helpers
@@ -7,7 +6,7 @@ namespace AspNetArticle.MvcApp.Helpers
     [HtmlTargetElement("article-text")]
     public class ArticleTextTagHelper : TagHelper
     {
-        public ArticleDto Article { get; set; }
+        public string ArticleText { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
@@ -15,10 +14,7 @@ namespace AspNetArticle.MvcApp.Helpers
             output.TagName = "div";
 
             var sb = new StringBuilder();
-            sb.Append(Article.Title);
-            sb.Append(Article.Text);
-            sb.Append(Article.PublicationDate.ToString("g"));
-            
+            sb.Append(ArticleText);
 
             output.PreContent.SetHtmlContent(sb.ToString());
         }

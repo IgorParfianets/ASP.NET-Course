@@ -31,13 +31,30 @@ public class ArticleProfile : Profile //to do     ещё не закончено
     {
         // For Entity -> Dto & Dto -> Entity
         CreateMap<Article, ArticleDto>()
-            .ForMember(dto => dto.Id, opt => opt.MapFrom(article => article.Id))
-            .ForMember(dto => dto.Title, opt => opt.MapFrom(article => article.Title))
-            .ForMember(dto => dto.ShortDescription, opt => opt.MapFrom(article => article.ShortDescription))
-            .ForMember(dto => dto.Text, opt => opt.MapFrom(article => article.Text))
-            .ForMember(dto => dto.PublicationDate, opt => opt.MapFrom(article => article.PublicationDate))
-            .ForMember(dto => dto.Views, opt => opt.MapFrom(article => article.Views))
-            .ForMember(dto => dto.Comments, opt => opt.MapFrom(article => article.Comments));
+            .ForMember(dto => dto.Id,
+                opt
+                    => opt.MapFrom(article => article.Id))
+            .ForMember(dto => dto.Title,
+                opt
+                    => opt.MapFrom(article => article.Title))
+            .ForMember(dto => dto.ShortDescription,
+                opt
+                    => opt.MapFrom(article => article.ShortDescription))
+            .ForMember(dto => dto.Text,
+                opt
+                    => opt.MapFrom(article => article.Text))
+            .ForMember(dto => dto.PublicationDate,
+                opt
+                    => opt.MapFrom(article => article.PublicationDate))
+            .ForMember(dto => dto.Views,
+                opt
+                    => opt.MapFrom(article => article.Views))
+            .ForMember(dto => dto.Comments,
+                opt
+                    => opt.MapFrom(article => article.Comments))
+            .ForMember(dto => dto.ImageUrl,
+                opt
+                    => opt.MapFrom(article => article.ImageUrl));
 
         CreateMap<ArticleDto, Article>()
             .ForMember(article => article.Id, opt => opt.MapFrom(dto => dto.Id))

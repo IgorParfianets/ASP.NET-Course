@@ -11,7 +11,7 @@ public class Article : IBaseEntity
     public string? Text { get; set; }
     public DateTime PublicationDate { get; set; }
     public string SourceUrl { get; set; }
-     
+    public string? ImageUrl { get; set; }
 
     public Guid SourceId { get; set; }
     public Source Source { get; set; }

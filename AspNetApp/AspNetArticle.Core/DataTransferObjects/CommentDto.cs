@@ -7,4 +7,5 @@ public class CommentDto
     public DateTime PublicationDate { get; set; }
     public Guid ArticleId { get; set; }
     public Guid UserId { get; set; }
+    public bool IsEdited { get; set; }
 }

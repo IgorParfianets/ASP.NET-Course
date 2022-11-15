@@ -16,18 +16,18 @@ public class CommentProfile : Profile
             .ForMember(dto => dto.Id,
                 opt
                     => opt.MapFrom(comment => comment.Id))
-            .ForMember(dto => dto.Description, 
-                opt 
+            .ForMember(dto => dto.Description,
+                opt
                     => opt.MapFrom(comment => comment.Description))
-            .ForMember(dto => dto.PublicationDate, 
-                opt 
+            .ForMember(dto => dto.PublicationDate,
+                opt
                     => opt.MapFrom(comment => comment.PublicationDate))
             .ForMember(dto => dto.UserId,
                 opt
                     => opt.MapFrom(comment => comment.User))
-            .ForMember(dto => dto.PublicationDate,
+            .ForMember(dto => dto.IsEdited,
                 opt
-                    => opt.MapFrom(comment => comment.PublicationDate));
+                    => opt.MapFrom(comment => comment.IsEdited));
 
 
 
@@ -40,7 +40,10 @@ public class CommentProfile : Profile
                     => opt.MapFrom(dto => dto.Description))
             .ForMember(comment => comment.PublicationDate, 
                 opt 
-                    => opt.MapFrom(dto => dto.PublicationDate));
+                    => opt.MapFrom(dto => dto.PublicationDate))
+            .ForMember(comment => comment.IsEdited,
+            opt
+                => opt.MapFrom(dto => dto.IsEdited));
 
         CreateMap<Comment, CommentaryWithUserDto>()
             .ForMember(dto => dto.CommentId,
@@ -63,7 +66,10 @@ public class CommentProfile : Profile
                     => opt.MapFrom(comment => comment.User.Email))
             .ForMember(dto => dto.AccountCreated,
                 opt
-                    => opt.MapFrom(comment => comment.User.AccountCreated));
+                    => opt.MapFrom(comment => comment.User.AccountCreated))
+            .ForMember(comment => comment.IsEdited,
+                opt
+                    => opt.MapFrom(dto => dto.IsEdited));
 
 
         CreateMap<CommentaryModel, CommentDto>()
@@ -84,6 +90,7 @@ public class CommentProfile : Profile
             .ForMember(dto => dto.Description,
                 opt
                     => opt.MapFrom(comment => comment.Description));
+
 
 
 

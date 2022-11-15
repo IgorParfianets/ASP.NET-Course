@@ -10,6 +10,7 @@ public class ArticleDto // Можно рабить на 2 класса ArticleAn
     public string SourceUrl { get; set; }
     public DateTime PublicationDate { get; set; }
     public Guid SourceId { get; set; }
+    public string? ImageUrl { get; set; }
 
     public List<CommentDto> Comments { get; set; }
     public List<ViewDto> Views { get; set; } //todo remove unnecessary field

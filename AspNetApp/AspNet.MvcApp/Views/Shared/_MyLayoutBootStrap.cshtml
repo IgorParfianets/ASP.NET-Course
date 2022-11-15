@@ -7,7 +7,6 @@
     <meta name="generator" content="Hugo 0.104.2">
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
-    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/bootstrap.css" asp-append-version="true" />
     <link rel="canonical" href="https://getbootstrap.com/docs/5.2/examples/product/">
     <link rel="stylesheet" href="~/css/MyStyle.css" asp-append-version="true" />
@@ -19,9 +18,10 @@
 
 <body>
 <header>
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <div class="container-fluid">
-            <a class="navbar-brand" asp-controller="Home" asp-action="Index">Logo</a>
+
+        <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #225C73">
+            <div class="container-fluid">
+            <a class="navbar-brand" asp-controller="Home" asp-action="Index">logo</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
             </button>
@@ -30,7 +30,7 @@
 
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        <a class="nav-link active" asp-controller="Article" asp-action="Index">Новости</a>
+                        <a class="nav-link active" asp-controller="Article" asp-action="Index">Все Новости</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#"></a>
@@ -49,29 +49,13 @@
                 </ul>
 
                 <div class="d-flex">
-                    <partial name="_LoginLogoutSectionPartial" />
+                    <partial name="_LoginLogoutSectionPartial"/>
                 </div>
             </div>
         </div>
     </nav>
-   
+
 </header>
-    @*<header class="py-1">
-    <nav class="container d-flex flex-column flex-md-row nav-justified gap-5 pt-1">
-        <div>
-            <a class="py-2 d-none d-md-inline-block" asp-controller="Article" asp-action="Index">Articles</a>
-            <a class="py-2 d-none d-md-inline-block" href="#">New</a>
-            <a class="py-2 d-none d-md-inline-block" href="#">Archiv</a>
-        </div>
-        @*<a class="py-2" asp-controller="Home" asp-action="Index" aria-label="Product">
-                <img src="image/world-news.png" width="30" height="30" alt="news"> <!-- logo doesn't match-->
-            </a>*@
-            
-        @*<div>
-            <partial name="_LoginLogoutSectionPartial" />
-        </div>
-    </nav>
-    </header>*@
 
 <div>
     <main role="main">
@@ -128,10 +112,11 @@
 </footer>
 
 
-<script src="~/lib/jquery/dist/jquery.min.js"></script>
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+<script src="~/lib/jquery/dist/jquery.min.js"></script>
+
 <script src="~/js/site.js" asp-append-version="true"></script>
-<script src="~/js/bootstrap.js"></script>
+@*<script src="~/js/bootstrap.js"></script>*@
     
 @* <script scr="~/js/authentication.js" asp-append-version="true"></script>*@
 @await RenderSectionAsync("Scripts", required: false)

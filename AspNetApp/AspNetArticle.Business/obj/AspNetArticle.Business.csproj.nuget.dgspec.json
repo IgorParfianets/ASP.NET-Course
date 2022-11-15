@@ -62,10 +62,6 @@
               "target": "Package",
               "version": "[1.2.1, )"
             },
-            "HtmlAgilityPack.NetCore": {
-              "target": "Package",
-              "version": "[1.5.0.1, )"
-            },
             "System.ServiceModel.Syndication": {
               "target": "Package",
               "version": "[6.0.0, )"

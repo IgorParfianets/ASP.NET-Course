@@ -4,9 +4,16 @@
         <name>AspNetArticle.Api</name>
     </assembly>
     <members>
-        <member name="M:AspNetArticle.Api.Controllers.ArticleResourceInitializer.AddArticles">
+        <member name="M:AspNetArticle.Api.Controllers.ArticleResourceInitializer.AddOnlinerSourceArticles">
             <summary>
-            Initialize adding articles
+            Initialize Onliner source articles
+            </summary>
+            <returns></returns>
+            <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.ArticleResourceInitializer.AddDevIoSourceArticles">
+            <summary>
+            Initialize DevIo source articles
             </summary>
             <returns></returns>
             <exception cref="T:System.Exception"></exception>

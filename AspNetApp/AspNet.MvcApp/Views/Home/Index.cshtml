@@ -4,18 +4,52 @@
 }
 
 <main>
-    <div class="position-relative overflow-hidden p-3 p-md-5 m-md-3 text-center bg-light" 
-         style="background-image: url(https://img.freepik.com/free-photo/top-view-newspaper-pieces-arrangement_23-2149318829.jpg?w=2000);
-                background-attachment: fixed; background-repeat: no-repeat; background-size: cover;">
-        @* style="background-image: url(image/image2.jpg); background-attachment: fixed; background-repeat: no-repeat; background-size: cover;">*@
-        <div class="col-md-5 p-lg-5 mx-auto my-5">
-            <h1 class="display-4 fw-normal" style="font-family: fantasy; text-shadow: 1px 3px 9px rgba(0, 0, 0, 0.36); color: aliceblue; font-size: 100px;">Latest News</h1>
-            <p class="lead fw-normal">Text</p>
-            <a class="btn btn-outline-secondary" href="#">Coming soon</a>
+
+    <div id="carouselExampleCaptions" class="carousel slide overflow-hidden m-3"  data-bs-ride="false">
+        <div class="carousel-indicators">
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Топ 1"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Топ 2"></button>
+            <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Топ 3"></button>
         </div>
-        <div class="product-device shadow-sm d-none d-md-block"></div>
-        <div class="product-device product-device-2 shadow-sm d-none d-md-block"></div>
+        <div class="carousel-inner">
+            <!-- не работает fixed -->
+            <div class="carousel-item active position-relative">
+                <img src="~/image/image1.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block position-absolute top-50 start-50 translate-middle" style="color: black; font-size: 40px;">
+                    <h1 >Название новости</h1>
+                    <p>Кратко</p>
+                </div>
+            </div>
+
+            <div class="carousel-item">
+                <img src="~/image/image2.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h2 style="color: black">Название новости</h2>
+                    <p>Кратко</p>
+                </div>
+            </div>
+
+            <div class="carousel-item">
+                <img src="~/image/image3.jpg" class="d-block w-100" alt="...">
+                <div class="carousel-caption d-none d-md-block">
+                    <h2 style="color: black">Название новости</h2>
+                    <p>Кратко</p>
+                </div>
+            </div>
+
+        </div>
+
+        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
+            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Previous</span>
+        </button>
+        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="next">
+            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <span class="visually-hidden">Next</span>
+        </button>
+
     </div>
+    
 
     <div class="container-sm">
         <div class="row">
@@ -35,8 +69,6 @@
                 <div class="bg-dark shadow-sm mx-auto" style="width: 80%; height: 300px; border-radius: 21px 21px 0 0;"></div>
             </div>
         </div>
-        
-
     </div>
 
     <div class="d-md-flex flex-md-equal w-100 my-md-3 ps-md-3">

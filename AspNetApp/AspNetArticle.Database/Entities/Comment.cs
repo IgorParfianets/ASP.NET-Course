@@ -5,6 +5,7 @@ public class Comment : IBaseEntity
     public Guid Id { get; set; }
     public string Description { get; set; }
     public DateTime PublicationDate { get; set; }
+    public bool IsEdited { get; set; }
 
     public Guid UserId { get; set; }
     public User User { get; set; }

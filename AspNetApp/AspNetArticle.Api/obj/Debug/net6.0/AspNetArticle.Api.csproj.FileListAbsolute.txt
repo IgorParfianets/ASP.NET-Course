@@ -80,7 +80,6 @@ D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Api\bin\D
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Api\bin\Debug\net6.0\Serilog.Sinks.File.dll
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Api\bin\Debug\net6.0\HtmlAgilityPack.dll
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Api\bin\Debug\net6.0\HtmlAgilityPack.CssSelectors.NetCore.dll
-D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Api\bin\Debug\net6.0\HtmlAgilityPack.NetCore.dll
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Api\bin\Debug\net6.0\System.ServiceModel.Syndication.dll
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Api\bin\Debug\net6.0\runtimes\win\lib\netcoreapp3.0\Microsoft.Win32.SystemEvents.dll
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Api\bin\Debug\net6.0\runtimes\unix\lib\netcoreapp3.0\System.Drawing.Common.dll

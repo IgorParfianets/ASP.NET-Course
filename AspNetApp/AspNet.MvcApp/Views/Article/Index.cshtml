@@ -19,19 +19,33 @@
             <div class="col-6">
                 <div class="row">
                     <div class="d-block pt-3 px-3 pt-md-5 px-md-5 pb-3 text-center col"
-                         style="border: 1px solid #708090; border-radius: 5px; height: 600px; max-width: 550px;background-color: aliceblue;">
-                         @if (User.Identity.IsAuthenticated)
-                         {
-                             //todo Add Article to Favorite 
-                         }
-                        <test-index article="art"></test-index>
-                        <a class="btn btn-primary btn-sm col w-50 justify-content-end" asp-controller="Article" asp-action="Details" asp-route-id="@art.Id">Читать далее...</a>
+                         style="border: 1px solid #708090; border-radius: 5px; height: 600px; max-width: 550px; background-color: aliceblue;">
+
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            //todo Add Article to Favorite 
+                        }
+                        <h5>@art.Title</h5>
+
+
+                        <div class="mb-3">
+                            <img src="@art.ImageUrl"/>
+                        </div>
+                        <div>
+                            @art.ShortDescription
+                        </div>
+                        @*<test-index article="art"></test-index>*@
+                        <div class="align-bottom">
+                            <a class="btn btn-primary btn-sm col w-50" asp-controller="Article" asp-action="Details" asp-route-id="@art.Id">Читать далее...</a>
+                        </div>
+
                     </div>
                 </div>
             </div>
         }
+
     </div>
 }
 else{
-    <h2>Articles are not exist</h2>
+    <h2>Новостей нету</h2>
 }

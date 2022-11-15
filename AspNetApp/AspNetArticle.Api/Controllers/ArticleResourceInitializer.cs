@@ -1,4 +1,5 @@
 ﻿using AspNetArticle.Core.Abstractions;
+using AspNetArticle.Database.Entities;
 using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -21,23 +22,45 @@ namespace AspNetArticle.Api.Controllers
             _mapper = mapper;
             _sourceService = sourceService;
         }
+
         /// <summary>
-        /// Initialize adding articles
+        /// Initialize Onliner source articles
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         [HttpPost]
-        public async Task<IActionResult> AddArticles() //todo rework with last lecture
+        public async Task<IActionResult> AddOnlinerSourceArticles() //todo rework with last lecture
         {
             try
             {
-                var sources = await _sourceService.GetSourcesAsync();
+                await _articleService.GetAllArticleDataFromOnlinerRssAsync(Guid.Parse("B4702318-EBB2-4141-AB98-9113851063DB"),
+                    "https://www.onliner.by/feed");
+                await _articleService.AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync();
 
-                foreach (var source in sources)
-                {
-                    await _articleService.GetAllArticleDataFromRssAsync(source.Id, source.RssUrl);
-                    await _articleService.AddArticleTextToArticlesAsync();
-                }
+                await _articleService.AddArticleImageUrlToArticlesOnlinerAsync();
+
+                return Ok();
+            }
+            catch (Exception e)
+            {
+
+                throw new Exception();
+            }
+        }
+        /// <summary>
+        /// Initialize DevIo source articles
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="Exception"></exception>
+        [HttpGet]
+        public async Task<IActionResult> AddDevIoSourceArticles() //todo rework with last lecture
+        {
+            try
+            {
+                await _articleService.GetAllArticleDataFromDevIoRssAsync(Guid.Parse("EC8CCBC6-EA52-4BFB-8578-176AAE285309"),
+                    "https://devby.io/rss");
+
+                await _articleService.AddArticleTextToArticlesDevIoAsync();
 
                 return Ok();
             }
