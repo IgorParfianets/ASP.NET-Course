@@ -5,6 +5,8 @@ using AspNetArticle.Data.Abstractions.Repositories;
 using AspNetArticle.Data.Repositories;
 using AspNetArticle.Database;
 using AspNetArticle.Database.Entities;
+using Hangfire;
+using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using NuGet.Packaging.Core;
@@ -36,6 +38,7 @@ namespace AspNet.MvcApp
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IRoleService, RoleService>();
             builder.Services.AddScoped<ICommentaryService, CommentaryService>();
+            builder.Services.AddScoped<IArticleRateService, ArticleRateService>();
 
             builder.Services.AddScoped<IExtendedArticleRepository, ExtendedArticleRepository>();
             builder.Services.AddScoped<IRepository<User>, Repository<User>>();
@@ -59,9 +62,24 @@ namespace AspNet.MvcApp
             builder.Services.AddAuthorization(); // Test Remove Or Not
 
             // Db Context
+            var connectionString = builder.Configuration.GetConnectionString("Default");
             builder.Services.AddDbContext<AggregatorContext>(optionBuilder =>
-            optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("Default"))); // For DB (connectionString in config files)
+            optionBuilder.UseSqlServer(connectionString)); // For DB (connectionString in config files)
 
+            //Hangfire config
+            builder.Services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(connectionString,
+                    new SqlServerStorageOptions
+                    {
+                        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                        QueuePollInterval = TimeSpan.Zero,
+                        UseRecommendedIsolationLevel = true,
+                        DisableGlobalLocks = true,
+                    }));
             // Mapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // For Mapping to collect all profiles
 
@@ -75,15 +93,16 @@ namespace AspNet.MvcApp
             {
                 app.UseExceptionHandler("/Home/Error");
             }
-            app.UseStaticFiles();
 
+            app.UseStaticFiles();
+            app.UseHangfireDashboard();
             app.UseRouting();
 
             app.UseAuthentication();
             app.UseAuthorization();
 
             //app.UseSession(); // Check that is mean
-
+            app.MapHangfireDashboard("/jobs");
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "b8T3Sosr6eF6frECceXSPuvr3unK4ZjZq8ehkSmMXePRutqU7DIb/0ZRQROoXUs5v8gyxZ0FEtbbmDT1yxpTiQ==",
+  "dgSpecHash": "xpPw0FBAApTqjtGOdBJz451GVA1JVxSxV/AVf7VE0A8jKsnvGKfqOvM6z/dz5ScCqzsvDlmZ+J+ZdUnr/91Ivg==",
   "success": true,
   "projectFilePath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Business\\AspNetArticle.Business.csproj",
   "expectedPackageFiles": [
@@ -34,6 +34,7 @@
     "C:\\Users\\Igor\\.nuget\\packages\\microsoft.netcore.platforms\\3.1.0\\microsoft.netcore.platforms.3.1.0.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\microsoft.win32.registry\\4.7.0\\microsoft.win32.registry.4.7.0.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\microsoft.win32.systemevents\\4.7.0\\microsoft.win32.systemevents.4.7.0.nupkg.sha512",
+    "C:\\Users\\Igor\\.nuget\\packages\\newtonsoft.json\\13.0.1\\newtonsoft.json.13.0.1.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\system.collections.immutable\\6.0.0\\system.collections.immutable.6.0.0.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\system.configuration.configurationmanager\\4.7.0\\system.configuration.configurationmanager.4.7.0.nupkg.sha512",
     "C:\\Users\\Igor\\.nuget\\packages\\system.diagnostics.diagnosticsource\\6.0.0\\system.diagnostics.diagnosticsource.6.0.0.nupkg.sha512",

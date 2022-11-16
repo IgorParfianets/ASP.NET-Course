@@ -13,5 +13,4 @@ public class ArticleDto // Можно рабить на 2 класса ArticleAn
     public string? ImageUrl { get; set; }
 
     public List<CommentDto> Comments { get; set; }
-    public List<ViewDto> Views { get; set; } //todo remove unnecessary field
 }

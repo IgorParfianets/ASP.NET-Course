@@ -13,6 +13,8 @@ using Serilog.Events;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Hangfire;
+using Hangfire.SqlServer;
 
 namespace AspNetArticle.Api
 {
@@ -36,6 +38,7 @@ namespace AspNetArticle.Api
             builder.Services.AddScoped<IUserService, UserService>();
             builder.Services.AddScoped<IRoleService, RoleService>();
             builder.Services.AddScoped<ICommentaryService, CommentaryService>();
+            builder.Services.AddScoped<IArticleRateService, ArticleRateService>();
 
             builder.Services.AddScoped<IExtendedArticleRepository, ExtendedArticleRepository>();
             builder.Services.AddScoped<IRepository<User>, Repository<User>>();
@@ -53,9 +56,26 @@ namespace AspNetArticle.Api
                 options.IncludeXmlComments(builder.Configuration["XmlDoc"]);
             });
 
+            var connectionString = builder.Configuration.GetConnectionString("Default");
             builder.Services.AddDbContext<AggregatorContext>(optionBuilder =>
-                optionBuilder.UseSqlServer(builder.Configuration.GetConnectionString("Default"))); // For DB (connectionString in config files)
+                optionBuilder.UseSqlServer(connectionString)); // For DB (connectionString in config files)
 
+            //Hangfire config
+            builder.Services.AddHangfire(configuration => configuration
+                .SetDataCompatibilityLevel(CompatibilityLevel.Version_170)
+                .UseSimpleAssemblyNameTypeSerializer()
+                .UseRecommendedSerializerSettings()
+                .UseSqlServerStorage(connectionString,
+                    new SqlServerStorageOptions
+                    {
+                        CommandBatchMaxTimeout = TimeSpan.FromMinutes(5),
+                        SlidingInvisibilityTimeout = TimeSpan.FromMinutes(5),
+                        QueuePollInterval = TimeSpan.Zero,
+                        UseRecommendedIsolationLevel = true,
+                        DisableGlobalLocks = true,
+                    }));
+
+            builder.Services.AddHangfireServer();
             // Mapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // For Mapping to collect all profiles
 
@@ -84,6 +104,7 @@ namespace AspNetArticle.Api
             var app = builder.Build();
 
             app.UseStaticFiles();
+            app.UseHangfireDashboard();
             app.UseRouting();
 
             // Configure the HTTP request pipeline.
@@ -93,6 +114,7 @@ namespace AspNetArticle.Api
                 app.UseSwaggerUI();
             }
 
+            app.MapHangfireDashboard();
             app.UseHttpsRedirection();
 
             app.UseAuthentication();

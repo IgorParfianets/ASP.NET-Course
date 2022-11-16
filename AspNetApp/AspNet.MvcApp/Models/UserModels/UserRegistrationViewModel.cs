@@ -6,28 +6,28 @@ namespace AspNetArticle.MvcApp.Models.UserModels;
 
 public class UserRegistrationViewModel
 {
-    [Required(ErrorMessage = "Input your name")]
-    [MaxLength(12, ErrorMessage = "You entered long name")]
-    [MinLength(2, ErrorMessage = "You entered too short name")]
-    [Remote("CheckUserName",
+    [Required(ErrorMessage = "Введите имя")]
+    [MaxLength(12, ErrorMessage = "Слишком длинное имя. Не более 12 символов")]
+    [MinLength(2, ErrorMessage = "Слишком короткое имя. Не менее 2 символов")]
+    [Remote("CheckUserNameRegistrationAccount",
         "Account",
         HttpMethod = WebRequestMethods.Http.Post,
-        ErrorMessage = "Username is already exists")]
+        ErrorMessage = "Пользователь с таким именем уже существует")]
     public string UserName { get; set; }
 
     [EmailAddress]
-    [Remote("CheckEmail",
+    [Remote("CheckEmailRegistrationAccount",
         "Account",
         HttpMethod = WebRequestMethods.Http.Post,
-        ErrorMessage = "Email is already exists")]
+        ErrorMessage = "Пользователь с таким e-mail уже существует")]
     public string Email { get; set; }
 
-    [Required(ErrorMessage = "Input your password")]
+    [Required(ErrorMessage = "Введите пароль")]
     [DataType(DataType.Password)]
     public string Password { get; set; }
 
     [Compare("Password",
-        ErrorMessage = "Passwords mismatch")]
+        ErrorMessage = "Пароли не совпадают")]
     [DataType(DataType.Password)]
     public string ConfirmPassword { get; set; }
 

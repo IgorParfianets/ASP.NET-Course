@@ -22,5 +22,4 @@ document.getElementById("favourite").onclick = function () {
         document.getElementById("star").src = "/image/star_funny.png";
         state = true;
     }
-    
 }

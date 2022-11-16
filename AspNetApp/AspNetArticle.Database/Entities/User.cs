@@ -15,5 +15,5 @@ public class User : IBaseEntity
     public DateTime LastVisit { get;set; }
 
     public List<Comment> Comments { get; set; } 
-    public List<View> Views { get; set; }
+    //public List<View> Views { get; set; }
 }

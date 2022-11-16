@@ -41,21 +41,6 @@ namespace AspNetArticle.MvcApp.Controllers
             return View();
         }
 
-        [HttpPost]
-        public async Task<IActionResult> Create(ArticleModel article)
-        {
-            if (ModelState.IsValid)
-            {
-                var articleDto = _mapper.Map<ArticleDto>(article);
-                var result = await _articleService.CreateArticleAsync(articleDto);
-                if(result > 0)
-                    return RedirectToAction("Index");
-
-                return NotFound(); //todo переделать
-            }
-            return View(article);
-        }
-
 
         [HttpGet]
         public async Task<IActionResult> Details(Guid id, CommentaryModel? model) // todo Кривой до невозможности метод

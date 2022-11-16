@@ -16,13 +16,16 @@
         <div class="m-5 p-5 bg-white" style="border-radius: 8px;">
            
             @*<i class="fa-regular fa-star fa-2xl"></i>*@
-            <div class=" justify-content-end align-items-end align-content-end align-self-end text-end mb-3">
+            @if (User.Identity.IsAuthenticated)
+            {
+                <div class=" justify-content-end align-items-end align-content-end align-self-end text-end mb-3">
 
-                <span id="favourite" data-bs-toggle="tooltip" title="Добавить в избранное" onclick="addArticle()">
-                    <img id="star" class="d-inline-block" onclick="changeStar(this)" src="~/image/star_disable.png" style="width: 5%">
-                </span>
+                    <span id="favourite" data-bs-toggle="tooltip" title="Добавить в избранное" onclick="addArticle()">
+                        <img id="star" class="d-inline-block" onclick="changeStar(this)" src="~/image/star_disable.png" style="width: 5%">
+                    </span>
 
-            </div>
+                </div>
+            }
 
             <h1>@Model.Article.Title</h1>
             <hr/>

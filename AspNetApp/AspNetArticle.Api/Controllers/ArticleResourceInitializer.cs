@@ -11,16 +11,20 @@ namespace AspNetArticle.Api.Controllers
     public class ArticleResourceInitializer : ControllerBase
     {
         private readonly IArticleService _articleService;
+        private readonly IArticleRateService _articleRateService;
         private readonly ISourceService _sourceService;
+        private readonly IConfiguration _configuration;
         private readonly IMapper _mapper;
 
         public ArticleResourceInitializer(IArticleService articleService,
             IMapper mapper,
-            ISourceService sourceService)
+            ISourceService sourceService, IConfiguration configuration, IArticleRateService articleRateService)
         {
             _articleService = articleService;
             _mapper = mapper;
             _sourceService = sourceService;
+            _configuration = configuration;
+            _articleRateService = articleRateService;
         }
 
         /// <summary>
@@ -33,20 +37,22 @@ namespace AspNetArticle.Api.Controllers
         {
             try
             {
-                await _articleService.GetAllArticleDataFromOnlinerRssAsync(Guid.Parse("B4702318-EBB2-4141-AB98-9113851063DB"),
-                    "https://www.onliner.by/feed");
-                await _articleService.AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync();
+                //var onlinerId = Guid.Parse(_configuration["Sources:Onliner"]);
+                //var sourceRssUrl = (await _sourceService.GetSourcesByIdAsync(onlinerId))?.RssUrl;
 
-                await _articleService.AddArticleImageUrlToArticlesOnlinerAsync();
+                //await _articleService.GetAllArticleDataFromOnlinerRssAsync(onlinerId, sourceRssUrl);
+                //await _articleService.AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync();
+                //await _articleService.AddArticleImageUrlToArticlesOnlinerAsync();
 
+                await _articleRateService.AddRateToArticlesAsync();
                 return Ok();
             }
             catch (Exception e)
             {
-
                 throw new Exception();
             }
         }
+
         /// <summary>
         /// Initialize DevIo source articles
         /// </summary>
@@ -57,16 +63,16 @@ namespace AspNetArticle.Api.Controllers
         {
             try
             {
-                await _articleService.GetAllArticleDataFromDevIoRssAsync(Guid.Parse("EC8CCBC6-EA52-4BFB-8578-176AAE285309"),
-                    "https://devby.io/rss");
+                var devIoId = Guid.Parse(_configuration["Sources:DevIo"]);
+                var sourceRssUrl = (await _sourceService.GetSourcesByIdAsync(devIoId))?.RssUrl;
 
+                await _articleService.GetAllArticleDataFromDevIoRssAsync(devIoId, sourceRssUrl);
                 await _articleService.AddArticleTextToArticlesDevIoAsync();
 
                 return Ok();
             }
             catch (Exception e)
             {
-
                 throw new Exception();
             }
         }

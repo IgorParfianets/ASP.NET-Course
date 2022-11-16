@@ -9,13 +9,13 @@ public class UserEditViewModel
     public Guid Id { get; set; }
 
     public string? Avatar { get; set; }
-    [Required(ErrorMessage = "Input your name")]
-    [MaxLength(12, ErrorMessage = "You entered long name")]
-    [MinLength(2, ErrorMessage = "You entered too short name")]
-    //[Remote("CheckUserName",
-    //    "Account",
-    //    HttpMethod = WebRequestMethods.Http.Post,
-    //    ErrorMessage = "Username is already exists")]
+    [Required(ErrorMessage = "Введите имя")]
+    [MaxLength(12, ErrorMessage = "Слишком длинное имя. Не более 12 символов")]
+    [MinLength(2, ErrorMessage = "Слишком короткое имя. Не менее 2 символов")]
+    [Remote("CheckUserNameEditAccount",
+        "Account",
+        HttpMethod = WebRequestMethods.Http.Post,
+        ErrorMessage = "Это имя уже занято")]
     public string UserName { get; set; } //todo Need to come up with own Username
 
     public string Email { get; set; }
@@ -23,7 +23,7 @@ public class UserEditViewModel
     public string NewPassword { get; set; }
 
     [Compare("NewPassword",
-        ErrorMessage = "Passwords mismatch")]
+        ErrorMessage = "Пароли не совпадают")]
     [DataType(DataType.Password)]
     public string ConfirmNewPassword { get; set; }
     public Guid RoleId { get; set; }

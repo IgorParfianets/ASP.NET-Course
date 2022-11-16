@@ -38,5 +38,14 @@ namespace AspNetArticle.Data.Repositories
                 article.ImageUrl = imageUrl;
             }
         }
+
+        public async Task UpdateArticleRateAsync(Guid id, double rate)
+        {
+            var article = await DbSet.FirstOrDefaultAsync(a => a.Id.Equals(id));
+            if (article != null)
+            {
+                article.Rate = rate;
+            }
+        }
     }
 }

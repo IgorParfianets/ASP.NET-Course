@@ -46,9 +46,6 @@ public class ArticleProfile : Profile //to do     ещё не закончено
             .ForMember(dto => dto.PublicationDate,
                 opt
                     => opt.MapFrom(article => article.PublicationDate))
-            .ForMember(dto => dto.Views,
-                opt
-                    => opt.MapFrom(article => article.Views))
             .ForMember(dto => dto.Comments,
                 opt
                     => opt.MapFrom(article => article.Comments))
@@ -62,7 +59,6 @@ public class ArticleProfile : Profile //to do     ещё не закончено
             .ForMember(article => article.ShortDescription, opt => opt.MapFrom(dto => dto.ShortDescription))
             .ForMember(article => article.Text, opt => opt.MapFrom(dto => dto.Text))
             .ForMember(article => article.PublicationDate, opt => opt.MapFrom(dto => dto.PublicationDate))
-            .ForMember(article => article.Views, opt => opt.MapFrom(dto => dto.Views))
             .ForMember(article => article.Comments, opt => opt.MapFrom(dto => dto.Comments));
 
         // For ArticleDto -> ArticleModel 

@@ -37,6 +37,9 @@ namespace AspNetArticle.Database.Migrations
                     b.Property<DateTime>("PublicationDate")
                         .HasColumnType("datetime2");
 
+                    b.Property<double?>("Rate")
+                        .HasColumnType("float");
+
                     b.Property<string>("ShortDescription")
                         .HasColumnType("nvarchar(max)");
 
@@ -169,34 +172,6 @@ namespace AspNetArticle.Database.Migrations
                     b.ToTable("Users");
                 });
 
-            modelBuilder.Entity("AspNetArticle.Database.Entities.View", b =>
-                {
-                    b.Property<Guid>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<Guid>("ArticleId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.Property<DateTime>("DateOfView")
-                        .HasColumnType("datetime2");
-
-                    b.Property<string>("IpAddress")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
-                    b.Property<Guid>("UserId")
-                        .HasColumnType("uniqueidentifier");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ArticleId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("Views");
-                });
-
             modelBuilder.Entity("AspNetArticle.Database.Entities.Article", b =>
                 {
                     b.HasOne("AspNetArticle.Database.Entities.Source", "Source")
@@ -238,30 +213,9 @@ namespace AspNetArticle.Database.Migrations
                     b.Navigation("Role");
                 });
 
-            modelBuilder.Entity("AspNetArticle.Database.Entities.View", b =>
-                {
-                    b.HasOne("AspNetArticle.Database.Entities.Article", "Article")
-                        .WithMany("Views")
-                        .HasForeignKey("ArticleId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("AspNetArticle.Database.Entities.User", "User")
-                        .WithMany("Views")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Article");
-
-                    b.Navigation("User");
-                });
-
             modelBuilder.Entity("AspNetArticle.Database.Entities.Article", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Views");
                 });
 
             modelBuilder.Entity("AspNetArticle.Database.Entities.Role", b =>
@@ -277,8 +231,6 @@ namespace AspNetArticle.Database.Migrations
             modelBuilder.Entity("AspNetArticle.Database.Entities.User", b =>
                 {
                     b.Navigation("Comments");
-
-                    b.Navigation("Views");
                 });
 #pragma warning restore 612, 618
         }

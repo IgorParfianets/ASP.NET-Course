@@ -15,7 +15,6 @@ public class ArticleService : IArticleService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
-
     public ArticleService(IMapper mapper, IUnitOfWork unitOfWork)
     {
         _mapper = mapper;
@@ -26,19 +25,6 @@ public class ArticleService : IArticleService
     public async Task<ArticleDto> GetArticleByIdAsync(Guid id)
     {
         return _mapper.Map<ArticleDto>(await _unitOfWork.Articles.GetByIdAsync(id));
-    }
-
-    public async Task<int> CreateArticleAsync(ArticleDto article)
-    {
-        var entity = _mapper.Map<Article>(article);
-        await _unitOfWork.Articles.AddAsync(entity);
-
-        return await _unitOfWork.Commit();
-    }
-
-    public Task<int> UpdateArticleAsync(Guid id, ArticleDto? patchList) // todo need implement
-    {
-        throw new NotImplementedException();
     }
 
     public async Task<IEnumerable<ArticleDto>> GetAllArticlesAsync() // for Home / Index
@@ -74,7 +60,10 @@ public class ArticleService : IArticleService
 
     public async Task RemoveArticleByIdSourceAsync(Guid id)
     {
-        var entities = await  _unitOfWork.Articles.Get().Where(ent => ent.SourceId == id).ToListAsync();
+        var entities = await  _unitOfWork.Articles
+            .Get()
+            .Where(ent => ent.SourceId == id)
+            .ToListAsync();
         
         _unitOfWork.Articles.RemoveRange(entities);
         
@@ -82,8 +71,9 @@ public class ArticleService : IArticleService
     }
 
 
-    //Onliner
+    //Onliner 
     #region GetArticlesOnlinerRss
+
     public async Task GetAllArticleDataFromOnlinerRssAsync(Guid sourceId, string? sourceRssUrl)
     {
         if (!string.IsNullOrEmpty(sourceRssUrl))
@@ -131,6 +121,7 @@ public class ArticleService : IArticleService
     #endregion
     #region FixArticleOnlinerTextAndShortDescriptionMethods
 
+    
     public async Task AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync()
     {
         var articlesWithEmptyTextIds = _unitOfWork.Articles.Get()
@@ -140,11 +131,11 @@ public class ArticleService : IArticleService
 
         foreach (var articleId in articlesWithEmptyTextIds)
         {
-            await AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync(articleId);
+            await AddArticleTextToArticlesOnlinerAsync(articleId);
         }
     }
 
-    private async Task AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync(Guid articleId)
+    private async Task AddArticleTextToArticlesOnlinerAsync(Guid articleId)
     {
         try
         {
@@ -260,7 +251,8 @@ public class ArticleService : IArticleService
         {
             throw;
         }
-    }                                                     
+    }  
+    
     private string FixArticleOnlinerStringUrl(string url) 
     {                                                    
         if(url.StartsWith("background-image: url('") && url.EndsWith("');"))

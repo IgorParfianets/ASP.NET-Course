@@ -110,7 +110,7 @@ public class AccountController : Controller
 
     //------------------------------------------  [Remote] Check UserName and Email при Registration
     [HttpPost]
-    public async Task<IActionResult> CheckEmail(string email)   
+    public async Task<IActionResult> CheckEmailRegistrationAccount(string email)   
     {
         if (!string.IsNullOrEmpty(email))
         {
@@ -123,7 +123,7 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CheckUserName(string username)   
+    public async Task<IActionResult> CheckUserNameRegistrationAccount(string username)   
     {
         if (!string.IsNullOrEmpty(username))
         {
@@ -135,29 +135,21 @@ public class AccountController : Controller
         return Ok(true);
     }
 
-    //------------------------------------------  Authenticate
-    private async Task Authenticate(string email)
+    [HttpPost]
+    public async Task<IActionResult> CheckUserNameEditAccount(string username)
     {
-        var userDto = await _userService.GetUserByEmailAsync(email);
-
-        var claims = new List<Claim>()
+        if (!string.IsNullOrEmpty(username))
         {
-            new Claim(ClaimsIdentity.DefaultNameClaimType, userDto.Email),
-            new Claim(ClaimsIdentity.DefaultRoleClaimType, userDto.RoleName),
-            new Claim(ClaimTypes.Actor, userDto.UserName)
-            
-        };
+            var email = User.Identity.Name;
+            var user = await _userService.GetUserByEmailAsync(email);
 
-
-        var identity = new ClaimsIdentity(claims,
-            "ApplicationCookie",
-            ClaimsIdentity.DefaultNameClaimType,
-            ClaimsIdentity.DefaultRoleClaimType
-        );
-
-        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
-            new ClaimsPrincipal(identity));
+            if(user.UserName.Equals(username))
+                return Ok(false);
+        }
+        return Ok(true);
     }
+
+
 
     //------------------------------------------ Data for Authorize User
 
@@ -201,5 +193,28 @@ public class AccountController : Controller
         return BadRequest();
     }
 
+    //------------------------------------------  Authenticate
+    private async Task Authenticate(string email)
+    {
+        var userDto = await _userService.GetUserByEmailAsync(email);
+
+        var claims = new List<Claim>()
+        {
+            new Claim(ClaimsIdentity.DefaultNameClaimType, userDto.Email),
+            new Claim(ClaimsIdentity.DefaultRoleClaimType, userDto.RoleName),
+            new Claim(ClaimTypes.Actor, userDto.UserName)
+
+        };
+
+
+        var identity = new ClaimsIdentity(claims,
+            "ApplicationCookie",
+            ClaimsIdentity.DefaultNameClaimType,
+            ClaimsIdentity.DefaultRoleClaimType
+        );
+
+        await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme,
+            new ClaimsPrincipal(identity));
+    }
 }
  

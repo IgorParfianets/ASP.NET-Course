@@ -15,9 +15,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetArticle.Data.Abstract
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetArticle.Data.Repositories", "AspNetArticle.Data.Repositories\AspNetArticle.Data.Repositories.csproj", "{8BA3B42C-CCA3-4624-A013-253E2A020F75}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetArticle.Api", "AspNetArticle.Api\AspNetArticle.Api.csproj", "{D0D6EBAF-E920-4DD4-AE3C-8FCA84AC86EA}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AspNetArticle.Mappers", "AspNetArticle.Mappers\AspNetArticle.Mappers.csproj", "{0D292F28-9B79-4CE0-B315-8512CC5D4083}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "AspNetArticle.Api", "AspNetArticle.Api\AspNetArticle.Api.csproj", "{D0D6EBAF-E920-4DD4-AE3C-8FCA84AC86EA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -53,10 +51,6 @@ Global
 		{D0D6EBAF-E920-4DD4-AE3C-8FCA84AC86EA}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D0D6EBAF-E920-4DD4-AE3C-8FCA84AC86EA}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D0D6EBAF-E920-4DD4-AE3C-8FCA84AC86EA}.Release|Any CPU.Build.0 = Release|Any CPU
-		{0D292F28-9B79-4CE0-B315-8512CC5D4083}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{0D292F28-9B79-4CE0-B315-8512CC5D4083}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{0D292F28-9B79-4CE0-B315-8512CC5D4083}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{0D292F28-9B79-4CE0-B315-8512CC5D4083}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
