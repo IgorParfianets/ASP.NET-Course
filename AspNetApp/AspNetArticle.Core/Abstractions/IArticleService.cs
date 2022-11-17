@@ -8,17 +8,14 @@ public interface IArticleService
     Task<IEnumerable<ArticleDto>> GetAllArticlesAsync();
     Task<List<ArticleDto>> GetArticlesByNameAndSourcesAsync(string? name, Guid? category);
 
-    Task RemoveArticleByIdSourceAsync(Guid id);
+    Task RemoveArticleToArchiveByIdAsync(Guid id);
 
+    Task AggregateArticlesFromExternalSourcesAsync();
+    Task AddArticlesDataAsync();
 
-    Task GetAllArticleDataFromOnlinerRssAsync(Guid sourceId, string? sourceRssUrl);
-    Task GetAllArticleDataFromDevIoRssAsync(Guid soirceId, string? sourceRssUrl);
-
-
-
-    Task AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync();
-    Task AddArticleImageUrlToArticlesOnlinerAsync();
-    Task AddArticleTextToArticlesDevIoAsync();
+    //Task AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync();
+    //Task AddArticleImageUrlToArticlesOnlinerAsync();
+    //Task AddArticleTextToArticlesDevIoAsync();
     
 
 }

@@ -4,7 +4,7 @@ using System.Globalization;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Converters;
 
-public class Welcome
+public class Affin
 {
     public static Dictionary<string, long?> FromJson(string json) => 
         JsonConvert.DeserializeObject<Dictionary<string, long?>>(json, Converter.Settings);

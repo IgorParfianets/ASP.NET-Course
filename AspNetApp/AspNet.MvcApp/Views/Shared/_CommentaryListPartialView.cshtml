@@ -37,7 +37,7 @@
 
                     @if (User.Identity.IsAuthenticated)
                     {
-                        @if (User.Identity.Name.Equals(comment.Email))
+                        @if (User.Identity.Name.Equals(comment.Email) || User.IsInRole("Admin"))
                         {
 
                             <div>

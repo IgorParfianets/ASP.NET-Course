@@ -1,0 +1,26 @@
+﻿@*@model AspNetArticle.MvcApp.Models.AdminPersonalAreaViewModel;*@
+@{
+    Layout = "_MyLayoutBootStrap";
+}
+@{
+    ViewData["Title"] = "Personal Admin Area";
+}
+
+<div class="container-sm">
+    <div>
+        <h3>Пользователи</h3>
+        <a asp-controller="Admin" asp-action="Users" class="btn btn-sm btn-primary">Показать</a>
+    </div>
+    <div>
+        <h3>Новости</h3>
+        <a asp-controller="Admin" asp-action="Articles" class="btn btn-sm btn-primary">Показать</a>
+    </div>
+    <div>
+        <h3>Коментарии</h3>
+        <a asp-controller="Admin" asp-action="Comments" class="btn btn-sm btn-primary">Показать</a>
+    </div>
+    <div>
+        <h3>Задачи</h3>
+        <a href="/jobs" class="btn btn-sm btn-primary">Показать</a>
+    </div>
+</div>

@@ -8,8 +8,8 @@ using Microsoft.Extensions.Configuration;
 using AspNetArticle.Core.Abstractions;
 using HtmlAgilityPack;
 using System.Text.RegularExpressions;
-using System.Text.Json.Nodes;
-using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
+//using System.Text.Json.Nodes;
+//using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
 namespace AspNetArticle.Business.Services
 {
@@ -62,7 +62,7 @@ namespace AspNetArticle.Business.Services
                 .Select(t => t.InnerText)
                 .Aggregate((i, j) => i + " " + j);
 
-            textWithoutHtml = Regex.Replace(textWithoutHtml, @"<[^>]+>|&nbsp;", " ")
+            textWithoutHtml = Regex.Replace(textWithoutHtml, @"<[^>]+>|&nbsp|\n;", " ")
                 .Trim()
                 .ToLower();
             
@@ -86,10 +86,9 @@ namespace AspNetArticle.Business.Services
                     var isprasUrl = _configuration["IsprasUrl"];
                     var affinPath = _configuration["AffinPath"];
 
-                    var httpRequest = new HttpRequestMessage(HttpMethod.Post,
-                        new Uri(@isprasUrl));
-                    httpRequest.Headers.Add("Accept", "application/json");
+                    var httpRequest = new HttpRequestMessage(HttpMethod.Post, new Uri(@isprasUrl));
 
+                    httpRequest.Headers.Add("Accept", "application/json");
                     httpRequest.Content = JsonContent.Create(new[] { new TextRequestModel() { Text = articleFixedText } });
 
                     var response = await client.SendAsync(httpRequest);
@@ -104,27 +103,33 @@ namespace AspNetArticle.Business.Services
                         var affinJsonText = await File.ReadAllTextAsync(@affinPath);
 
 
-                        var jsonObject = Welcome.FromJson(affinJsonText);
+                        var affinJsonObject = Affin.FromJson(affinJsonText);
                         
-                        if (isprassResponce != null && jsonObject.Any())
+                        if (isprassResponce != null && affinJsonObject.Any())
                         {
-                            double rateValue = 0;
+                            double overallRate = 0 , resultRate = 0;
+                            int numberRecognizedWords = 0;
 
-                            foreach (var lem in isprassResponce[0].Annotations.Lemma) // todo necessary optimized cycle
-                            {
+                            foreach (var lem in isprassResponce[0].Annotations.Lemma) 
+                            { 
                                 long? temp = 0;
-                                jsonObject.TryGetValue(lem.Value, out temp);
-                                
-                                if(temp != null)
-                                    rateValue += (double)temp;
+                                affinJsonObject.TryGetValue(lem.Value, out temp);
+
+                                if (temp != null)
+                                {
+                                    overallRate += (double)temp;
+                                    numberRecognizedWords++;
+                                }
+                                    
                             }
-                            var countWords = isprassResponce[0].Annotations.Lemma.Count;
-                            var resultRate = rateValue / countWords;
+                            //var countWords = isprassResponce[0].Annotations.Lemma.Count;
+                            if(numberRecognizedWords > 0)
+                                resultRate = overallRate / numberRecognizedWords;
 
                             await _unitOfWork.Articles.UpdateArticleRateAsync(articleId, resultRate);
                             await _unitOfWork.Commit();
 
-                            Thread.Sleep(2000);
+                            Thread.Sleep(1000);
                         }
                     }
                 }

@@ -1,6 +1,7 @@
 ﻿using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Database.Entities;
 using AutoMapper;
+using Hangfire;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -18,7 +19,9 @@ namespace AspNetArticle.Api.Controllers
 
         public ArticleResourceInitializer(IArticleService articleService,
             IMapper mapper,
-            ISourceService sourceService, IConfiguration configuration, IArticleRateService articleRateService)
+            ISourceService sourceService, 
+            IConfiguration configuration, 
+            IArticleRateService articleRateService)
         {
             _articleService = articleService;
             _mapper = mapper;
@@ -28,7 +31,7 @@ namespace AspNetArticle.Api.Controllers
         }
 
         /// <summary>
-        /// Initialize Onliner source articles
+        /// Initialize Onliner and DevIo source articles
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
@@ -37,37 +40,14 @@ namespace AspNetArticle.Api.Controllers
         {
             try
             {
-                //var onlinerId = Guid.Parse(_configuration["Sources:Onliner"]);
-                //var sourceRssUrl = (await _sourceService.GetSourcesByIdAsync(onlinerId))?.RssUrl;
+                RecurringJob.AddOrUpdate(() => _articleService.AggregateArticlesFromExternalSourcesAsync(),
+                    "*/5 * * * *");
 
-                //await _articleService.GetAllArticleDataFromOnlinerRssAsync(onlinerId, sourceRssUrl);
-                //await _articleService.AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync();
-                //await _articleService.AddArticleImageUrlToArticlesOnlinerAsync();
+                RecurringJob.AddOrUpdate(() => _articleService.AddArticlesDataAsync(),
+                    "*/7 * * * *");
 
-                await _articleRateService.AddRateToArticlesAsync();
-                return Ok();
-            }
-            catch (Exception e)
-            {
-                throw new Exception();
-            }
-        }
-
-        /// <summary>
-        /// Initialize DevIo source articles
-        /// </summary>
-        /// <returns></returns>
-        /// <exception cref="Exception"></exception>
-        [HttpGet]
-        public async Task<IActionResult> AddDevIoSourceArticles() //todo rework with last lecture
-        {
-            try
-            {
-                var devIoId = Guid.Parse(_configuration["Sources:DevIo"]);
-                var sourceRssUrl = (await _sourceService.GetSourcesByIdAsync(devIoId))?.RssUrl;
-
-                await _articleService.GetAllArticleDataFromDevIoRssAsync(devIoId, sourceRssUrl);
-                await _articleService.AddArticleTextToArticlesDevIoAsync();
+                RecurringJob.AddOrUpdate(() => _articleRateService.AddRateToArticlesAsync(),
+                    "*/10 * * * *");
 
                 return Ok();
             }

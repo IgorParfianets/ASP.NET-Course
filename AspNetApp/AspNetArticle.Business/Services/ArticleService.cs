@@ -7,18 +7,24 @@ using HtmlAgilityPack;
 using Microsoft.EntityFrameworkCore;
 using System.ServiceModel.Syndication;
 using System.Xml;
-using System.Xml.Linq;
+using Microsoft.Extensions.Configuration;
+
+//using System.Xml.Linq;
 
 namespace AspNetArticle.Business.Services;
 
 public class ArticleService : IArticleService
 {
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
-    public ArticleService(IMapper mapper, IUnitOfWork unitOfWork)
+    public ArticleService(IMapper mapper, 
+        IUnitOfWork unitOfWork, 
+        IConfiguration configuration)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
+        _configuration = configuration;
     }
 
 
@@ -58,7 +64,7 @@ public class ArticleService : IArticleService
         return result;
     }
 
-    public async Task RemoveArticleByIdSourceAsync(Guid id)
+    public async Task RemoveArticleToArchiveByIdAsync(Guid id)
     {
         var entities = await  _unitOfWork.Articles
             .Get()
@@ -70,11 +76,33 @@ public class ArticleService : IArticleService
         await _unitOfWork.Commit();
     }
 
+    public async Task AggregateArticlesFromExternalSourcesAsync()
+    {
+        var onlinerSourceId = Guid.Parse(_configuration["Sources:Onliner"]);
+        var onlinerSourceUrl = (await _unitOfWork.Sources.GetByIdAsync(onlinerSourceId))?.RssUrl;
+
+        var devIoSourceId = Guid.Parse(_configuration["Sources:DevIo"]);
+        var devIoSourceUrl = (await _unitOfWork.Sources.GetByIdAsync(devIoSourceId))?.RssUrl;
+
+        await GetAllArticleDataFromOnlinerRssAsync(onlinerSourceId, onlinerSourceUrl);
+        await GetAllArticleDataFromDevIoRssAsync(devIoSourceId, devIoSourceUrl);
+    }
+
+    public async Task AddArticlesDataAsync()
+    {
+        var onlinerSourceId = Guid.Parse(_configuration["Sources:Onliner"]);
+        var devIoSourceId = Guid.Parse(_configuration["Sources:DevIo"]);
+
+        await AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync(onlinerSourceId);
+        await AddArticleImageUrlToArticlesOnlinerAsync(onlinerSourceId);
+
+        await AddArticleTextToArticlesDevIoAsync(devIoSourceId);
+    }
 
     //Onliner 
     #region GetArticlesOnlinerRss
 
-    public async Task GetAllArticleDataFromOnlinerRssAsync(Guid sourceId, string? sourceRssUrl)
+    private async Task GetAllArticleDataFromOnlinerRssAsync(Guid sourceId, string? sourceRssUrl)
     {
         if (!string.IsNullOrEmpty(sourceRssUrl))
         {
@@ -119,13 +147,14 @@ public class ArticleService : IArticleService
 
 
     #endregion
+
     #region FixArticleOnlinerTextAndShortDescriptionMethods
 
     
-    public async Task AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync()
+    private async Task AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync(Guid sourceId)
     {
         var articlesWithEmptyTextIds = _unitOfWork.Articles.Get()
-            .Where(article => string.IsNullOrEmpty(article.Text))
+            .Where(article => article.SourceId.Equals(sourceId) && string.IsNullOrEmpty(article.Text))
             .Select(article => article.Id)
             .ToList();
 
@@ -201,20 +230,20 @@ public class ArticleService : IArticleService
     }
     #endregion
     #region FixArticleOnlinerImageMethod
-    public async Task AddArticleImageUrlToArticlesOnlinerAsync()
+    private async Task AddArticleImageUrlToArticlesOnlinerAsync(Guid sourceId)
     {
         var articlesWithEmptyImageUrlIds = _unitOfWork.Articles.Get()
-            .Where(article => string.IsNullOrEmpty(article.ImageUrl))
+            .Where(article => article.SourceId.Equals(sourceId) && string.IsNullOrEmpty(article.ImageUrl))
             .Select(article => article.Id)
             .ToList();
 
         foreach (var articleId in articlesWithEmptyImageUrlIds)
         {
-            await AddArticleImageUrlToArticlesOnlinerAsync(articleId);
+            await AddArticleImageUrlToArticlesAsync(articleId);
         }
     }
 
-    private async Task AddArticleImageUrlToArticlesOnlinerAsync(Guid articleId)
+    private async Task AddArticleImageUrlToArticlesAsync(Guid articleId)
     {
         try
         {
@@ -266,10 +295,9 @@ public class ArticleService : IArticleService
     }
     #endregion
 
-
     //DevIo
     #region GetArticleDevIoRss
-    public async Task GetAllArticleDataFromDevIoRssAsync(Guid sourceId, string? sourceRssUrl)
+    private async Task GetAllArticleDataFromDevIoRssAsync(Guid sourceId, string? sourceRssUrl)
     {
         if (!string.IsNullOrEmpty(sourceRssUrl))
         {
@@ -315,11 +343,12 @@ public class ArticleService : IArticleService
 
 
     #endregion
+
     #region FixArticleDevIoTextMethods
-    public async Task AddArticleTextToArticlesDevIoAsync()
+    private async Task AddArticleTextToArticlesDevIoAsync(Guid sourceId)
     {
         var articlesWithEmptyTextIds = _unitOfWork.Articles.Get()
-            .Where(article => string.IsNullOrEmpty(article.Text))
+            .Where(article => article.SourceId.Equals(sourceId) && string.IsNullOrEmpty(article.Text))
             .Select(article => article.Id)
             .ToList();
 

@@ -6,26 +6,7 @@ using AutoMapper;
 
 namespace AspNetArticle.MvcApp.MappingProfiles;
 
-//public static class Mapping
-//{
-//    private static readonly Lazy<IMapper> Lazy = new Lazy<IMapper>(() =>
-//    {
-//        var config = new MapperConfiguration(cfg => {
-//            // This line ensures that internal properties are also mapped over.
-//            cfg.ShouldMapProperty = p => p.GetMethod.IsPublic || p.GetMethod.IsAssembly;
-//            cfg.AddProfile<ArticleProfile>();
-//            cfg.AddProfile<CommentProfile>();
-//            cfg.AddProfile<SourceProfile>();
-//            cfg.AddProfile<UserProfile>();
-//            cfg.AddProfile<ViewProfile>();
-//        });
-//        var mapper = config.CreateMapper();
-//        return mapper;
-//    });
-
-//    public static IMapper Mapper => Lazy.Value;
-//}
-public class ArticleProfile : Profile //to do     ещё не закончено
+public class ArticleProfile : Profile 
 {
     public ArticleProfile()
     {
@@ -51,7 +32,10 @@ public class ArticleProfile : Profile //to do     ещё не закончено
                     => opt.MapFrom(article => article.Comments))
             .ForMember(dto => dto.ImageUrl,
                 opt
-                    => opt.MapFrom(article => article.ImageUrl));
+                    => opt.MapFrom(article => article.ImageUrl))
+            .ForMember(dto => dto.Rate,
+            opt
+                => opt.MapFrom(article => article.Rate));
 
         CreateMap<ArticleDto, Article>()
             .ForMember(article => article.Id, opt => opt.MapFrom(dto => dto.Id))

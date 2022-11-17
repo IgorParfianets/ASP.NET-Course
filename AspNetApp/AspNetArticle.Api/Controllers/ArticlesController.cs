@@ -37,13 +37,13 @@ namespace AspNetArticle.Api.Controllers
             }
             return Ok(article);
         }
-        //todo decide how to act with filtering by category name
+        ////todo decide how to act with filtering by category name
 
-        [HttpDelete] // todo unnecessary method use only clearing Db
-        public async Task<IActionResult> DeleteArticlesBySourceId(Guid id)
-        {
-            await _articleService.RemoveArticleByIdSourceAsync(id);
-            return Ok();
-        }
+        //[HttpDelete] // todo unnecessary method use only clearing Db
+        //public async Task<IActionResult> DeleteArticlesBySourceId(Guid id)
+        //{
+        //    await _articleService.RemoveArticleByIdSourceAsync(id);
+        //    return Ok();
+        //}
     }
 }

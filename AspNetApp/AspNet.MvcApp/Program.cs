@@ -5,6 +5,7 @@ using AspNetArticle.Data.Abstractions.Repositories;
 using AspNetArticle.Data.Repositories;
 using AspNetArticle.Database;
 using AspNetArticle.Database.Entities;
+using AspNetArticle.MvcApp.Filters;
 using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.Cookies;
@@ -39,6 +40,7 @@ namespace AspNet.MvcApp
             builder.Services.AddScoped<IRoleService, RoleService>();
             builder.Services.AddScoped<ICommentaryService, CommentaryService>();
             builder.Services.AddScoped<IArticleRateService, ArticleRateService>();
+            builder.Services.AddScoped<ISendMessageService, SendMessageService>();
 
             builder.Services.AddScoped<IExtendedArticleRepository, ExtendedArticleRepository>();
             builder.Services.AddScoped<IRepository<User>, Repository<User>>();
@@ -102,7 +104,11 @@ namespace AspNet.MvcApp
             app.UseAuthorization();
 
             //app.UseSession(); // Check that is mean
-            app.MapHangfireDashboard("/jobs");
+            app.MapHangfireDashboard("/jobs", options: new DashboardOptions()
+            {
+                Authorization = new[] { new HangfireDashboardAuthorizationFilter() }
+            });
+
             app.MapControllerRoute(
                 name: "default",
                 pattern: "{controller=Home}/{action=Index}/{id?}");

@@ -6,14 +6,7 @@
     <members>
         <member name="M:AspNetArticle.Api.Controllers.ArticleResourceInitializer.AddOnlinerSourceArticles">
             <summary>
-            Initialize Onliner source articles
-            </summary>
-            <returns></returns>
-            <exception cref="T:System.Exception"></exception>
-        </member>
-        <member name="M:AspNetArticle.Api.Controllers.ArticleResourceInitializer.AddDevIoSourceArticles">
-            <summary>
-            Initialize DevIo source articles
+            Initialize Onliner and DevIo source articles
             </summary>
             <returns></returns>
             <exception cref="T:System.Exception"></exception>

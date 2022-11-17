@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using System.Security.Claims
+@using Microsoft.CodeAnalysis.VisualBasic.Syntax
 
 <div>
     @if (User.Identity.IsAuthenticated)
@@ -12,10 +13,18 @@
         </div>
 
         <div class="d-inline-flex gap-3">
-            <a class="py-2 d-none d-md-inline-block ms-3" asp-action="Edit" asp-controller="Account">
-                Hello @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value
-            </a>
-
+            @if (User.IsInRole("Admin"))
+            {
+                <a class="py-2 d-none d-md-inline-block ms-3" asp-action="PersonalArea" asp-controller="Admin">
+                    Hello @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value
+                </a>
+            }
+            else
+            {
+                <a class="py-2 d-none d-md-inline-block ms-3" asp-action="Index" asp-controller="ManagerAccount">
+                    Hello @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value
+                </a>
+            }
             <a class="py-2 d-none d-md-inline-block me-3 " asp-controller="Account" asp-action="Logout">Выход</a>
         </div>
     }

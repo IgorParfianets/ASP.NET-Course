@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "WKEJl0IbxCvWmz+/HlKZ9/6nCsgpGaDxU2D0nXNrGIs=",
+  "Hash": "rkjvUZJe3lIapsfK+wSGMcjDAxNwa7cmfxiYf9GZoIg=",
   "Source": "AspNetArticle.MvcApp",
   "BasePath": "_content/AspNetArticle.MvcApp",
   "Mode": "Default",
@@ -1052,6 +1052,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\site.js"
+    },
+    {
+      "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\js\\table-button.js",
+      "SourceId": "AspNetArticle.MvcApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\",
+      "BasePath": "_content/AspNetArticle.MvcApp",
+      "RelativePath": "js/table-button.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\table-button.js"
     },
     {
       "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",

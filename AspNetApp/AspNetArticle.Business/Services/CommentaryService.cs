@@ -62,6 +62,13 @@ namespace AspNetArticle.Business.Services
             return userAllComments;
         }
 
+        public async Task<IEnumerable<CommentDto>> GelAllCommentsAsync()
+        {
+            return (await _unitOfWork.Comments.GetAllAsync())
+                .Select(com => _mapper.Map<CommentDto>(com))
+                .ToList();
+        }
+
         public async Task<IEnumerable<CommentaryWithUserDto>> GetAllCommentsWithUsersByArticleIdAsync(Guid id) // For Details
         {
             var articleAllComments = await _unitOfWork.Comments

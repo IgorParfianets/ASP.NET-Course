@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace AspNetArticle.MvcApp.Controllers
 {
+    [Authorize]
     public class CommentaryController : Controller
     {
         private readonly IMapper _mapper;
@@ -23,7 +24,6 @@ namespace AspNetArticle.MvcApp.Controllers
             _commentaryService = commentaryService;
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Create(CommentaryModel model)
         {
@@ -49,9 +49,8 @@ namespace AspNetArticle.MvcApp.Controllers
             return BadRequest();
         }
 
-        [Authorize]
         [HttpGet]
-        public async Task<IActionResult> Update(Guid id) //1
+        public async Task<IActionResult> Update(Guid id) 
         {
             var comment = _mapper.Map<CommentaryModel>(await _commentaryService.GetCommentByIdAsync(id));
 
@@ -61,7 +60,6 @@ namespace AspNetArticle.MvcApp.Controllers
             return BadRequest();
         }
 
-        [Authorize]
         [HttpPost]
         public async Task<IActionResult> Update(CommentaryModel model) 
         {
@@ -93,7 +91,6 @@ namespace AspNetArticle.MvcApp.Controllers
             return RedirectToAction("Details", "Article", model);
         }
 
-        [Authorize]
         [HttpGet]
         public async Task<IActionResult> Delete(Guid id)
         {
