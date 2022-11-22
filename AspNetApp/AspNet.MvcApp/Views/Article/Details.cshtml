@@ -4,7 +4,7 @@
 @model AspNetArticle.MvcApp.Models.ArticleWIthCommentaryViewModel
 
 @{
-    Layout = "_MyLayoutBootStrap";
+    Layout = "_Layout";
 }
 
 @{
@@ -14,18 +14,19 @@
 <div class="container d-sm-flex col-10">
     <div class="container d-sm-flex text-center w-100">
         <div class="m-5 p-5 bg-white" style="border-radius: 8px;">
-           
-            @*<i class="fa-regular fa-star fa-2xl"></i>*@
-            @if (User.Identity.IsAuthenticated)
-            {
-                <div class=" justify-content-end align-items-end align-content-end align-self-end text-end mb-3">
 
-                    <span id="favourite" data-bs-toggle="tooltip" title="Добавить в избранное" onclick="addArticle()">
-                        <img id="star" class="d-inline-block" onclick="changeStar(this)" src="~/image/star_disable.png" style="width: 5%">
-                    </span>
+            
+            
+                <div class=" d-flex justify-content-between mb-3">
+                    <strong class="bg-warning p-1 rounded">Рейтинг: @string.Format("{0:0.00}", @Model.Article.Rate)</strong>
 
+                    @if (User.Identity.IsAuthenticated)
+                    {
+                        <span class="text-end" id="favourite" data-bs-toggle="tooltip" title="Добавить в избранное" onclick="addArticle()">
+                            <img id="star" class="d-inline-block " onclick="changeStar(this)" src="~/image/star_disable.png" style="width: 7%">
+                        </span>
+                    }
                 </div>
-            }
 
             <h1>@Model.Article.Title</h1>
             <hr/>
@@ -35,8 +36,8 @@
             <div class="bg-light p-5 text-start" style="border-radius: 6px;">
                 <article-text article-text="@Model.Article.Text"></article-text>
             </div>
-            <div class="d-flex justify-content-end me-4 mt-2 p-3">
-                Опубликовано: @Model.Article.PublicationDate.ToString("g")
+            <div class="d-flex justify-content-end me-4 mt-2 p-3 gap-1">
+                <strong>Дата публикации: </strong> @Model.Article.PublicationDate.ToString("f")
             </div>
         </div>
         

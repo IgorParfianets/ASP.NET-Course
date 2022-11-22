@@ -28,6 +28,7 @@ else
 {
     <form asp-controller="Commentary" asp-action="Update" method="post">
         <input asp-for="ArticleId" hidden/>
+        <input asp-for="UserId" hidden />
         <input asp-for="Id" hidden/>
         <strong>Автор: @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value</strong>
 

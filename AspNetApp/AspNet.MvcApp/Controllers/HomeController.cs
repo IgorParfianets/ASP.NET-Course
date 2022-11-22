@@ -1,21 +1,34 @@
 ﻿using AspNet.MvcApp.Models;
 using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
+using AspNetArticle.Core.Abstractions;
+using AspNetArticle.MvcApp.Models;
+using AutoMapper;
 
 namespace AspNet.MvcApp.Controllers
 {
     public class HomeController : Controller
     {
         private readonly ILogger<HomeController> _logger;
-
-        public HomeController(ILogger<HomeController> logger)
+        private readonly IArticleService _articleService;
+        private readonly IMapper _mapper;
+        public HomeController(ILogger<HomeController> logger, 
+            IArticleService articleService, 
+            IMapper mapper)
         {
             _logger = logger;
+            _articleService = articleService;
+            _mapper = mapper;
         }
 
-        public IActionResult Index()
+        public async Task<IActionResult> Index()
         {
-            return View();
+            var articles = (await _articleService.GetAllArticlesAsync())
+                .OrderByDescending(art => art.Rate)
+                .Take(3)
+                .Select(art => _mapper.Map<ArticleModel>(art)).ToArray();
+            
+            return View(articles);
         }
 
         public IActionResult Privacy()

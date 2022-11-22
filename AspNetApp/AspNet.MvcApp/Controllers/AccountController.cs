@@ -1,13 +1,14 @@
 ﻿using System.Security.Claims;
 using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Core.DataTransferObjects;
-using AspNetArticle.MvcApp.Models.UserModels;
+using AspNetArticle.MvcApp.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Serilog;
 
 namespace AspNetArticle.MvcApp.Controllers;
 
@@ -29,9 +30,8 @@ public class AccountController : Controller
         _configuration = configuration;
     }
 
-    //------------------------------------------  Login
     [HttpGet]
-    public async Task<IActionResult> Login()
+    public IActionResult Login()
     {
         return View();
     }
@@ -54,13 +54,13 @@ public class AccountController : Controller
             }
             return View(loginModel);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return NotFound();
+            Log.Error(ex, $"{nameof(Login)} method failed");
+            return BadRequest();
         }
-        
     }
-    //------------------------------------------  Registration
+
     [HttpGet]
     public async Task<IActionResult> Registration()
     {
@@ -86,114 +86,147 @@ public class AccountController : Controller
                     if (result > 0)
                     {
                         await Authenticate(user.Email);
-                        return RedirectToAction("Index", "Home"); // Redirect на Main для Registered User
+                        return RedirectToAction("Index", "Home"); 
                     }
                 }
             }
             return View(user);
         }
-        catch (Exception)
+        catch (Exception ex)
         {
-            return StatusCode(500);
+            Log.Error(ex, $"{nameof(Registration)} method failed");
+            return BadRequest();
         }
     }
 
-    //------------------------------------------  Logout
     [HttpGet]
     public async Task<IActionResult> Logout()
     {
         await HttpContext.SignOutAsync();
         return RedirectToAction("Index", "Home");
-
-
     }
 
-    //------------------------------------------  [Remote] Check UserName and Email при Registration
     [HttpPost]
     public async Task<IActionResult> CheckEmailRegistrationAccount(string email)   
     {
-        if (!string.IsNullOrEmpty(email))
+        try
         {
-            var isExistEmail = await _userService.IsExistUserEmailAsync(email);
+            if (!string.IsNullOrEmpty(email))
+            {
+                var isExistEmail = await _userService.IsExistUserEmailAsync(email);
 
-            if(isExistEmail)
-                 return Ok(false);
+                if (isExistEmail)
+                    return Ok(false);
+            }
+            return Ok(true);
         }
-        return Ok(true);
+        catch (Exception ex)
+        {
+            Log.Error(ex, $"{nameof(CheckEmailRegistrationAccount)} method failed");
+            return BadRequest();
+        }
     }
 
     [HttpPost]
     public async Task<IActionResult> CheckUserNameRegistrationAccount(string username)   
     {
-        if (!string.IsNullOrEmpty(username))
+        try
         {
-            var isExistName = await _userService.IsExistUserNameAsync(username);
+            if (!string.IsNullOrEmpty(username))
+            {
+                var isExistName = await _userService.IsExistUserNameAsync(username);
 
-            if (isExistName)
-                return Ok(false);
+                if (isExistName)
+                    return Ok(false);
+            }
+            return Ok(true);
         }
-        return Ok(true);
+        catch (Exception ex)
+        {
+            Log.Error(ex, $"{nameof(CheckUserNameRegistrationAccount)} with username {username} method failed");
+            return BadRequest();
+        }
     }
 
     [HttpPost]
     public async Task<IActionResult> CheckUserNameEditAccount(string username)
     {
-        if (!string.IsNullOrEmpty(username))
+        try
         {
-            var email = User.Identity.Name;
-            var user = await _userService.GetUserByEmailAsync(email);
+            if (!string.IsNullOrEmpty(username))
+            {
+                var email = User.Identity.Name;
+                var user = await _userService.GetUserByEmailAsync(email);
 
-            if(user.UserName.Equals(username))
-                return Ok(false);
+                if (user.UserName.Equals(username))
+                    return Ok(false);
+            }
+            return Ok(true);
         }
-        return Ok(true);
+        catch (Exception ex)
+        {
+            Log.Error(ex, $"{nameof(CheckUserNameEditAccount)} with username {username} method failed");
+            return BadRequest();
+        }
+        
     }
-
-
-
-    //------------------------------------------ Data for Authorize User
 
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> Edit()  
     {
-        var userEmail = User.Identity?.Name;
-
-        if (string.IsNullOrEmpty(userEmail))
+        try
         {
+            var userEmail = User.Identity?.Name;
+
+            if (string.IsNullOrEmpty(userEmail))
+            {
+                return BadRequest();
+            }
+
+            var user = _mapper.Map<UserEditViewModel>(await _userService.GetUserByEmailAsync(userEmail));
+
+            return View(user);
+        }
+        catch (Exception ex)
+        {
+            Log.Error(ex, $"{nameof(Edit)} method failed");
             return BadRequest();
         }
-
-        var user = _mapper.Map<UserEditViewModel>(await _userService.GetUserByEmailAsync(userEmail));
-        //var user = _mapper.Map<UserEditModel>(await _userService.GetUserAsync(id));
-        return View(user);
     }
 
     [HttpPost]
     [Authorize]
-    public async Task<IActionResult> Edit(UserEditViewModel model) // todo not fully works need to create POST version
+    public async Task<IActionResult> Edit(UserEditViewModel model) 
     {
-        var userEmail = User.Identity?.Name;
-
-        if (ModelState.IsValid && userEmail != null)
+        try
         {
-            var dto = _mapper.Map<UserDto>(model);
-            dto.Email = userEmail;
-            dto.RoleName = await _roleService.GetRoleNameByIdAsync(model.RoleId);
+            var userEmail = User.Identity?.Name;
 
-            if (dto != null)
+            if (ModelState.IsValid && userEmail != null)
             {
-                var result = await _userService.UpdateUserAsync(model.Id, dto);
-                
-                return result > 0 
-                    ? RedirectToAction("Index", "Home") 
-                    : BadRequest();
+                var dto = _mapper.Map<UserDto>(model);
+                dto.Email = userEmail;
+                dto.RoleName = await _roleService.GetRoleNameByIdAsync(model.RoleId);
+
+                if (dto != null)
+                {
+                    var result = await _userService.UpdateUserAsync(model.Id, dto);
+
+                    return result > 0
+                        ? RedirectToAction("Index", "Home")
+                        : BadRequest();
+                }
             }
+            return BadRequest();
         }
-        return BadRequest();
+        catch (Exception ex)
+        {
+            Log.Error(ex, $"{nameof(Edit)} method with model {model} failed");
+            return BadRequest();
+        }
     }
 
-    //------------------------------------------  Authenticate
     private async Task Authenticate(string email)
     {
         var userDto = await _userService.GetUserByEmailAsync(email);
@@ -205,7 +238,6 @@ public class AccountController : Controller
             new Claim(ClaimTypes.Actor, userDto.UserName)
 
         };
-
 
         var identity = new ClaimsIdentity(claims,
             "ApplicationCookie",

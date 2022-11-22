@@ -1,0 +1,12 @@
+D:\Программирование\ArticleApp\AspNetApp\AsoNetArticle.Data.CQS\bin\Debug\net6.0\AsoNetArticle.Data.CQS.deps.json
+D:\Программирование\ArticleApp\AspNetApp\AsoNetArticle.Data.CQS\bin\Debug\net6.0\AsoNetArticle.Data.CQS.dll
+D:\Программирование\ArticleApp\AspNetApp\AsoNetArticle.Data.CQS\bin\Debug\net6.0\AsoNetArticle.Data.CQS.pdb
+D:\Программирование\ArticleApp\AspNetApp\AsoNetArticle.Data.CQS\obj\Debug\net6.0\AsoNetArticle.Data.CQS.csproj.AssemblyReference.cache
+D:\Программирование\ArticleApp\AspNetApp\AsoNetArticle.Data.CQS\obj\Debug\net6.0\AsoNetArticle.Data.CQS.GeneratedMSBuildEditorConfig.editorconfig
+D:\Программирование\ArticleApp\AspNetApp\AsoNetArticle.Data.CQS\obj\Debug\net6.0\AsoNetArticle.Data.CQS.AssemblyInfoInputs.cache
+D:\Программирование\ArticleApp\AspNetApp\AsoNetArticle.Data.CQS\obj\Debug\net6.0\AsoNetArticle.Data.CQS.AssemblyInfo.cs
+D:\Программирование\ArticleApp\AspNetApp\AsoNetArticle.Data.CQS\obj\Debug\net6.0\AsoNetArticle.Data.CQS.csproj.CoreCompileInputs.cache
+D:\Программирование\ArticleApp\AspNetApp\AsoNetArticle.Data.CQS\obj\Debug\net6.0\AsoNetArticle.Data.CQS.dll
+D:\Программирование\ArticleApp\AspNetApp\AsoNetArticle.Data.CQS\obj\Debug\net6.0\refint\AsoNetArticle.Data.CQS.dll
+D:\Программирование\ArticleApp\AspNetApp\AsoNetArticle.Data.CQS\obj\Debug\net6.0\AsoNetArticle.Data.CQS.pdb
+D:\Программирование\ArticleApp\AspNetApp\AsoNetArticle.Data.CQS\obj\Debug\net6.0\ref\AsoNetArticle.Data.CQS.dll

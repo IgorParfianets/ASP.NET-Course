@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "rkjvUZJe3lIapsfK+wSGMcjDAxNwa7cmfxiYf9GZoIg=",
+  "Hash": "9qIfrSJSrGz+WnoRx2Kkzqm4LrOoGnK6GV5Y0Ob4XS4=",
   "Source": "AspNetArticle.MvcApp",
   "BasePath": "_content/AspNetArticle.MvcApp",
   "Mode": "Default",
@@ -765,40 +765,6 @@
       "OriginalItemSpec": "C:\\Users\\Igor\\.nuget\\packages\\bootstrap\\5.2.1\\contentFiles\\any\\any\\wwwroot\\js\\bootstrap.min.js.map"
     },
     {
-      "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\obj\\Debug\\net6.0\\scopedcss\\bundle\\AspNetArticle.MvcApp.styles.css",
-      "SourceId": "AspNetArticle.MvcApp",
-      "SourceType": "Computed",
-      "ContentRoot": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\obj\\Debug\\net6.0\\scopedcss\\bundle\\",
-      "BasePath": "_content/AspNetArticle.MvcApp",
-      "RelativePath": "AspNetArticle.MvcApp.styles.css",
-      "AssetKind": "All",
-      "AssetMode": "CurrentProject",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ApplicationBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\obj\\Debug\\net6.0\\scopedcss\\bundle\\AspNetArticle.MvcApp.styles.css"
-    },
-    {
-      "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\AspNetArticle.MvcApp.bundle.scp.css",
-      "SourceId": "AspNetArticle.MvcApp",
-      "SourceType": "Computed",
-      "ContentRoot": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\",
-      "BasePath": "_content/AspNetArticle.MvcApp",
-      "RelativePath": "AspNetArticle.MvcApp.bundle.scp.css",
-      "AssetKind": "All",
-      "AssetMode": "Reference",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "ScopedCss",
-      "AssetTraitValue": "ProjectBundle",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\obj\\Debug\\net6.0\\scopedcss\\projectbundle\\AspNetArticle.MvcApp.bundle.scp.css"
-    },
-    {
       "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\css\\MyStyle.css",
       "SourceId": "AspNetArticle.MvcApp",
       "SourceType": "Discovered",
@@ -1035,6 +1001,23 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\progress-streght-bar.js"
+    },
+    {
+      "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\js\\show-categories.js",
+      "SourceId": "AspNetArticle.MvcApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\",
+      "BasePath": "_content/AspNetArticle.MvcApp",
+      "RelativePath": "js/show-categories.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\show-categories.js"
     },
     {
       "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\js\\site.js",

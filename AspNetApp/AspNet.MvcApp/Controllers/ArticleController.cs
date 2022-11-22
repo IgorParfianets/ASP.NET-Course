@@ -1,10 +1,10 @@
 ﻿using AspNetArticle.Core.Abstractions;
-using AspNetArticle.Core.DataTransferObjects;
 using AspNetArticle.MvcApp.Models;
-using AspNetArticle.MvcApp.Models.ArticleModels;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Rendering;
+using Serilog;
 
 namespace AspNetArticle.MvcApp.Controllers
 {
@@ -27,58 +27,120 @@ namespace AspNetArticle.MvcApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Index()
         {
-            var articles = await _articleService.GetAllArticlesAsync();
+            var articles = (await _articleService.GetAllArticlesAsync())
+                .Select(dto => _mapper.Map<ArticleModel>(dto));
 
-            if(articles != null)
-                return View(articles);
+            var existCategories = await _articleService.GetArticlesCategoryAsync();
 
+            if (articles != null)
+            {
+                var articlesModel = new ArticlesCategoryViewModel()
+                {
+                    Articles = articles.ToList(),
+                    Categories = new SelectList(existCategories.ToList())
+                };
+                return View(articlesModel);
+            }
             return View();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Create(Guid id)
+        [Authorize]
+        [HttpPost]
+        public async Task<IActionResult> Index(string articleCategory, string searchString)
         {
-            return View();
+            try
+            {
+                var searchingArticles =
+                    (await _articleService.GetArticlesByCategoryAndSearchStringAsync(articleCategory, searchString))
+                    .Select(dto => _mapper.Map<ArticleModel>(dto));
+
+                var existCategories = await _articleService.GetArticlesCategoryAsync();
+
+                var model = new ArticlesCategoryViewModel();
+
+                if (searchingArticles != null)
+                {
+                    model.Articles = searchingArticles.ToList();
+                    model.Categories = new SelectList(existCategories.ToList());
+                }
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"{nameof(Index)} with arguments {articleCategory}, {searchString} method failed");
+                return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllCategories()
+        {
+            var existCategories = await _articleService.GetArticlesCategoryAsync();
+
+            return Ok(existCategories.ToList());
         }
 
 
         [HttpGet]
         public async Task<IActionResult> Details(Guid id, CommentaryModel? model) // todo Кривой до невозможности метод
         {
-            if (model != null && !string.IsNullOrEmpty(model.Description))
+            try
             {
-                var article = await _articleService.GetArticleByIdAsync(model.ArticleId);
-
-                if (article != null)
+                if (model != null && !string.IsNullOrEmpty(model.Description))
                 {
-                    var articleWithUsersComments = new ArticleWIthCommentaryViewModel
-                    {
-                        Article = article,
-                        ExistComments = await _commentaryService.GetAllCommentsWithUsersByArticleIdAsync(model.ArticleId),
-                        Comment = model
+                    var articleModel = _mapper.Map<ArticleModel>(await _articleService.GetArticleByIdAsync(model.ArticleId));
 
-                    };
-                    return View(articleWithUsersComments); 
+                    if (articleModel != null)
+                    {
+                        var articleWithUsersComments = new ArticleWIthCommentaryViewModel
+                        {
+                            Article = articleModel,
+                            ExistComments = await _commentaryService.GetAllCommentsWithUsersByArticleIdAsync(model.ArticleId),
+                            Comment = model
+                        };
+                        return View(articleWithUsersComments);
+                    }
                 }
+                else
+                {
+                    var articleModel = _mapper.Map<ArticleModel>(await _articleService.GetArticleByIdAsync(id));
+
+                    if (articleModel != null)
+                    {
+                        var articleWithUsersComments = new ArticleWIthCommentaryViewModel
+                        {
+                            Article = articleModel,
+                            ExistComments = await _commentaryService.GetAllCommentsWithUsersByArticleIdAsync(id),
+                            Comment = new CommentaryModel() { ArticleId = id }
+                        };
+                        return View(articleWithUsersComments);
+                    }
+                }
+                return View();
             }
-            else
+            catch (Exception ex)
             {
-                var article = await _articleService.GetArticleByIdAsync(id);
-
-                if (article != null)
-                {
-                    var articleWithUsersComments = new ArticleWIthCommentaryViewModel
-                    {
-                        Article = article,
-                        ExistComments = await _commentaryService.GetAllCommentsWithUsersByArticleIdAsync(id),
-                        Comment = new CommentaryModel() { ArticleId = id }
-                        
-                    };
-                    return View(articleWithUsersComments);
-                }
+                Log.Error(ex, $"{nameof(Details)} with arguments {model} and Guid {id} method failed");
+                return BadRequest();
             }
-            return View();
         }
+
+        //[Authorize]
+        //[HttpPost]
+        //public async Task<IActionResult> Search(SearchModel model)
+        //{
+        //    if (!string.IsNullOrEmpty(model.Text))
+        //    {
+        //        var articles = await _articleService.GetArticlesBySearchStringAsync(model.Text);
+
+        //        return RedirectToAction("Index", articles);
+        //    }
+            
+        //    return View();
+        //}
+
+
+
         //[HttpGet]
         //public async Task<IActionResult> Details(CommentaryModel model)
         //{
@@ -99,10 +161,6 @@ namespace AspNetArticle.MvcApp.Controllers
 
         //    return View();
         //}
-        //[HttpGet]
-        //public async Task<IActionResult> Search()
-        //{
-
-        //}
+       
     }
 }

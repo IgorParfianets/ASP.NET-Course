@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<AspNetArticle.Core.DataTransferObjects.ArticleDto>
 
 @{
-    Layout = "_MyLayoutBootStrap";
+    Layout = "_Layout";
 }
 @{
     ViewData["Title"] = "Articles";
@@ -28,7 +28,7 @@
                     <th scope="row">@string.Format("{0:0.00}", art.Rate)</th>
                     <td>@art.Title</td>
                     <td>@art.Category</td>
-                    <td>@art.PublicationDate.ToString("g")</td>
+                    <td>@art.PublicationDate.ToString("f")</td>
                     <td id="table-button">
                         <a asp-controller="Article" asp-action="Details" asp-route-id="@art.Id" class="btn btn-sm btn-success me-1">Подробнее</a>
                         <a class="btn btn-sm btn-danger ps-3 pe-3">В Архив</a>

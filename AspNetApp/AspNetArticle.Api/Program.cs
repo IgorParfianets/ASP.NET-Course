@@ -15,6 +15,7 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using Hangfire;
 using Hangfire.SqlServer;
+using AspNetArticle.Business.Models;
 
 namespace AspNetArticle.Api
 {
@@ -39,6 +40,7 @@ namespace AspNetArticle.Api
             builder.Services.AddScoped<IRoleService, RoleService>();
             builder.Services.AddScoped<ICommentaryService, CommentaryService>();
             builder.Services.AddScoped<IArticleRateService, ArticleRateService>();
+            builder.Services.AddScoped<ISendMessageService, SendMessageService>();
 
             builder.Services.AddScoped<IExtendedArticleRepository, ExtendedArticleRepository>();
             builder.Services.AddScoped<IRepository<User>, Repository<User>>();
@@ -78,6 +80,9 @@ namespace AspNetArticle.Api
             builder.Services.AddHangfireServer();
             // Mapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // For Mapping to collect all profiles
+
+            //SendMessage
+            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
             builder.Services
                 .AddAuthentication(options =>

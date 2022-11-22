@@ -1,8 +1,9 @@
-﻿using System.Text.Json;
+﻿using System.ComponentModel.DataAnnotations;
+using System.Text.Json;
 
 namespace AspNetArticle.Core.DataTransferObjects;
 
-public class UserDto   // Можно отказаться от некоторых полей
+public class UserDto 
 {
     public Guid Id { get; set; }
     public string UserName { get; set; }
@@ -11,5 +12,7 @@ public class UserDto   // Можно отказаться от некоторы�
     public bool Spam { get; set; }
     public Guid RoleId { get; set; }
     public string RoleName { get; set; }
+    public DateTime AccountCreated { get; set; }
+    public DateTime LastVisit { get; set; }
 
 }

@@ -13,21 +13,15 @@ namespace AspNetArticle.Api.Controllers
     {
         private readonly IArticleService _articleService;
         private readonly IArticleRateService _articleRateService;
-        private readonly ISourceService _sourceService;
-        private readonly IConfiguration _configuration;
-        private readonly IMapper _mapper;
+        private readonly ISendMessageService _sendMessageService;
 
         public ArticleResourceInitializer(IArticleService articleService,
-            IMapper mapper,
-            ISourceService sourceService, 
-            IConfiguration configuration, 
-            IArticleRateService articleRateService)
+            IArticleRateService articleRateService, 
+            ISendMessageService sendMessageService)
         {
             _articleService = articleService;
-            _mapper = mapper;
-            _sourceService = sourceService;
-            _configuration = configuration;
             _articleRateService = articleRateService;
+            _sendMessageService = sendMessageService;
         }
 
         /// <summary>
@@ -35,7 +29,7 @@ namespace AspNetArticle.Api.Controllers
         /// </summary>
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
-        [HttpPost]
+        [HttpGet]
         public async Task<IActionResult> AddOnlinerSourceArticles() //todo rework with last lecture
         {
             try
@@ -48,6 +42,9 @@ namespace AspNetArticle.Api.Controllers
 
                 RecurringJob.AddOrUpdate(() => _articleRateService.AddRateToArticlesAsync(),
                     "*/10 * * * *");
+
+                await _articleService.AddArticlesDataAsync();
+                await _sendMessageService.GetArticlesAndUsersForMessage();
 
                 return Ok();
             }

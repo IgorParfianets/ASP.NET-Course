@@ -1,27 +1,20 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @using System.Security.Claims
-@using Microsoft.CodeAnalysis.VisualBasic.Syntax
 
 <div>
     @if (User.Identity.IsAuthenticated)
     {
-        <div class="d-inline-flex">
-            <form class="d-flex me-3 ms-5">
-                <input class="form-control form-control-sm me-2" type="search" placeholder="Поиск новостей" aria-label="Search">
-                <button class="btn btn-outline-success btn-sm" type="submit">Поиск</button>
-            </form>
-        </div>
 
         <div class="d-inline-flex gap-3">
             @if (User.IsInRole("Admin"))
             {
                 <a class="py-2 d-none d-md-inline-block ms-3" asp-action="PersonalArea" asp-controller="Admin">
-                    Hello @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value
+                    Привет @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value
                 </a>
             }
             else
             {
-                <a class="py-2 d-none d-md-inline-block ms-3" asp-action="Index" asp-controller="ManagerAccount">
+                <a class="py-2 d-none d-md-inline-block ms-3" asp-action="Edit" asp-controller="Account">
                     Hello @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value
                 </a>
             }

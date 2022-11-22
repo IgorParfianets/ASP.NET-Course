@@ -1,3 +1,4 @@
+using AspNetArticle.Business.Models;
 using AspNetArticle.Business.Services;
 using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Data.Abstractions;
@@ -10,24 +11,27 @@ using Hangfire;
 using Hangfire.SqlServer;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
+using NETCore.MailKit.Extensions;
+using NETCore.MailKit.Infrastructure.Internal;
 using NuGet.Packaging.Core;
 using Serilog;
 using Serilog.Events;
+using System.Configuration;
 
 namespace AspNet.MvcApp
 {
-    public class Program //todo in Automapper to fix problem with Models
+    public class Program 
     {
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // For Logger Serilog !!!
+            // For Logger Serilog 
             builder.Host.UseSerilog((ctx, lc) =>
                 lc.WriteTo.File(
                         @"C:\Users\Igor\Desktop\data.log",
                         LogEventLevel.Information)
-                    .WriteTo.Console(LogEventLevel.Verbose));
+                    .WriteTo.Console(LogEventLevel.Information));
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
@@ -63,6 +67,7 @@ namespace AspNet.MvcApp
 
             builder.Services.AddAuthorization(); // Test Remove Or Not
 
+            
             // Db Context
             var connectionString = builder.Configuration.GetConnectionString("Default");
             builder.Services.AddDbContext<AggregatorContext>(optionBuilder =>
@@ -82,11 +87,26 @@ namespace AspNet.MvcApp
                         UseRecommendedIsolationLevel = true,
                         DisableGlobalLocks = true,
                     }));
+
             // Mapper
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // For Mapping to collect all profiles
 
-            // Configuration
-            //builder.Configuration.AddJsonFile("hashingsalt.json"); //todo remove!!! for custom configuration 
+            //MailKit
+            builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+
+            //builder.Services.AddMailKit(optionsBuilder =>
+            //    {
+            //        var mailKitOptions = new MailKitOptions()
+            //        {
+            //            Server = builder.Configuration.GetValue<string>("MailSettings:Mail"),
+            //            SenderName = builder.Configuration.GetValue<string>("MailSettings:DisplayName"),
+            //            Password = builder.Configuration.GetValue<string>("MailSettings:Password"),
+            //            SenderEmail = builder.Configuration.GetValue<string>("MailSettings:Host"),
+            //            Port = builder.Configuration.GetValue<int>("MailSettings:Port"),
+            //        };
+            //        optionsBuilder.UseMailKit(mailKitOptions);
+            //    }
+            //);
 
             var app = builder.Build();
 

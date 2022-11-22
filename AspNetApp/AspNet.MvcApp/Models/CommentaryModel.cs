@@ -12,7 +12,8 @@ namespace AspNetArticle.MvcApp.Models
         [MinLength(3, ErrorMessage = "Слишком короткий комментарий, не менее 3 символов")]
         [Required]
         public string Description { get; set; }
-        public Guid ArticleId { get; set; } 
+        public Guid ArticleId { get; set; }
+        public Guid UserId { get; set; }
         public bool IsEdited { get; set; }
     }
 }

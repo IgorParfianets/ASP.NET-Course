@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using System.ServiceModel.Syndication;
 using System.Xml;
 using Microsoft.Extensions.Configuration;
+using Serilog;
 
 //using System.Xml.Linq;
 
@@ -33,7 +34,7 @@ public class ArticleService : IArticleService
         return _mapper.Map<ArticleDto>(await _unitOfWork.Articles.GetByIdAsync(id));
     }
 
-    public async Task<IEnumerable<ArticleDto>> GetAllArticlesAsync() // for Home / Index
+    public async Task<IEnumerable<ArticleDto>> GetAllArticlesAsync() 
     {
         var articleDto = await _unitOfWork.Articles
             .Get()
@@ -43,7 +44,7 @@ public class ArticleService : IArticleService
         return articleDto;
     }
 
-    public async Task<List<ArticleDto>> GetArticlesByNameAndSourcesAsync(string? name, Guid? category) // for Article API
+    public async Task<List<ArticleDto>> GetArticlesByNameAndSourcesAsync(string? name, Guid? category) // todo can remove unnecessary
     {
         var entities = _unitOfWork.Articles.Get();
 
@@ -76,6 +77,42 @@ public class ArticleService : IArticleService
         await _unitOfWork.Commit();
     }
 
+    public async Task<IEnumerable<ArticleDto>> GetArticlesByCategoryAndSearchStringAsync(string category, string searchString)
+    {
+        var articles =  _unitOfWork.Articles.Get();
+
+        var categories =  _unitOfWork.Articles
+            .Get()
+            .Select(art => art.Category);
+
+        if (!string.IsNullOrEmpty(searchString))
+        {
+            articles = articles.Where(art => art.Title.Contains(searchString));
+        }
+
+        if (!string.IsNullOrEmpty(category))
+        {
+            articles = articles.Where(art => art.Category.Equals(category));
+        }
+
+        var result = (await articles.ToListAsync())
+            .Select(ent => _mapper.Map<ArticleDto>(ent))
+            .ToList();
+
+        return result;
+    }
+
+    public async Task<IEnumerable<string>> GetArticlesCategoryAsync()
+    {
+        var categories = await _unitOfWork.Articles
+            .Get()
+            .Select(art => art.Category)
+            .Distinct()
+            .ToListAsync();
+
+        return categories;
+    }
+
     public async Task AggregateArticlesFromExternalSourcesAsync()
     {
         var onlinerSourceId = Guid.Parse(_configuration["Sources:Onliner"]);
@@ -87,6 +124,7 @@ public class ArticleService : IArticleService
         await GetAllArticleDataFromOnlinerRssAsync(onlinerSourceId, onlinerSourceUrl);
         await GetAllArticleDataFromDevIoRssAsync(devIoSourceId, devIoSourceUrl);
     }
+
 
     public async Task AddArticlesDataAsync()
     {
@@ -104,45 +142,49 @@ public class ArticleService : IArticleService
 
     private async Task GetAllArticleDataFromOnlinerRssAsync(Guid sourceId, string? sourceRssUrl)
     {
-        if (!string.IsNullOrEmpty(sourceRssUrl))
+        try
         {
-            var list = new List<ArticleDto>();
-
-            using (var reader = XmlReader.Create(sourceRssUrl))
+            if (!string.IsNullOrEmpty(sourceRssUrl))
             {
-                var feed = SyndicationFeed.Load(reader);
+                var list = new List<ArticleDto>();
 
-
-                foreach (var item in feed.Items)
+                using (var reader = XmlReader.Create(sourceRssUrl))
                 {
-                    //should be checked for different rss sources 
+                    var feed = SyndicationFeed.Load(reader);
 
-                    var articleDto = new ArticleDto() 
+                    foreach (var item in feed.Items)
                     {
-                        Id = Guid.NewGuid(),
-                        Title = item.Title.Text,
-                        PublicationDate = item.PublishDate.UtcDateTime,
-                        ShortDescription = item.Summary.Text,
-                        Category = item.Categories.FirstOrDefault()?.Name,
-                        SourceId = sourceId,
-                        SourceUrl = item.Id
-                    };
-
-                    list.Add(articleDto);
+                        var articleDto = new ArticleDto()
+                        {
+                            Id = Guid.NewGuid(),
+                            Title = item.Title.Text,
+                            PublicationDate = item.PublishDate.UtcDateTime,
+                            ShortDescription = item.Summary.Text,
+                            Category = item.Categories.FirstOrDefault()?.Name,
+                            SourceId = sourceId,
+                            SourceUrl = item.Id
+                        };
+                        list.Add(articleDto);
+                    }
                 }
+                var oldArticleUrls = await _unitOfWork.Articles.Get()
+                    .Select(article => article.SourceUrl)
+                    .Distinct()
+                    .ToArrayAsync();
+
+                var entities = list.Where(dto => !oldArticleUrls.Contains(dto.SourceUrl))
+                    .Select(dto => _mapper.Map<Article>(dto)).ToArray();
+
+                await _unitOfWork.Articles.AddRangeAsync(entities);
+                await _unitOfWork.Commit();
             }
-
-            var oldArticleUrls = await _unitOfWork.Articles.Get()
-                .Select(article => article.SourceUrl)
-                .Distinct()
-                .ToArrayAsync();
-
-            var entities = list.Where(dto => !oldArticleUrls.Contains(dto.SourceUrl))
-                .Select(dto => _mapper.Map<Article>(dto)).ToArray();
-
-            await _unitOfWork.Articles.AddRangeAsync(entities);
-            await _unitOfWork.Commit();
         }
+        catch (Exception ex)
+        {
+            Log.Error(ex, $"{nameof(GetAllArticleDataFromOnlinerRssAsync)} with arguments SourceGuid {sourceId}, SourceUrl {sourceRssUrl}");
+            throw;
+        }
+        
     }
 
 
@@ -210,6 +252,7 @@ public class ArticleService : IArticleService
         }
         catch (Exception ex)
         {
+            Log.Error(ex, $"{nameof(AddArticleTextToArticlesOnlinerAsync)} with ArticleGuid {articleId} failed");
             throw;
         }
     }
@@ -278,6 +321,7 @@ public class ArticleService : IArticleService
         }
         catch (Exception ex)
         {
+            Log.Error(ex, $"{nameof(AddArticleImageUrlToArticlesAsync)} with ArticleGuid {articleId} failed");
             throw;
         }
     }  
@@ -299,46 +343,51 @@ public class ArticleService : IArticleService
     #region GetArticleDevIoRss
     private async Task GetAllArticleDataFromDevIoRssAsync(Guid sourceId, string? sourceRssUrl)
     {
-        if (!string.IsNullOrEmpty(sourceRssUrl))
+        try
         {
-            var list = new List<ArticleDto>();
-
-            using (var reader = XmlReader.Create(sourceRssUrl))
+            if (!string.IsNullOrEmpty(sourceRssUrl))
             {
-                var feed = SyndicationFeed.Load(reader);
+                var list = new List<ArticleDto>();
 
-                foreach (var item in feed.Items)
+                using (var reader = XmlReader.Create(sourceRssUrl))
                 {
-                    //should be checked for different rss sources 
+                    var feed = SyndicationFeed.Load(reader);
 
-                    var articleDto = new ArticleDto()
+                    foreach (var item in feed.Items)
                     {
-                        Id = Guid.NewGuid(),
-                        Title = item.Title.Text,
-                        PublicationDate = item.PublishDate.UtcDateTime,
-                        ShortDescription = item.Summary?.Text ?? string.Empty,
-                        Category = item.Categories.FirstOrDefault()?.Name ?? "Обо Всём",
-                        SourceId = sourceId,
-                        SourceUrl = item.Id,
-                        ImageUrl = item.Links[1]?.Uri.AbsoluteUri
-                    };
-
-                    if (!string.IsNullOrEmpty(articleDto.ShortDescription))
-                        list.Add(articleDto);
+                        var articleDto = new ArticleDto()
+                        {
+                            Id = Guid.NewGuid(),
+                            Title = item.Title.Text,
+                            PublicationDate = item.PublishDate.UtcDateTime,
+                            ShortDescription = item.Summary?.Text ?? string.Empty,
+                            Category = item.Categories.FirstOrDefault()?.Name ?? "Обо Всём",
+                            SourceId = sourceId,
+                            SourceUrl = item.Id,
+                            ImageUrl = item.Links[1]?.Uri.AbsoluteUri
+                        };
+                        if (!string.IsNullOrEmpty(articleDto.ShortDescription))
+                            list.Add(articleDto);
+                    }
                 }
+                var oldArticleUrls = await _unitOfWork.Articles.Get()
+                    .Select(article => article.SourceUrl)
+                    .Distinct()
+                    .ToArrayAsync();
+
+                var entities = list.Where(dto => !oldArticleUrls.Contains(dto.SourceUrl))
+                    .Select(dto => _mapper.Map<Article>(dto)).ToArray();
+
+                await _unitOfWork.Articles.AddRangeAsync(entities);
+                await _unitOfWork.Commit();
             }
-
-            var oldArticleUrls = await _unitOfWork.Articles.Get()
-                .Select(article => article.SourceUrl)
-                .Distinct()
-                .ToArrayAsync();
-
-            var entities = list.Where(dto => !oldArticleUrls.Contains(dto.SourceUrl))
-                .Select(dto => _mapper.Map<Article>(dto)).ToArray();
-
-            await _unitOfWork.Articles.AddRangeAsync(entities);
-            await _unitOfWork.Commit();
         }
+        catch (Exception ex)
+        {
+            Log.Error(ex, $"{nameof(GetAllArticleDataFromDevIoRssAsync)} with arguments SourceGuid {sourceId}, SourceUrl {sourceRssUrl}");
+            throw;
+        }
+        
     }
 
 
@@ -394,6 +443,7 @@ public class ArticleService : IArticleService
         }
         catch (Exception ex)
         {
+            Log.Error(ex, $"{nameof(AddArticleTextToArticleDevIoAsync)} with ArticleId {articleId}");
             throw;
         }
     }

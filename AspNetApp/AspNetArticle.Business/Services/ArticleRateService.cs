@@ -8,6 +8,10 @@ using Microsoft.Extensions.Configuration;
 using AspNetArticle.Core.Abstractions;
 using HtmlAgilityPack;
 using System.Text.RegularExpressions;
+using Microsoft.Extensions.Logging;
+using Serilog;
+using AspNetArticle.Database.Entities;
+
 //using System.Text.Json.Nodes;
 //using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
@@ -16,14 +20,11 @@ namespace AspNetArticle.Business.Services
     public class ArticleRateService : IArticleRateService
     {
         private readonly IUnitOfWork _unitOfWork;
-        private readonly IMapper _mapper;
         private readonly IConfiguration _configuration;
 
-        public ArticleRateService(IMapper mapper, 
-            IUnitOfWork unitOfWork, 
+        public ArticleRateService(IUnitOfWork unitOfWork,
             IConfiguration configuration)
         {
-            _mapper = mapper;
             _unitOfWork = unitOfWork;
             _configuration = configuration;
         }
@@ -31,16 +32,24 @@ namespace AspNetArticle.Business.Services
 
         public async Task AddRateToArticlesAsync()
         {
-            var articlesWithEmptyRateIds = _unitOfWork.Articles.Get()
-                .Where(article => article.Rate == null && !string.IsNullOrEmpty(article.Text))
-                .Select(article => article.Id)
-                .ToList();
-
-            foreach (var articleId in articlesWithEmptyRateIds)
+            try
             {
-                string articleFixedText = await RemoveHtmlTagsFromArticleTestAsync(articleId);
-                await RateArticleAsync(articleId, articleFixedText);
+                var articlesWithEmptyRateIds = _unitOfWork.Articles.Get()
+                    .Where(article => article.Rate == null && !string.IsNullOrEmpty(article.Text))
+                    .Select(article => article.Id)
+                    .ToList();
 
+                foreach (var articleId in articlesWithEmptyRateIds)
+                {
+                    string articleFixedText = await RemoveHtmlTagsFromArticleTestAsync(articleId);
+                    await RateArticleAsync(articleId, articleFixedText);
+
+                }
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"{nameof(AddRateToArticlesAsync)} method failed");
+                throw;
             }
         }
 
@@ -92,8 +101,11 @@ namespace AspNetArticle.Business.Services
                     httpRequest.Content = JsonContent.Create(new[] { new TextRequestModel() { Text = articleFixedText } });
 
                     var response = await client.SendAsync(httpRequest);
+                    Log.Information($"Responce from Isprass Api successfully. {response}");
+
                     var responseStr = await response.Content.ReadAsStreamAsync();
 
+                    
                     using (var sr = new StreamReader(responseStr))
                     {
                         var data = await sr.ReadToEndAsync();
@@ -107,6 +119,7 @@ namespace AspNetArticle.Business.Services
                         
                         if (isprassResponce != null && affinJsonObject.Any())
                         {
+                            Log.Information($"IsprassJsonResponce and AffinJsonText converted to object successfully.");
                             double overallRate = 0 , resultRate = 0;
                             int numberRecognizedWords = 0;
 
@@ -120,22 +133,22 @@ namespace AspNetArticle.Business.Services
                                     overallRate += (double)temp;
                                     numberRecognizedWords++;
                                 }
-                                    
                             }
-                            //var countWords = isprassResponce[0].Annotations.Lemma.Count;
+                            
                             if(numberRecognizedWords > 0)
                                 resultRate = overallRate / numberRecognizedWords;
 
                             await _unitOfWork.Articles.UpdateArticleRateAsync(articleId, resultRate);
                             await _unitOfWork.Commit();
 
-                            Thread.Sleep(1000);
+                            Thread.Sleep(500);
                         }
                     }
                 }
             }
             catch (Exception ex)
             {
+                Log.Error(ex, $"{nameof(RateArticleAsync)} with arguments Guid {articleId}, string {articleFixedText} method failed");
                 throw;
             }
         }

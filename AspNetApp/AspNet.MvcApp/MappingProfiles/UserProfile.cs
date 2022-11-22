@@ -1,6 +1,8 @@
-﻿using AspNetArticle.Core.DataTransferObjects;
+﻿using System.Diagnostics;
+using AspNetArticle.Core;
+using AspNetArticle.Core.DataTransferObjects;
 using AspNetArticle.Database.Entities;
-using AspNetArticle.MvcApp.Models.UserModels;
+using AspNetArticle.MvcApp.Models;
 using AutoMapper;
 
 namespace AspNetArticle.MvcApp.MappingProfiles;
@@ -17,9 +19,6 @@ public class UserProfile : Profile
             .ForMember(dto => dto.UserName, 
                 opt => 
                     opt.MapFrom(user => user.UserName))
-            .ForMember(dto => dto.Password,
-                opt =>
-                    opt.MapFrom(user => user.PasswordHash))
             .ForMember(dto => dto.Email,
                 opt =>
                     opt.MapFrom(user => user.Email))
@@ -58,19 +57,21 @@ public class UserProfile : Profile
 
         // For Dto -> Model & Model -> Dto
         CreateMap<UserRegistrationViewModel, UserDto>()                        //todo Можно отказаться от некоторых полей
-           .ForMember(dto => dto.Id, opt => opt.MapFrom(user => Guid.NewGuid()))
-           .ForMember(dto => dto.UserName, opt => opt.MapFrom(user => user.UserName))
-           .ForMember(dto => dto.Password, opt => opt.MapFrom(user => user.Password))
-           .ForMember(dto => dto.Email, opt => opt.MapFrom(user => user.Email))
-           .ForMember(dto => dto.Spam, opt => opt.MapFrom(user => user.Spam));
-
-        CreateMap<UserDto, UserRegistrationViewModel>()
-            .ForMember(user => user.UserName, opt => opt.MapFrom(dto => dto.UserName))
-            .ForMember(user => user.Password, opt => opt.MapFrom(dto => dto.Password))
-            .ForMember(user => user.Email, opt => opt.MapFrom(dto => dto.Email))
-            .ForMember(user => user.Spam, opt => opt.MapFrom(dto => dto.Spam));
-
-
+           .ForMember(dto => dto.Id, 
+               opt => 
+                   opt.MapFrom(user => Guid.NewGuid()))
+           .ForMember(dto => dto.UserName, 
+               opt => 
+                   opt.MapFrom(user => user.UserName))
+           .ForMember(dto => dto.Password,
+               opt => 
+                   opt.MapFrom(user => user.Password))
+           .ForMember(dto => dto.Email, 
+               opt => 
+                   opt.MapFrom(user => user.Email))
+           .ForMember(dto => dto.Spam, 
+               opt => 
+                   opt.MapFrom(user => user.Spam));
 
         //todo For UserLoginModel -> Dto НАДО ОНО ИЛИ НЕТ ???
         CreateMap<UserLoginViewModel, UserDto>()
@@ -105,5 +106,43 @@ public class UserProfile : Profile
                 opt
                 => opt.MapFrom(dto => dto.Spam));
 
+        CreateMap<UserDto, UserModel>().ConvertUsing(new UserMembershipConverter());
+
+    }
+
+    private class UserMembershipConverter : ITypeConverter<UserDto, UserModel>
+    {
+        public UserModel Convert(UserDto source, UserModel destination, ResolutionContext context)
+        {
+
+            UserModel userModel = new UserModel
+            {
+                Id = source.Id,
+                UserName = source.UserName,
+                Email = source.Email,
+                Spam = source.Spam,
+                LastVisit = source.LastVisit,
+                AccountCreated = source.AccountCreated
+            };
+
+            var days = (DateTime.Now - source.AccountCreated).Days;
+
+            switch (days)
+            {
+                case <= 7:
+                    userModel.Status = MembershipStatus.Новичек;
+                    break;
+                case <= 30 when days > 7:
+                    userModel.Status = MembershipStatus.Местный;
+                    break;
+                case <= 180 when days > 30:
+                    userModel.Status = MembershipStatus.Опытный;
+                    break;
+                case > 180:
+                    userModel.Status = MembershipStatus.Ветеран;
+                    break;
+            }
+            return userModel;
+        }
     }
 }

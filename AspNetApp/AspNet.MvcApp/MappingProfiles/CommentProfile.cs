@@ -24,10 +24,19 @@ public class CommentProfile : Profile
                     => opt.MapFrom(comment => comment.PublicationDate))
             .ForMember(dto => dto.UserId,
                 opt
-                    => opt.MapFrom(comment => comment.User))
+                    => opt.MapFrom(comment => comment.UserId))
             .ForMember(dto => dto.IsEdited,
                 opt
-                    => opt.MapFrom(comment => comment.IsEdited));
+                    => opt.MapFrom(comment => comment.IsEdited))
+            .ForMember(dto => dto.ArticleName,
+                opt
+                    => opt.MapFrom(comment => comment.Article.Title))
+            .ForMember(dto => dto.Username,
+                opt
+                    => opt.MapFrom(comment => comment.User.UserName))
+            .ForMember(dto => dto.Email,
+            opt
+                => opt.MapFrom(comment => comment.User.Email));
 
 
 
@@ -90,14 +99,5 @@ public class CommentProfile : Profile
             .ForMember(dto => dto.Description,
                 opt
                     => opt.MapFrom(comment => comment.Description));
-
-
-
-
-
-
-
-
-
     }
 }

@@ -1,8 +1,9 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers;
-@model IEnumerable<AspNetArticle.Core.DataTransferObjects.UserDto>;
+@using Microsoft.CodeAnalysis.VisualBasic.Syntax
+@model List<AspNetArticle.MvcApp.Models.AdminPageUserModel>
 
 @{
-    Layout = "_MyLayoutBootStrap";
+    Layout = "_Layout";
 }
 @{
     ViewData["Title"] = "Articles";
@@ -15,26 +16,32 @@
         <table class="table table-hover ">
             <thead>
             <tr>
-                <th scope="col" class="col-1">Рейтинг</th>
-                <th scope="col" class="col-5">Название</th>
-                <th scope="col" class="col-auto">Категория</th>
-                <th scope="col" class="col-auto">Дата публикации</th>
-                <th scope="col" class="col-4">Кнопки</th>
+                <th scope="col" class="col-1">Статус</th>
+                <th scope="col" class="col-1">Имя</th>
+                <th scope="col" class="col-2">Email</th>
+                <th scope="col" class="col-1">Кол-во комментариев</th>
+                <th scope="col" class="col-auto">Последний визит</th>
+                <th scope="col" class="col-auto">Колличество дней в составе</th>
+                <th scope="col" class="col-auto">Возможности</th>
             </tr>
             </thead>
             <tbody>
-            @foreach (var art in Model)
+            @foreach (var userWithComments in Model)
             {
-                @*<tr id="table-row">
-                    <th scope="row">@string.Format("{0:0.00}", art.Rate)</th>
-                    <td>@art.Title</td>
-                    <td>@art.Category</td>
-                    <td>@art.PublicationDate.ToString("g")</td>
+                <tr id="table-row">
+
+                    <th scope="row">@userWithComments.User.Status.ToString()</th>
+                    <td>@userWithComments.User.UserName</td>
+                    <td>@userWithComments.User.Email</td>
+                    <td>@userWithComments.Comments.Count()</td>
+                    <td>@userWithComments.User.LastVisit.ToString("f")</td>
+                    <td>@((DateTime.Now - userWithComments.User.AccountCreated).Days)</td>
+
                     <td id="table-button">
-                        <a asp-controller="Article" asp-action="Details" asp-route-id="@art.Id" class="btn btn-sm btn-success me-1">Подробнее</a>
-                        <a class="btn btn-sm btn-danger ps-3 pe-3">В Архив</a>
+                        <a asp-controller="Admin" asp-action="UserDetails" asp-route-id="@userWithComments.User.Id" class="btn btn-sm btn-success me-1">Подробнее</a>
+                        <a class="btn btn-sm btn-danger ps-3 pe-3 mt-1">Заблокировать</a>
                     </td>
-                </tr>*@
+                </tr>
             }
             </tbody>
         </table>

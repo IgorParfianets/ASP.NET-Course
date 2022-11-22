@@ -39,12 +39,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cUGVyc29uYWxBcmVhLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Программирование/ArticleApp/AspNetApp/AspNet.MvcApp/Views/Admin/Users.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVXNlcnMuY3NodG1s
+[D:/Программирование/ArticleApp/AspNetApp/AspNet.MvcApp/Views/Admin/UserDetails.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVXNlckRldGFpbHMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Программирование/ArticleApp/AspNetApp/AspNet.MvcApp/Views/Article/Create.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQXJ0aWNsZVxDcmVhdGUuY3NodG1s
+[D:/Программирование/ArticleApp/AspNetApp/AspNet.MvcApp/Views/Admin/Users.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcQWRtaW5cVXNlcnMuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Программирование/ArticleApp/AspNetApp/AspNet.MvcApp/Views/Article/Details.cshtml]
@@ -79,12 +79,12 @@ build_metadata.AdditionalFiles.CssScope =
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9DcmVhdGVDb21tZW50YXJ5UGFydGlhbFZpZXcuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Программирование/ArticleApp/AspNetApp/AspNet.MvcApp/Views/Shared/_LoginLogoutSectionPartial.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpbkxvZ291dFNlY3Rpb25QYXJ0aWFsLmNzaHRtbA==
+[D:/Программирование/ArticleApp/AspNetApp/AspNet.MvcApp/Views/Shared/_Layout.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
 build_metadata.AdditionalFiles.CssScope = 
 
-[D:/Программирование/ArticleApp/AspNetApp/AspNet.MvcApp/Views/Shared/_MyLayoutBootStrap.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9NeUxheW91dEJvb3RTdHJhcC5jc2h0bWw=
+[D:/Программирование/ArticleApp/AspNetApp/AspNet.MvcApp/Views/Shared/_LoginLogoutSectionPartial.cshtml]
+build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9Mb2dpbkxvZ291dFNlY3Rpb25QYXJ0aWFsLmNzaHRtbA==
 build_metadata.AdditionalFiles.CssScope = 
 
 [D:/Программирование/ArticleApp/AspNetApp/AspNet.MvcApp/Views/Shared/_ValidationScriptsPartial.cshtml]
@@ -98,7 +98,3 @@ build_metadata.AdditionalFiles.CssScope =
 [D:/Программирование/ArticleApp/AspNetApp/AspNet.MvcApp/Views/_ViewStart.cshtml]
 build_metadata.AdditionalFiles.TargetPath = Vmlld3NcX1ZpZXdTdGFydC5jc2h0bWw=
 build_metadata.AdditionalFiles.CssScope = 
-
-[D:/Программирование/ArticleApp/AspNetApp/AspNet.MvcApp/Views/Shared/_Layout.cshtml]
-build_metadata.AdditionalFiles.TargetPath = Vmlld3NcU2hhcmVkXF9MYXlvdXQuY3NodG1s
-build_metadata.AdditionalFiles.CssScope = b-3hss47bwlw

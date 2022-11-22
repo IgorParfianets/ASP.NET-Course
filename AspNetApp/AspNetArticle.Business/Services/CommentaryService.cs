@@ -34,6 +34,7 @@ namespace AspNetArticle.Business.Services
 
             await _unitOfWork.Comments.AddAsync(entity);
             var result = await _unitOfWork.Commit();
+
             return result;
         }
 
@@ -45,7 +46,6 @@ namespace AspNetArticle.Business.Services
             {
                 _unitOfWork.Comments.Update(entity);
             }
-            
             return await _unitOfWork.Commit();
         }
 
@@ -55,6 +55,7 @@ namespace AspNetArticle.Business.Services
                 .Get()
                 .Where(user => 
                     user.UserId.Equals(id))
+                .Include(com => com.Article)
                 .Select(cmt => 
                     _mapper.Map<CommentDto>(cmt))
                 .ToListAsync();
@@ -64,9 +65,16 @@ namespace AspNetArticle.Business.Services
 
         public async Task<IEnumerable<CommentDto>> GelAllCommentsAsync()
         {
-            return (await _unitOfWork.Comments.GetAllAsync())
+            return await _unitOfWork.Comments
+                .Get()
+                .Include(com => com.User)
+                .Include(com => com.Article)
                 .Select(com => _mapper.Map<CommentDto>(com))
-                .ToList();
+                .ToListAsync();
+
+            //return (await _unitOfWork.Comments.GetAllAsync())
+            //    .Select(com => _mapper.Map<CommentDto>(com))
+            //    .ToList();
         }
 
         public async Task<IEnumerable<CommentaryWithUserDto>> GetAllCommentsWithUsersByArticleIdAsync(Guid id) // For Details

@@ -2,6 +2,6 @@
 {
     public interface ISendMessageService
     {
-        Task SendArticlesToUsers();
+        Task GetArticlesAndUsersForMessage();
     }
 }

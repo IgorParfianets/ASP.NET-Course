@@ -1,7 +1,7 @@
 ﻿@model IEnumerable<AspNetArticle.Core.DataTransferObjects.CommentDto>
 
 @{
-    Layout = "_MyLayoutBootStrap";
+    Layout = "_Layout";
 }
 @{
     ViewData["Title"] = "Comments";
@@ -9,35 +9,9 @@
 
 @if (Model.Any())
 {
+    <p><strong>Сегодняшних комментариев: @Model.Where(com => com.PublicationDate >= DateTime.Today)?.Count()</strong></p>
+    <p><strong>За всё время: @Model.Count()</strong></p>
 
-    @*<div class="container-sm d-flex text-center justify-content-center mt-5 w-75">
-        <table class="table table-hover">
-            <thead>
-                <tr>
-                    <th scope="col" class="col-1">Рейтинг</th>
-                    <th scope="col" class="col-5">Название</th>
-                    <th scope="col" class="col-auto">Категория</th>
-                    <th scope="col" class="col-auto">Дата публикации</th>
-                    <th scope="col" class="col-4">Кнопки</th>
-                </tr>
-            </thead>
-            <tbody>
-                @foreach (var art in Model)
-                {
-                    <tr class="align-content-center" id="table-row">
-                        <th scope="row">@</th>
-                        <td>@art</td>
-                        <td>@art</td>
-                        <td>@art.PublicationDate.ToString("g")</td>
-                        <td id="table-button">
-                            <a asp-controller="Article" asp-action="Details" asp-route-id="@art.Id" class="btn btn-sm btn-success">Подробнее</a>
-                            <a class="btn btn-sm btn-danger">В архив</a>
-                        </td>
-                    </tr>
-                }
-            </tbody>
-        </table>
-    </div>*@
 }
 else
 {

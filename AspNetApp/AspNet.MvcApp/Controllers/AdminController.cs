@@ -1,10 +1,12 @@
 ﻿using AspNetArticle.Core.Abstractions;
+using AspNetArticle.Core.DataTransferObjects;
 using AspNetArticle.Database.Entities;
 using AspNetArticle.MvcApp.Models;
 using AutoMapper;
 using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace AspNetArticle.MvcApp.Controllers
 {
@@ -12,27 +14,21 @@ namespace AspNetArticle.MvcApp.Controllers
     public class AdminController : Controller
     {
         private readonly IUserService _userService;
-        private readonly IRoleService _roleService;
         private readonly IArticleService _articleService;
-        private readonly ISourceService _sourceService;
         private readonly ICommentaryService _commentaryService;
         private readonly IArticleRateService _articleRateService;
         private readonly IMapper _mapper;
-
         public AdminController(IUserService userService,
-            IRoleService roleService,
             IArticleService articleService,
-            ISourceService sourceService,
             ICommentaryService commentaryService,
-            IMapper mapper, IArticleRateService articleRateService)
+            IArticleRateService articleRateService,
+            IMapper mapper)
         {
             _userService = userService;
-            _roleService = roleService;
             _articleService = articleService;
-            _sourceService = sourceService;
             _commentaryService = commentaryService;
-            _mapper = mapper;
             _articleRateService = articleRateService;
+            _mapper = mapper;
         }
 
         [HttpGet]
@@ -44,36 +40,102 @@ namespace AspNetArticle.MvcApp.Controllers
         [HttpGet]
         public async Task<IActionResult> Users()
         {
-            var users = await _userService.GetAllUsersAsync();
+            try
+            {
+                var users = (await _userService.GetAllUsersAsync())
+                    .Select(dto => _mapper.Map<UserModel>(dto));
 
-            if (users != null)
-                return View(users);
+                List<AdminPageUserModel> listUsersForModel = new List<AdminPageUserModel>();
 
-            return View();
+                foreach (var user in users)
+                {
+                    var userComments = (await _commentaryService.GetAllCommentsByUserIdAsync(user.Id)).ToList();
+
+                    var userWithComment = new AdminPageUserModel()
+                    {
+                        User = user,
+                        Comments = userComments
+                    };
+                    listUsersForModel.Add(userWithComment);
+                }
+
+                if (listUsersForModel != null)
+                    return View(listUsersForModel);
+
+                return View();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"{nameof(Users)} method failed");
+                return BadRequest();
+            }
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> UserDetails(Guid id)
+        {
+            try
+            {
+                var user = _mapper.Map<UserModel>(await _userService.GetUserByIdAsync(id));
+                var model = new AdminPageUserModel();
+
+                if (user != null)
+                {
+                    var comments = (await _commentaryService.GetAllCommentsByUserIdAsync(id)).ToList();
+
+                    model.User = user;
+                    model.Comments = comments;
+
+                    return View(model);
+                }
+
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"{nameof(UserDetails)} with Guid {id} method failed");
+                return BadRequest();
+            }
         }
 
 
         [HttpGet]
         public async Task<IActionResult> Articles()
         {
-            var articles = await _articleService.GetAllArticlesAsync();
+            try
+            {
+                var articles = await _articleService.GetAllArticlesAsync();
 
-            if (articles != null)
-                return View(articles);
+                if (articles != null)
+                    return View(articles);
 
-            return View();
+                return View();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"{nameof(Articles)} method failed");
+                return BadRequest();
+            }
         }
 
 
         [HttpGet]
         public async Task<IActionResult> Comments()
         {
-            var comments = await _commentaryService.GelAllCommentsAsync();
+            try
+            {
+                var comments = await _commentaryService.GelAllCommentsAsync();
 
-            if (comments != null)
-                return View(comments);
+                if (comments != null)
+                    return View(comments);
 
-            return View();
+                return View();
+            }
+            catch (Exception ex)
+            {
+                Log.Error(ex, $"{nameof(Comments)} method failed");
+                return BadRequest();
+            }
         }
 
         //[HttpGet]
@@ -82,20 +144,6 @@ namespace AspNetArticle.MvcApp.Controllers
         //    await _articleService.RemoveArticleToArchiveByIdAsync(articleId);
 
         //}
-        [HttpGet]
-        public async Task<IActionResult> InitializedArticles()
-        {
 
-            RecurringJob.AddOrUpdate(() =>  _articleService.AggregateArticlesFromExternalSourcesAsync(),
-                "*/5 * * * *");
-
-            RecurringJob.AddOrUpdate(() => _articleService.AddArticlesDataAsync(),
-                "*/7 * * * *");
-
-            RecurringJob.AddOrUpdate(() => _articleRateService.AddRateToArticlesAsync(),
-                "*/10 * * * *");
-
-            return Ok();
-        }
     }
 }
