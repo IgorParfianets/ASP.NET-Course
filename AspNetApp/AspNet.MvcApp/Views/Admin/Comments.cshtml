@@ -9,11 +9,11 @@
 
 @if (Model.Any())
 {
-    <p><strong>Сегодняшних комментариев: @Model.Where(com => com.PublicationDate >= DateTime.Today)?.Count()</strong></p>
+    <p><strong>За сегодня: @Model.Where(com => com.PublicationDate >= DateTime.Today)?.Count()</strong></p>
     <p><strong>За всё время: @Model.Count()</strong></p>
 
 }
 else
 {
-    <h3>В базе нет новостей</h3>
+    <h3>ІИнформация о комментариях отсуствует</h3>
 }

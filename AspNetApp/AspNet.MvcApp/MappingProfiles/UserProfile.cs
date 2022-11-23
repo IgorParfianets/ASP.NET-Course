@@ -114,7 +114,6 @@ public class UserProfile : Profile
     {
         public UserModel Convert(UserDto source, UserModel destination, ResolutionContext context)
         {
-
             UserModel userModel = new UserModel
             {
                 Id = source.Id,

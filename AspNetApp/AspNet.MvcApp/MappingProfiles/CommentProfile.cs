@@ -3,6 +3,7 @@ using AspNetArticle.Core.DataTransferObjects;
 using AspNetArticle.Database.Entities;
 using AspNetArticle.MvcApp.Models;
 using AutoMapper;
+using System.Drawing.Text;
 
 namespace AspNetArticle.MvcApp.MappingProfiles;
 
@@ -99,5 +100,6 @@ public class CommentProfile : Profile
             .ForMember(dto => dto.Description,
                 opt
                     => opt.MapFrom(comment => comment.Description));
+
     }
 }

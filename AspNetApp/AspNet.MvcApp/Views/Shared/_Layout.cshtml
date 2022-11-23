@@ -17,40 +17,30 @@
 </head>
 
 <body>
-<header>
+    <div class="d-flex align-content-center mt-5">
+        <img class="w-75" src="https://x-lines.ru/letters/i/cyrillicbasic/0010/000000/60/1/4nepbc6todemmwfu4napdysoz5eayegtozem7wcy4n9pdngozdeakegozzem7wf14n9pdyqtomemmwf3.png">
 
-        <nav class="navbar navbar-expand-lg navbar-light w-100" style="background-color: #225C73">
-            <div class="container-fluid">
-            <a class="navbar-brand" asp-controller="Home" asp-action="Index">logo</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
+    </div>
+    <header class="sticky-top bg-secondary bg-opacity-75" style="margin: 3rem auto;">
 
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <div class="d-flex justify-content-center">
 
-                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
-                    <li class="nav-item">
-                        <a class="nav-link active" asp-controller="Article" asp-action="Index">Все Новости</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"></a>
-                    </li>
-                </ul>
+            <nav class="d-flex w-75">
+                <a class="" asp-controller="Home" asp-action="Index">logo</a>
+                <a class="" asp-controller="Article" asp-action="Index">Все Новости</a>
 
-                <div class="d-flex">
-                    <partial name="_LoginLogoutSectionPartial"/>
+                <div class="d-flex align-content-end">
+                    <partial name="_LoginLogoutSectionPartial" />
                 </div>
-            </div>
-        </div>
-    </nav>
-
+            </nav>
+        </div>  
 </header>
 
-<div>
-    <main role="main">
+
+    <main style="margin: 0 10rem;" role="main">
         @RenderBody()
     </main>
-</div>
+
 
 <hr/>
 <footer class="container py-5">

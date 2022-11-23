@@ -34,16 +34,16 @@ namespace AspNetArticle.Api.Controllers
         {
             try
             {
-                RecurringJob.AddOrUpdate(() => _articleService.AggregateArticlesFromExternalSourcesAsync(),
-                    "*/5 * * * *");
+                //RecurringJob.AddOrUpdate(() => _articleService.AggregateArticlesFromExternalSourcesAsync(),
+                //    "*/5 * * * *");
 
-                RecurringJob.AddOrUpdate(() => _articleService.AddArticlesDataAsync(),
-                    "*/7 * * * *");
+                //RecurringJob.AddOrUpdate(() => _articleService.AddArticlesDataAsync(),
+                //    "*/7 * * * *");
 
-                RecurringJob.AddOrUpdate(() => _articleRateService.AddRateToArticlesAsync(),
-                    "*/10 * * * *");
+                //RecurringJob.AddOrUpdate(() => _articleRateService.AddRateToArticlesAsync(),
+                //    "*/10 * * * *");
 
-                await _articleService.AddArticlesDataAsync();
+                //await _articleService.AddArticlesDataAsync();
                 await _sendMessageService.GetArticlesAndUsersForMessage();
 
                 return Ok();
