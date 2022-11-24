@@ -17,18 +17,20 @@
 </head>
 
 <body>
-    <div class="d-flex align-content-center mt-5">
+    <div class="d-flex align-content-center p-5 bg-light">
         <img class="w-75" src="https://x-lines.ru/letters/i/cyrillicbasic/0010/000000/60/1/4nepbc6todemmwfu4napdysoz5eayegtozem7wcy4n9pdngozdeakegozzem7wf14n9pdyqtomemmwf3.png">
 
     </div>
-    <header class="sticky-top bg-secondary bg-opacity-75" style="margin: 3rem auto;">
+    <header class="sticky-top bg-secondary bg-opacity-75 mb-5" >
 
         <div class="d-flex justify-content-center">
 
-            <nav class="d-flex w-75">
-                <a class="" asp-controller="Home" asp-action="Index">logo</a>
-                <a class="" asp-controller="Article" asp-action="Index">Все Новости</a>
-
+            <nav class="d-flex w-75  m-3 justify-content-between bg-light rounded">
+                <div class="d-flex py-2 mx-5 gap-5">
+                    <a class="" asp-controller="Home" asp-action="Index">Home</a>
+                    <a class="" asp-controller="Article" asp-action="Index">Новости</a>
+                </div>
+              
                 <div class="d-flex align-content-end">
                     <partial name="_LoginLogoutSectionPartial" />
                 </div>
@@ -37,7 +39,7 @@
 </header>
 
 
-    <main style="margin: 0 10rem;" role="main">
+    <main style="padding: 2rem 10rem;" role="main">
         @RenderBody()
     </main>
 

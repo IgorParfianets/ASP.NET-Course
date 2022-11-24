@@ -1,4 +1,5 @@
 ﻿using AspNetArticle.Core.Abstractions;
+using AspNetArticle.Database.Entities;
 using AspNetArticle.MvcApp.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -25,64 +26,45 @@ namespace AspNetArticle.MvcApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index()
-        {
-            var articles = (await _articleService.GetAllArticlesAsync())
-                .Select(dto => _mapper.Map<ArticleModel>(dto));
-
-            var existCategories = await _articleService.GetArticlesCategoryAsync();
-
-            if (articles != null)
-            {
-                var articlesModel = new ArticlesCategoryViewModel()
-                {
-                    Articles = articles.ToList(),
-                    Categories = new SelectList(existCategories.ToList())
-                };
-                return View(articlesModel);
-            }
-            return View();
-        }
-
-        [Authorize]
-        [HttpPost]
-        public async Task<IActionResult> Index(string articleCategory, string searchString)
+        public async Task<IActionResult> Index(string selectedCategory, string searchString, int page = 1)
         {
             try
             {
-                var searchingArticles =
-                    (await _articleService.GetArticlesByCategoryAndSearchStringAsync(articleCategory, searchString))
-                    .Select(dto => _mapper.Map<ArticleModel>(dto));
+                int pageSize = 5;
 
-                var existCategories = await _articleService.GetArticlesCategoryAsync();
+                var searchingArticles =
+                    (await _articleService.GetArticlesByCategoryAndSearchStringAsync(selectedCategory, searchString))
+                    .Select(dto => _mapper.Map<ArticleModel>(dto))
+                    .OrderByDescending(art => art.Rate)
+                    .ToList();
+
+                var existCategories = (await _articleService.GetArticlesCategoryAsync())
+                    .ToList();
 
                 var model = new ArticlesCategoryViewModel();
 
                 if (searchingArticles != null)
                 {
-                    model.Articles = searchingArticles.ToList();
-                    model.Categories = new SelectList(existCategories.ToList());
+                    int countArticles = searchingArticles.Count();
+                    var items = searchingArticles.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+                    model.Articles = items;
+                    model.Categories = new SelectList(existCategories);
+                    model.SelectedCategory = selectedCategory;
+                    model.PageViewModel = new PageViewModel(countArticles, page, pageSize);
                 }
                 return View(model);
             }
             catch (Exception ex)
             {
-                Log.Error(ex, $"{nameof(Index)} with arguments {articleCategory}, {searchString} method failed");
+                Log.Error(ex, $"{nameof(Index)} with arguments {selectedCategory}, {searchString} method failed");
                 return BadRequest();
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetAllCategories()
-        {
-            var existCategories = await _articleService.GetArticlesCategoryAsync();
-
-            return Ok(existCategories.ToList());
-        }
-
 
         [HttpGet]
-        public async Task<IActionResult> Details(Guid id, CommentaryModel? model) // todo Кривой до невозможности метод
+        public async Task<IActionResult> Details(Guid id, CommentaryModel? model) 
         {
             try
             {
@@ -125,22 +107,6 @@ namespace AspNetArticle.MvcApp.Controllers
             }
         }
 
-        //[Authorize]
-        //[HttpPost]
-        //public async Task<IActionResult> Search(SearchModel model)
-        //{
-        //    if (!string.IsNullOrEmpty(model.Text))
-        //    {
-        //        var articles = await _articleService.GetArticlesBySearchStringAsync(model.Text);
-
-        //        return RedirectToAction("Index", articles);
-        //    }
-            
-        //    return View();
-        //}
-
-
-
         //[HttpGet]
         //public async Task<IActionResult> Details(CommentaryModel model)
         //{
@@ -161,6 +127,5 @@ namespace AspNetArticle.MvcApp.Controllers
 
         //    return View();
         //}
-       
     }
 }

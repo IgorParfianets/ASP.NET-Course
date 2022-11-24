@@ -87,7 +87,7 @@ namespace AspNetArticle.MvcApp.Controllers
 
                     if (userId != null)
                     {
-                        var dto = new CommentDto()  //todo should be refactored maybe create separate EditModel or UpdateModel
+                        var dto = new CommentDto()  
                         {
                             Id = model.Id,
                             UserId = userId.Value,
@@ -114,17 +114,17 @@ namespace AspNetArticle.MvcApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(Guid id)
+        public async Task<IActionResult> Delete(Guid comment, Guid article)
         {
             try
             {
-                await _commentaryService.DeleteCommentById(id);
+                await _commentaryService.DeleteCommentById(comment);
 
-                return RedirectToAction("Index", "Article"); //todo need to make url string
+                return Redirect($"~/Article/Details/{article}"); //todo need to make url string
             }
             catch (Exception ex)
             {
-                Log.Error(ex, $"{nameof(Delete)} with Guid {id} method failed");
+                Log.Error(ex, $"{nameof(Delete)} with Guid {comment} method failed");
                 return BadRequest();
             }
         }

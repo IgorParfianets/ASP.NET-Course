@@ -10,111 +10,48 @@
 
     <h1 class="row-auto mt-5 mb-4">Профиль</h1>
     <hr/>
-        <div class="position-relative d-block col-2 col-md-12 mr-3 mr-md-0 flex-shrink-0 mb-3" style="z-index:4;">
+    <form>
+        <input asp-for="Id" hidden />
+        <div class="position-relative d-block mb-3" style="">
             <a class="tooltipped tooltipped-s d-block">
-                <img style="height: auto; width: 50%;" alt="" width="260" height="260"  src="~/image/DefaultAvatar.png">
-            <span class="position-absolute bottom-25 start-75 translate-middle badge rounded-pill bg-warning" data-bs-html="true" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Изменить аватар">
-                +
+                <img class="avatar" alt="" src="~/image/DefaultAvatar.png"> <!-- Сюда источник авы -->
+                <span class="position-absolute bottom-25 start-75 translate-middle badge rounded-pill bg-warning" data-bs-html="true" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Изменить аватар">
+                    +
                 </span>
             </a>
         </div>
 
-    <div class="user-status-container position-relative hide-sm hide-md"></div>
-    <div class="row container m-0 gy-1">
-        
-       
-        <div class="form-group">
-            <input asp-for="UserName" type="image" class="form-control form-control-sm"/>
-            <span asp-validation-for="UserName" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <input asp-for="Email" placeholder="Ваш e-mail" class="form-control form-control-sm" disabled/>
-        </div>
+        <div class="user-status-container position-relative hide-sm hide-md"></div>
+        <div class="row container m-0 gy-1">
 
 
-        <div class="form-group">
-            <input asp-for="UserName" placeholder="Повторите пароль" class="form-control form-control-sm"/>
-            <span asp-validation-for="UserName" class="text-danger"></span>
-        </div>
+            <div class="form-group">
+                <input asp-for="Avatar" type="image" class="form-control form-control-sm" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
 
-        <div class="form-group">
-            <label asp-for="Spam" class="form-check-label form-control-sm">Рассылка свежих новостей</label>
-            <input type="checkbox" asp-for="Spam" class="form-check-input mt-2" checked/>
+            <div class="form-group">
+                <input asp-for="Email" placeholder="Ваш e-mail" class="form-control form-control-sm" disabled />
+            </div>
+
+
+            <div class="form-group">
+                <input asp-for="UserName" placeholder="Повторите пароль" class="form-control form-control-sm" />
+                <span asp-validation-for="UserName" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Spam" class="form-check-label form-control-sm">Рассылка свежих новостей</label>
+                <input type="checkbox" asp-for="Spam" class="form-check-input mt-2" checked />
+            </div>
+            <hr />
+            <div class="form-group">
+                <button type="submit" class="btn btn-primary btn-sm w-100">Зарегистрироваться</button>
+            </div>
         </div>
-        <hr/>
-        <div class="form-group">
-            <button type="submit" class="btn btn-primary btn-sm w-100">Зарегистрироваться</button>
-        </div>
-    </div>
+    </form>
+
 </div>
-
-
-<form asp-controller="Account" asp-action="Edit" method="post">
-    <input asp-for="Id" hidden/>
-    <input asp-for="RoleId" hidden />
-    <div class="border col-md-4 offset-md-4 mt-5">
-        <div class="row">
-            <div class="mb-5">
-                <h1 class="text-center">Edit</h1>
-            </div>
-
-            <!-- For UserName -->
-            <div class="form-group row mb-3">
-                <div class="col-5">
-                    <label asp-for="UserName">UserName</label>
-
-                </div>
-                <div class="col-7">
-                    <input asp-for="UserName">
-                    <span asp-validation-for="UserName" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!-- For Email -->
-            <div class="form-group row mb-3">
-                <div class="col-5">
-                    <label asp-for="NewPassword">New Password</label>
-
-                </div>
-                <div class="col-7">
-                    <input asp-for="NewPassword">
-                    <span asp-validation-for="NewPassword" class="text-danger"></span>
-                </div>
-            </div>
-
-            <!-- For ConfirmPassword -->
-            <div class="mb-3 form-group row">
-                <div class="col-5">
-                    <label asp-for="ConfirmNewPassword">Confirm Password</label>
-
-                </div>
-                <div class="col-7">
-                    <input asp-for="ConfirmNewPassword">
-                    <span asp-validation-for="ConfirmNewPassword" class="text-danger"></span>
-                </div>
-
-            </div>
-            <!-- For Spam -->
-            <div class="mb-3 form-group gap-3">
-
-                <label asp-for="Spam">Spam</label>
-                <input type="checkbox" asp-for="Spam"/>
-            </div>
-            <!-- Button Submit -->
-            <div class="text-center row">
-
-                <button type="submit" class="btn btn-primary" style="width: 100px">Submit</button>
-                <a asp-controller="Home" asp-action="Index" class="btn btn-secondary" style="width: 100px">
-                    Back
-                </a>
-            </div>
-        </div>
-
-
-    </div>
-
-</form>
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />

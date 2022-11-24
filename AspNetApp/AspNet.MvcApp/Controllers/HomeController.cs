@@ -26,7 +26,8 @@ namespace AspNet.MvcApp.Controllers
             var articles = (await _articleService.GetAllArticlesAsync())
                 .OrderByDescending(art => art.Rate)
                 .Take(3)
-                .Select(art => _mapper.Map<ArticleModel>(art)).ToArray();
+                .Select(art => _mapper.Map<ArticleModel>(art))
+                .ToArray();
             
             return View(articles);
         }

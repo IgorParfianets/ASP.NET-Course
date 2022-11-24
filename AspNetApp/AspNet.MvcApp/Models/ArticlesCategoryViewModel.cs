@@ -7,7 +7,8 @@ namespace AspNetArticle.MvcApp.Models
     {
         public List<ArticleModel>? Articles { get; set; }
         public SelectList? Categories { get; set; }
-        public string? ArticleCategory { get; set; }
+        public string? SelectedCategory { get; set; } 
         public string? SearchString { get; set; }
+        public PageViewModel PageViewModel { get; set; }
     }
 }

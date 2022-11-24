@@ -4,7 +4,7 @@
     ViewData["Title"] = "Home Page";
 }
 
-<main class="bg-light m-5 p-5">
+<div class="bg-light m-5 p-5">
     <div class="d-flex justify-content-center">
         <h1>Топ-3 новостей</h1>
     </div>
@@ -16,11 +16,10 @@
         </div>
         <div class="carousel-inner">
 
-            <!-- не работает fixed -->
             <div class="carousel-item active">
                 <a asp-controller="Article" asp-action="Details" asp-route-id="@Model[0].Id">
                     <img src="@Model[0].ImageUrl" class="d-block w-100" alt="@Model[0].Title">
-                </a>
+                
                 <div class="carousel-caption d-none d-md-block">
                     <h1 class="top__news">@Model[0].Title</h1>
                     <p class="top__news">@Model[0].ShortDescription</p>
@@ -29,12 +28,13 @@
                     </div>
 
                 </div>
+                </a>
             </div>
 
             <div class="carousel-item">
                 <a asp-controller="Article" asp-action="Details" asp-route-id="@Model[1].Id">
                     <img src="@Model[1].ImageUrl" class="d-block w-100" alt="@Model[1].Title">
-                </a>
+                
                 <div class="carousel-caption d-none d-md-block">
                     <h1 class="top__news">@Model[1].Title</h1>
                     <p class="top__news">@Model[1].ShortDescription</p>
@@ -42,12 +42,13 @@
                         <strong class="bg-warning p-1 rounded mt-5">Рейтинг: @string.Format("{0:0.00}", @Model[1].Rate)</strong>
                     </div>
                 </div>
+                </a>
             </div>
 
             <div class="carousel-item">
                 <a asp-controller="Article" asp-action="Details" asp-route-id="@Model[2].Id">
                     <img src="@Model[2].ImageUrl" class="d-block w-100" alt="@Model[2].Title">
-                </a>
+                
                 <div class="carousel-caption d-none d-md-block">
                     <h1 class="top__news">@Model[2].Title</h1>
                     <p class="top__news">@Model[2].ShortDescription</p>
@@ -55,6 +56,7 @@
                         <strong class="bg-warning p-1 rounded mt-5">Рейтинг: @string.Format("{0:0.00}", @Model[2].Rate)</strong>
                     </div>
                 </div>
+                </a>
             </div>
 
         </div>
@@ -69,7 +71,4 @@
         </button>
 
     </div>
-    
-
-    
-</main>
+</div>

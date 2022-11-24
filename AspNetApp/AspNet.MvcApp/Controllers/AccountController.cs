@@ -168,7 +168,6 @@ public class AccountController : Controller
             Log.Error(ex, $"{nameof(CheckUserNameEditAccount)} with username {username} method failed");
             return BadRequest();
         }
-        
     }
 
     [HttpGet]
@@ -207,7 +206,7 @@ public class AccountController : Controller
             {
                 var dto = _mapper.Map<UserDto>(model);
                 dto.Email = userEmail;
-                dto.RoleName = await _roleService.GetRoleNameByIdAsync(model.RoleId);
+                //dto.RoleName = await _roleService.GetRoleNameByIdAsync(model.RoleName);
 
                 if (dto != null)
                 {

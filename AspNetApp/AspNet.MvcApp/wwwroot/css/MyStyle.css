@@ -55,12 +55,12 @@ input {
     color: #022255 !important;
 }
 
-/*input[type="email"]:focus,
+input[type="email"]:focus,
 input[type="password"]:focus,
 input[type="text"]:focus {
     box-shadow: 0 0 5px rgba(255, 228, 235, 242);
     border: 1px solid rgba(115, 84, 108, 115);
-}*/
+}
 
 p.a {
     color: black;
@@ -75,8 +75,10 @@ p.a {
 
 .show-pass {
     position: absolute;
-    top: 272px;
-    right: 655px;
+    top: 5%;
+    right: 8%;
+    /*top: 272px;
+    right: 655px;*/
 }
 
 .progress-bar-danger {
@@ -118,5 +120,13 @@ p.a {
 .top__news {
     color: white;
     text-shadow: 1px 1px 2px black;
+}
+
+.avatar {
+    width: 150px;
+    height: 150px; /* Ширина и высота */
+    border-radius: 50%; /* Превращаем в круг */
+     /* Параметры фона */
+    background-size: auto 150px; /* Высота фотографии равна высоте элемента */
 }
 

@@ -1,12 +1,13 @@
 ﻿@using Microsoft.AspNetCore.Mvc.TagHelpers
 @model AspNetArticle.MvcApp.Models.UserRegistrationViewModel
 
+
 @{
     ViewData["Title"] = "Registration";
 }
 
 
-<div class="col-auto container text-center w-25 mt-5 mb-5">
+<div class="col-auto container text-center w-25 p-1 mb-2 bg-light rounded">
 
     <h1 class="row-auto mt-5 mb-4">Регистрация</h1>
     <hr/>
@@ -31,7 +32,7 @@
         </div>
         
         <!--Here will be toggle-->
-        <div class="form-group">
+        <div class="form-group position-relative">
             <input asp-for="Password" id="password" placeholder="Придумайте пароль"class="form-control form-control-sm" />
 
             <span class="show-pass" onclick="toggle()">
@@ -69,13 +70,11 @@
             Уже есть аккаунт? Нажми <a asp-controller="Account" asp-action="Login" style="color:darkred">сюда</a>
         </div>
     </form>
-
-
 </div>
+
 <script src="https://kit.fontawesome.com/1c2c2462bf.js"></script>
 <script src="~/js/progress-streght-bar.js"></script>
 
 @section Scripts{
     <partial name="_ValidationScriptsPartial" />
 }
-<!-- Можно попробовать вместо form-group потестить form-floating ->

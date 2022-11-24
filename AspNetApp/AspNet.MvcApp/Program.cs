@@ -135,20 +135,5 @@ namespace AspNet.MvcApp
 
             app.Run();
         }
-
-        /*
-         * todo add Authenticate => Claims => Roles
-         * todo add Identity? (SignInManager and UserManager)
-         * todo implement Edit for user ( private room ) => add Image/Ava
-         * todo refactor names / ASYNC / try-catch in controllers
-         * todo edit entities some add/some remove
-         *
-         * todo implement Logger Serilog
-         *
-         *
-         *
-         * todo Fix Onliner news remove incut + reduce images in all news
-         * todo watch lecture JS Web and make something with Authentication
-         */
     }
 }

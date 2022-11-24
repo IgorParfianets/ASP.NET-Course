@@ -5,25 +5,39 @@
     @if (User.Identity.IsAuthenticated)
     {
 
-        <div class="d-inline-flex gap-3">
+        <div class="pt-1 pe-4">
             @if (User.IsInRole("Admin"))
             {
-                <a class="py-2 d-none d-md-inline-block ms-3" asp-action="PersonalArea" asp-controller="Admin">
-                    Привет @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value
-                </a>
+                <div class="dropdown">
+                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Привет @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a asp-controller="Admin" asp-action="Users" class="dropdown-item">Пользователи</a></li>
+                        <li><a asp-controller="Admin" asp-action="Articles" class="dropdown-item">Новости</a></li>
+                        <li><a asp-controller="Admin" asp-action="Comments" class="dropdown-item">Коментарии</a></li>
+                        <li><a href="/jobs" class="dropdown-item">Задачи</a></li>
+                    </ul>
+                </div>
             }
             else
             {
-                <a class="py-2 d-none d-md-inline-block ms-3" asp-action="Edit" asp-controller="Account">
-                    Hello @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value
-                </a>
+                <div class="dropdown">
+                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                        Привет @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value
+                    </button>
+                    <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
+                        <li><a class="dropdown-item" asp-action="Edit" asp-controller="Account">Настройки</a></li>
+                        <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выход</a></li>
+                        <li><a asp-controller="" asp-action="" class="dropdown-item">Что то вставить</a></li>
+                    </ul>
+                </div>
             }
-            <a class="py-2 d-none d-md-inline-block me-3 " asp-controller="Account" asp-action="Logout">Выход</a>
         </div>
     }
     else
     {
-        <div class="d-inline-flex me-5">
+        <div class="me-5">
             <a class="py-2 d-none d-md-inline-block" asp-action="Login" asp-controller="Account">Вход</a>
         </div>
     }

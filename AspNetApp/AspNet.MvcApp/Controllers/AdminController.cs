@@ -31,11 +31,6 @@ namespace AspNetArticle.MvcApp.Controllers
             _mapper = mapper;
         }
 
-        [HttpGet]
-        public IActionResult PersonalArea()
-        {
-            return View();
-        }
 
         [HttpGet]
         public async Task<IActionResult> Users()
@@ -98,7 +93,6 @@ namespace AspNetArticle.MvcApp.Controllers
             }
         }
 
-
         [HttpGet]
         public async Task<IActionResult> Articles()
         {
@@ -117,7 +111,6 @@ namespace AspNetArticle.MvcApp.Controllers
                 return BadRequest();
             }
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Comments()

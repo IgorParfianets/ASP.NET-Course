@@ -84,6 +84,7 @@ namespace AspNetArticle.Business.Services
                 .Where(article =>
                     article.ArticleId.Equals(id))
                 .Include(com => com.User)
+                .Include(com => com.Article)
                 .Select(cmt =>
                     _mapper.Map<CommentaryWithUserDto>(cmt))
                 .ToListAsync();
