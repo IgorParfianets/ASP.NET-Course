@@ -2,7 +2,7 @@
 
 namespace AspNetArticle.MvcApp.Models
 {
-    public class AdminPageUserModel
+    public class AdminPageUserViewModel
     {
         public UserModel User { get; set; }
         public List<CommentDto> Comments { get; set; }

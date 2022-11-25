@@ -2,7 +2,6 @@
 using AspNetArticle.Database;
 using AspNetArticle.Database.Entities;
 using Microsoft.EntityFrameworkCore;
-using static System.Net.Mime.MediaTypeNames;
 
 namespace AspNetArticle.Data.Repositories
 {

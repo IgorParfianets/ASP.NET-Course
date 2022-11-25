@@ -44,7 +44,7 @@
                                 <a asp-controller="Commentary" asp-action="Update" asp-route-id="@comment.CommentId" class="btn-sm btn-outline-success"><small>Редактировать</small></a>
                             </div>
                             <div>
-                                <a asp-controller="Commentary" asp-action="Delete" asp-route-comment="@comment.CommentId" asp-route-article="@comment.ArticleId" class="btn-sm btn-outline-danger"><small>Удалить</small></a>
+                                <a asp-controller="Commentary" asp-action="Delete" asp-route-id="@comment.CommentId" class="btn-sm btn-outline-danger"><small>Удалить</small></a>
                             </div>
                         }
                     }

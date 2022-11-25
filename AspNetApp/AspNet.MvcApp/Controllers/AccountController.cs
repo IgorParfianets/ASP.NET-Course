@@ -128,44 +128,34 @@ public class AccountController : Controller
     }
 
     [HttpPost]
-    public async Task<IActionResult> CheckUserNameRegistrationAccount(string username)   
-    {
-        try
-        {
-            if (!string.IsNullOrEmpty(username))
-            {
-                var isExistName = await _userService.IsExistUserNameAsync(username);
-
-                if (isExistName)
-                    return Ok(false);
-            }
-            return Ok(true);
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, $"{nameof(CheckUserNameRegistrationAccount)} with username {username} method failed");
-            return BadRequest();
-        }
-    }
-
-    [HttpPost]
-    public async Task<IActionResult> CheckUserNameEditAccount(string username)
-    {
+    public async Task<IActionResult> CheckUsername(string username)
+  {
         try
         {
             if (!string.IsNullOrEmpty(username))
             {
                 var email = User.Identity.Name;
-                var user = await _userService.GetUserByEmailAsync(email);
 
-                if (user.UserName.Equals(username))
+                if(email != null)
+                {
+                    var currentUsername = (await _userService.GetUserByEmailAsync(email))?.UserName;
+
+                    bool isSameUser = currentUsername != null && currentUsername.Equals(username);
+
+                    if (isSameUser)
+                        return Ok(true);
+                }
+               
+                bool isUsernameExist = await _userService.IsExistUsernameAsync(username);
+
+                if (isUsernameExist)
                     return Ok(false);
             }
             return Ok(true);
         }
         catch (Exception ex)
         {
-            Log.Error(ex, $"{nameof(CheckUserNameEditAccount)} with username {username} method failed");
+            Log.Error(ex, $"{nameof(CheckUsername)} with username {username} method failed");
             return BadRequest();
         }
     }
@@ -206,7 +196,6 @@ public class AccountController : Controller
             {
                 var dto = _mapper.Map<UserDto>(model);
                 dto.Email = userEmail;
-                //dto.RoleName = await _roleService.GetRoleNameByIdAsync(model.RoleName);
 
                 if (dto != null)
                 {

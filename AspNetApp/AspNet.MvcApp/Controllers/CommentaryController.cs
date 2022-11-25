@@ -15,14 +15,17 @@ namespace AspNetArticle.MvcApp.Controllers
         private readonly IMapper _mapper;
         private readonly IUserService _userService;
         private readonly ICommentaryService _commentaryService;
+        private readonly IArticleService _articleService;
 
-        public CommentaryController(IMapper mapper, 
+        public CommentaryController(IMapper mapper,
             IUserService userService,
-            ICommentaryService commentaryService)
+            ICommentaryService commentaryService,
+            IArticleService articleService)
         {
             _mapper = mapper;
             _userService = userService;
             _commentaryService = commentaryService;
+            _articleService = articleService;
         }
 
         [HttpPost]
@@ -30,7 +33,7 @@ namespace AspNetArticle.MvcApp.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (model != null)
                 {
                     var userEmail = User.Identity.Name;
                     var userId = (await _userService.GetUserByEmailAsync(userEmail))?.Id;
@@ -44,7 +47,7 @@ namespace AspNetArticle.MvcApp.Controllers
                         var result = await _commentaryService.CreateCommentAsync(dto);
                         if (result > 0)
                         {
-                            return Redirect($"~/Article/Details/{model.ArticleId}"); //todo need to make url string
+                            return Redirect($"~/Article/Details/{model.ArticleId}"); 
                         }
                     }
                 }
@@ -81,7 +84,7 @@ namespace AspNetArticle.MvcApp.Controllers
         {
             try
             {
-                if (ModelState.IsValid)
+                if (model != null)
                 {
                     var userId = (await _userService.GetUserByIdAsync(model.UserId))?.Id;
 
@@ -100,7 +103,7 @@ namespace AspNetArticle.MvcApp.Controllers
                         var result = await _commentaryService.UpdateCommentAsync(dto);
                         if (result > 0)
                         {
-                            return Redirect($"~/Article/Details/{model.ArticleId}"); //todo need to make url string
+                            return Redirect($"~/Article/Details/{model.ArticleId}"); 
                         }
                     }
                 }
@@ -114,17 +117,25 @@ namespace AspNetArticle.MvcApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Delete(Guid comment, Guid article)
+        public async Task<IActionResult> Delete(Guid id)
         {
             try
             {
-                await _commentaryService.DeleteCommentById(comment);
+                var articleId = await _articleService.GetArticleIdByCommentId(id);
 
-                return Redirect($"~/Article/Details/{article}"); //todo need to make url string
+                if(articleId == null)
+                {
+                    Log.Error( $"{nameof(Delete)} article {articleId} is not exist");
+                    throw new ArgumentException($"Article {articleId} is not exist");
+                }
+
+                await _commentaryService.DeleteCommentById(id);
+
+                return Redirect($"~/Article/Details/{articleId}"); 
             }
             catch (Exception ex)
             {
-                Log.Error(ex, $"{nameof(Delete)} with Guid {comment} method failed");
+                Log.Error(ex, $"{nameof(Delete)} with Guid {id} method failed");
                 return BadRequest();
             }
         }

@@ -17,7 +17,7 @@
         <div class="form-floating">
             <textarea asp-for="@Model.Description" placeholder="Комментарий" class="form-control" id="floatingTextarea2" style="height: 100px"></textarea>
             <label for="floatingTextarea2"><small>Ваш комментарий:</small></label>
-            <span asp-validation-for="@Model.Description" class="validate"></span>
+            @*<span asp-validation-for="@Model.Description" class="validate"></span>*@
         </div>
         <div class="form-group mt-2 p-3">
             <button type="submit" class="btn btn-sm btn-primary">Отправить</button>
@@ -37,7 +37,7 @@ else
         <div class="form-floating">
             <textarea asp-for="@Model.Description" placeholder="Комментарий" class="form-control" id="floatingTextarea2" style="height: 100px"></textarea>
             <label for="floatingTextarea2"><small>Ваш комментарий:</small></label>
-            <span asp-validation-for="@Model.Description" class="validate"></span>
+            @*<span asp-validation-for="@Model.Description" class="validate"></span>*@
         </div>
         <div class="form-group mt-2 p-3">
             <button type="submit" class="btn btn-sm btn-primary">Обновить</button>

@@ -53,17 +53,17 @@ namespace AspNetArticle.Business.Services
         {
             var userAllComments = await _unitOfWork.Comments
                 .Get()
-                .Where(user => 
-                    user.UserId.Equals(id))
+                .Where(com => 
+                    com.UserId.Equals(id))
                 .Include(com => com.Article)
-                .Select(cmt => 
-                    _mapper.Map<CommentDto>(cmt))
+                .Select(com => 
+                    _mapper.Map<CommentDto>(com))
                 .ToListAsync();
 
             return userAllComments;
         }
 
-        public async Task<IEnumerable<CommentDto>> GelAllCommentsAsync()
+        public async Task<IEnumerable<CommentDto>> GelAllCommentsAsync() // not implement for CQS
         {
             return await _unitOfWork.Comments
                 .Get()
@@ -71,20 +71,15 @@ namespace AspNetArticle.Business.Services
                 .Include(com => com.Article)
                 .Select(com => _mapper.Map<CommentDto>(com))
                 .ToListAsync();
-
-            //return (await _unitOfWork.Comments.GetAllAsync())
-            //    .Select(com => _mapper.Map<CommentDto>(com))
-            //    .ToList();
         }
 
-        public async Task<IEnumerable<CommentaryWithUserDto>> GetAllCommentsWithUsersByArticleIdAsync(Guid id) // For Details
+        public async Task<IEnumerable<CommentaryWithUserDto>> GetAllCommentsWithUsersByArticleIdAsync(Guid id) // For Details // not implement for CQS
         {
             var articleAllComments = await _unitOfWork.Comments
                 .Get()
                 .Where(article =>
                     article.ArticleId.Equals(id))
                 .Include(com => com.User)
-                .Include(com => com.Article)
                 .Select(cmt =>
                     _mapper.Map<CommentaryWithUserDto>(cmt))
                 .ToListAsync();
@@ -102,7 +97,7 @@ namespace AspNetArticle.Business.Services
             await _unitOfWork.Commit();
         }
 
-        public async Task<IEnumerable<CommentDto>> GetCommentsByUserIdAndArticleId(Guid? article, Guid? user)
+        public async Task<IEnumerable<CommentDto>> GetCommentsByUserIdAndArticleId(Guid? article, Guid? user) // not implement for CQS
         {
             var entities = _unitOfWork.Comments.Get();
 

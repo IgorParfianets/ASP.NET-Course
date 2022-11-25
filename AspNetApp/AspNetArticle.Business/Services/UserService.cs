@@ -15,7 +15,9 @@ public class UserService : IUserService
     private readonly IMapper _mapper;
     private readonly IConfiguration _configuration;
 
-    public UserService(IMapper mapper, IUnitOfWork unitOfWork, IConfiguration configuration)
+    public UserService(IMapper mapper, 
+        IUnitOfWork unitOfWork, 
+        IConfiguration configuration)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
@@ -47,7 +49,7 @@ public class UserService : IUserService
 
         var patchList = new List<PatchModel>();
 
-        if (userDto != null)
+        if (userDto != null && entity != null)
         {
             if (!userDto.UserName
                     .Equals(entity.UserName))
@@ -82,7 +84,6 @@ public class UserService : IUserService
         return await _unitOfWork.Commit();
     }
 
-    //------------------------------------------  Login
     public async Task<bool> CheckUserByEmailAndPasswordAsync(string email, string password)
     {
         var user = await _unitOfWork.Users
@@ -99,8 +100,7 @@ public class UserService : IUserService
         return false;
     }
 
-    //------------------------------------------  CheckEmail and UserName is Exist
-    public async Task<bool> IsExistUserEmailAsync(string email) // для Remote (Check Email)
+    public async Task<bool> IsExistUserEmailAsync(string email) 
     {
         return await _unitOfWork.Users
             .Get()
@@ -108,12 +108,12 @@ public class UserService : IUserService
                 user.Email.Equals(email));
     }
 
-    public async Task<bool> IsExistUserNameAsync(string name)
+    public async Task<bool> IsExistUsernameAsync(string newUsername) 
     {
         return await _unitOfWork.Users
-            .Get()
-            .AnyAsync(user => 
-                user.UserName.Equals(name));
+          .Get()
+          .AnyAsync(user =>
+             user.UserName.Equals(newUsername));
     }
 
     public async Task<UserDto> GetUserByEmailAsync(string email)
@@ -135,13 +135,9 @@ public class UserService : IUserService
             .Select(user => _mapper.Map<UserDto>(user))
             .ToListAsync();
 
-            //.Select(user => _mapper.Map<UserDto>(user))
-            //.ToArray();
-
         return users;
     }
 
-    //---------------------------------- For Hashing Password
     private string CreateMd5(string password)
     {
         var passwordSalt = _configuration["Secrets:PasswordSalt"];

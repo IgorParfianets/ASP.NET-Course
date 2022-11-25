@@ -40,13 +40,13 @@ namespace AspNetArticle.MvcApp.Controllers
                 var users = (await _userService.GetAllUsersAsync())
                     .Select(dto => _mapper.Map<UserModel>(dto));
 
-                List<AdminPageUserModel> listUsersForModel = new List<AdminPageUserModel>();
+                List<AdminPageUserViewModel> listUsersForModel = new List<AdminPageUserViewModel>();
 
                 foreach (var user in users)
                 {
                     var userComments = (await _commentaryService.GetAllCommentsByUserIdAsync(user.Id)).ToList();
 
-                    var userWithComment = new AdminPageUserModel()
+                    var userWithComment = new AdminPageUserViewModel()
                     {
                         User = user,
                         Comments = userComments
@@ -72,7 +72,7 @@ namespace AspNetArticle.MvcApp.Controllers
             try
             {
                 var user = _mapper.Map<UserModel>(await _userService.GetUserByIdAsync(id));
-                var model = new AdminPageUserModel();
+                var model = new AdminPageUserViewModel();
 
                 if (user != null)
                 {

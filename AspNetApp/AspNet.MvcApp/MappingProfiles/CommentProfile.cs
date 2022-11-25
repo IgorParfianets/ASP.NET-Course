@@ -79,10 +79,7 @@ public class CommentProfile : Profile
                     => opt.MapFrom(comment => comment.User.AccountCreated))
             .ForMember(comment => comment.IsEdited,
                 opt
-                    => opt.MapFrom(dto => dto.IsEdited))
-            .ForMember(comment => comment.ArticleId,
-                opt
-                    => opt.MapFrom(dto => dto.ArticleId));
+                    => opt.MapFrom(dto => dto.IsEdited));
 
 
         CreateMap<CommentaryModel, CommentDto>()

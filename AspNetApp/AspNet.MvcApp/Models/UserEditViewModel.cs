@@ -8,12 +8,10 @@ public class UserEditViewModel
 {
     public Guid Id { get; set; }
 
-    public string? Avatar { get; set; }
-
     [Required(ErrorMessage = "Введите имя")]
     [MaxLength(12, ErrorMessage = "Слишком длинное имя. Не более 12 символов")]
     [MinLength(2, ErrorMessage = "Слишком короткое имя. Не менее 2 символов")]
-    [Remote("CheckUserNameEditAccount",
+    [Remote("CheckUsername",
         "Account",
         HttpMethod = WebRequestMethods.Http.Post,
         ErrorMessage = "Это имя уже занято")]
@@ -29,4 +27,5 @@ public class UserEditViewModel
     public string ConfirmNewPassword { get; set; }
     public string RoleName { get; set; }
     public bool Spam { get; set; }
+    public byte[] Avatar { get; set; }
 }

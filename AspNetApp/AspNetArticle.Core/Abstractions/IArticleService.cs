@@ -4,12 +4,13 @@ namespace AspNetArticle.Core.Abstractions;
 
 public interface IArticleService
 {
-    Task<ArticleDto> GetArticleByIdAsync(Guid id);
-    Task<IEnumerable<ArticleDto>> GetAllArticlesAsync();
+    Task<ArticleDto> GetArticleByIdAsync(Guid id); // +
+    Task<IEnumerable<ArticleDto>> GetAllArticlesAsync(); // +
     Task<List<ArticleDto>> GetArticlesByNameAndSourcesAsync(string? name, Guid? category); // todo remove unnecessary method
-    Task<IEnumerable<ArticleDto>> GetArticlesByCategoryAndSearchStringAsync(string category, string searchString);
-    Task RemoveArticleToArchiveByIdAsync(Guid id);
-    Task<IEnumerable<string>> GetArticlesCategoryAsync();
+    Task<IEnumerable<ArticleDto>> GetArticlesByCategoryAndSearchStringAsync(string category, string searchString); // Home/Index
+    Task RemoveArticleToArchiveByIdAsync(Guid id); // unnecessary because no have archive
+    Task<IEnumerable<string>> GetArticlesCategoryAsync(); // +
+    Task<Guid?> GetArticleIdByCommentId(Guid commentId); // +
 
 
     Task AggregateArticlesFromExternalSourcesAsync();

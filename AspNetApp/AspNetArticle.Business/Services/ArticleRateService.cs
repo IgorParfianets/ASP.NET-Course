@@ -1,5 +1,4 @@
 ﻿using AspNetArticle.Data.Abstractions;
-using AutoMapper;
 using System.Net.Http.Json;
 using AspNetSample.Business.Models;
 using AspNetSample.Core;
@@ -8,12 +7,7 @@ using Microsoft.Extensions.Configuration;
 using AspNetArticle.Core.Abstractions;
 using HtmlAgilityPack;
 using System.Text.RegularExpressions;
-using Microsoft.Extensions.Logging;
 using Serilog;
-using AspNetArticle.Database.Entities;
-
-//using System.Text.Json.Nodes;
-//using Microsoft.EntityFrameworkCore.SqlServer.Query.Internal;
 
 namespace AspNetArticle.Business.Services
 {

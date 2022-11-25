@@ -10,8 +10,6 @@ using System.Xml;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 
-//using System.Xml.Linq;
-
 namespace AspNetArticle.Business.Services;
 
 public class ArticleService : IArticleService
@@ -19,6 +17,7 @@ public class ArticleService : IArticleService
     private readonly IUnitOfWork _unitOfWork;
     private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
+
     public ArticleService(IMapper mapper, 
         IUnitOfWork unitOfWork, 
         IConfiguration configuration)
@@ -77,22 +76,18 @@ public class ArticleService : IArticleService
         await _unitOfWork.Commit();
     }
 
-    public async Task<IEnumerable<ArticleDto>> GetArticlesByCategoryAndSearchStringAsync(string category, string searchString)
+    public async Task<IEnumerable<ArticleDto>> GetArticlesByCategoryAndSearchStringAsync(string selectedCategory, string searchString)
     {
         var articles =  _unitOfWork.Articles.Get();
-
-        var categories =  _unitOfWork.Articles
-            .Get()
-            .Select(art => art.Category);
 
         if (!string.IsNullOrEmpty(searchString))
         {
             articles = articles.Where(art => art.Title.Contains(searchString));
         }
 
-        if (!string.IsNullOrEmpty(category))
+        if (!string.IsNullOrEmpty(selectedCategory))
         {
-            articles = articles.Where(art => art.Category.Equals(category));
+            articles = articles.Where(art => art.Category.Equals(selectedCategory));
         }
 
         var result = (await articles.ToListAsync())
@@ -111,6 +106,14 @@ public class ArticleService : IArticleService
             .ToListAsync();
 
         return categories;
+    }
+
+    public async Task<Guid?> GetArticleIdByCommentId(Guid commentId)
+    {
+        return (await _unitOfWork.Comments
+            .Get()
+            .FirstOrDefaultAsync(com => com.Id.Equals(commentId)))
+            ?.ArticleId;
     }
 
     public async Task AggregateArticlesFromExternalSourcesAsync()
@@ -175,6 +178,7 @@ public class ArticleService : IArticleService
                 var entities = list.Where(dto => !oldArticleUrls.Contains(dto.SourceUrl))
                     .Select(dto => _mapper.Map<Article>(dto)).ToArray();
 
+                // Command AddRangeArticlesCommand
                 await _unitOfWork.Articles.AddRangeAsync(entities);
                 await _unitOfWork.Commit();
             }
@@ -195,12 +199,12 @@ public class ArticleService : IArticleService
     
     private async Task AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync(Guid sourceId)
     {
-        var articlesWithEmptyTextIds = _unitOfWork.Articles.Get()
+        var articlesIdWithEmptyTextIds = _unitOfWork.Articles.Get()
             .Where(article => article.SourceId.Equals(sourceId) && string.IsNullOrEmpty(article.Text))
             .Select(article => article.Id)
             .ToList();
 
-        foreach (var articleId in articlesWithEmptyTextIds)
+        foreach (var articleId in articlesIdWithEmptyTextIds)
         {
             await AddArticleTextToArticlesOnlinerAsync(articleId);
         }

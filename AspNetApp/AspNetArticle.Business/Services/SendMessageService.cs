@@ -2,12 +2,9 @@
 using AspNetArticle.Business.Models;
 using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Data.Abstractions;
-using AspNetArticle.Database.Entities;
-using AutoMapper;
 using MailKit.Net.Smtp;
 using MailKit.Security;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Options;
 using MimeKit;
 using Serilog;

@@ -9,7 +9,7 @@ public class UserRegistrationViewModel
     [Required(ErrorMessage = "Введите имя")]
     [MaxLength(12, ErrorMessage = "Слишком длинное имя. Не более 12 символов")]
     [MinLength(2, ErrorMessage = "Слишком короткое имя. Не менее 2 символов")]
-    [Remote("CheckUserNameRegistrationAccount",
+    [Remote("CheckUsername",
         "Account",
         HttpMethod = WebRequestMethods.Http.Post,
         ErrorMessage = "Пользователь с таким именем уже существует")]

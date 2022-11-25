@@ -4,7 +4,6 @@
     {
         public Guid CommentId { get; set; }
         public Guid UserId { get; set; }
-        public Guid ArticleId { get; set; }
         public string CommentDescription { get; set; }
         public DateTime PublishedDate { get; set; }
         public string Username { get; set; }

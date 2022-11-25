@@ -15,7 +15,7 @@
         <form asp-controller="Article" asp-action="Index" method="get" class="d-flex me-3 ms-5">
 
             <select class="me-2 rounded-1" id="show-categories" asp-for="SelectedCategory" asp-items="Model.Categories">
-                <option value="">@(Model.SelectedCategory ?? "Все")</option>
+                <option value="">Все</option>
             </select>
 
             <input asp-for="SearchString" class="form-control form-control-sm me-2" type="search" placeholder="Поиск новостей" aria-label="Search">
@@ -70,5 +70,3 @@ else
 {
     <h2>На данный момент новостей нет</h2>
 }
-<!-- page-url-company="(Model.SelectedCategory)-->
-<!-- page-url-company="(Model.SearchString)-->

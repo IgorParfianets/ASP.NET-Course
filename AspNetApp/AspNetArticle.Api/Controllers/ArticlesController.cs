@@ -1,6 +1,7 @@
 ﻿using AspNetArticle.Api.Models.Request;
 using AspNetArticle.Core.Abstractions;
 using AutoMapper;
+using MediatR;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -11,18 +12,22 @@ namespace AspNetArticle.Api.Controllers
     public class ArticlesController : ControllerBase
     {
         private readonly IArticleService _articleService;
+        private readonly IMediator mediator;
         private readonly IMapper _mapper;
 
-        public ArticlesController(IArticleService articleService, IMapper mapper)
+        public ArticlesController(IArticleService articleService, 
+            IMapper mapper, 
+            IMediator mediator)
         {
             _articleService = articleService;
             _mapper = mapper;
+            this.mediator = mediator;
         }
 
-        [HttpGet]
+        [HttpGet] 
         public async Task<IActionResult> GetArticles([FromQuery] GetArticlesRequestModel? model) // Having injected filter by Title and Source(onliner ...)
         {
-            var articles = await _articleService.GetArticlesByNameAndSourcesAsync(model?.Name, model?.SourceId);
+            var articles = await _articleService.GetArticlesByNameAndSourcesAsync(model?.Name, model?.SourceId); // need replace method
 
             return Ok(articles);
         }

@@ -57,8 +57,8 @@ public class Repository<T> : IRepository<T> where T : class, IBaseEntity
 
     public virtual async Task<T?> GetByIdAsync(Guid id)
     {
-        return await DbSet.AsNoTracking()
-            .FirstOrDefaultAsync(entiry => entiry.Id.Equals(id));
+        return await DbSet.FirstOrDefaultAsync(entiry => entiry.Id.Equals(id));
+
     }
 
     //Update
