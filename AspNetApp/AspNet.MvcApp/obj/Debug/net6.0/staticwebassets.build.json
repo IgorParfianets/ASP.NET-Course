@@ -1,6 +1,6 @@
 {
   "Version": 1,
-  "Hash": "F6XYbIIjaGpBvRLdass8PySDY+TaotC/FMyuJsLxG6c=",
+  "Hash": "PmvVIjhDiiVrg307YjgpjGTsFhv50j13XM0lf2P4PNs=",
   "Source": "AspNetArticle.MvcApp",
   "BasePath": "_content/AspNetArticle.MvcApp",
   "Mode": "Default",
@@ -969,6 +969,23 @@
       "OriginalItemSpec": "wwwroot\\image\\world-news.png"
     },
     {
+      "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\js\\add-avatar.js",
+      "SourceId": "AspNetArticle.MvcApp",
+      "SourceType": "Discovered",
+      "ContentRoot": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\",
+      "BasePath": "_content/AspNetArticle.MvcApp",
+      "RelativePath": "js/add-avatar.js",
+      "AssetKind": "All",
+      "AssetMode": "All",
+      "AssetRole": "Primary",
+      "RelatedAsset": "",
+      "AssetTraitName": "",
+      "AssetTraitValue": "",
+      "CopyToOutputDirectory": "Never",
+      "CopyToPublishDirectory": "PreserveNewest",
+      "OriginalItemSpec": "wwwroot\\js\\add-avatar.js"
+    },
+    {
       "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\js\\add-favourite-article.js",
       "SourceId": "AspNetArticle.MvcApp",
       "SourceType": "Discovered",
@@ -986,12 +1003,12 @@
       "OriginalItemSpec": "wwwroot\\js\\add-favourite-article.js"
     },
     {
-      "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\js\\authentication.js",
+      "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\js\\change-password.js",
       "SourceId": "AspNetArticle.MvcApp",
       "SourceType": "Discovered",
       "ContentRoot": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\",
       "BasePath": "_content/AspNetArticle.MvcApp",
-      "RelativePath": "js/authentication.js",
+      "RelativePath": "js/change-password.js",
       "AssetKind": "All",
       "AssetMode": "All",
       "AssetRole": "Primary",
@@ -1000,7 +1017,7 @@
       "AssetTraitValue": "",
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\js\\authentication.js"
+      "OriginalItemSpec": "wwwroot\\js\\change-password.js"
     },
     {
       "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\js\\progress-streght-bar.js",
@@ -1018,57 +1035,6 @@
       "CopyToOutputDirectory": "Never",
       "CopyToPublishDirectory": "PreserveNewest",
       "OriginalItemSpec": "wwwroot\\js\\progress-streght-bar.js"
-    },
-    {
-      "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\js\\show-categories.js",
-      "SourceId": "AspNetArticle.MvcApp",
-      "SourceType": "Discovered",
-      "ContentRoot": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\",
-      "BasePath": "_content/AspNetArticle.MvcApp",
-      "RelativePath": "js/show-categories.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\js\\show-categories.js"
-    },
-    {
-      "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\js\\site.js",
-      "SourceId": "AspNetArticle.MvcApp",
-      "SourceType": "Discovered",
-      "ContentRoot": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\",
-      "BasePath": "_content/AspNetArticle.MvcApp",
-      "RelativePath": "js/site.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\js\\site.js"
-    },
-    {
-      "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\js\\table-button.js",
-      "SourceId": "AspNetArticle.MvcApp",
-      "SourceType": "Discovered",
-      "ContentRoot": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\",
-      "BasePath": "_content/AspNetArticle.MvcApp",
-      "RelativePath": "js/table-button.js",
-      "AssetKind": "All",
-      "AssetMode": "All",
-      "AssetRole": "Primary",
-      "RelatedAsset": "",
-      "AssetTraitName": "",
-      "AssetTraitValue": "",
-      "CopyToOutputDirectory": "Never",
-      "CopyToPublishDirectory": "PreserveNewest",
-      "OriginalItemSpec": "wwwroot\\js\\table-button.js"
     },
     {
       "Identity": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNet.MvcApp\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",

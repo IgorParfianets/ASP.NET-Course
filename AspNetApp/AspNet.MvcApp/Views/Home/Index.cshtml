@@ -14,52 +14,57 @@
             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="1" aria-label="Топ 2"></button>
             <button type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide-to="2" aria-label="Топ 3"></button>
         </div>
-        <div class="carousel-inner">
 
-            <div class="carousel-item active">
-                <a asp-controller="Article" asp-action="Details" asp-route-id="@Model[0].Id">
-                    <img src="@Model[0].ImageUrl" class="d-block w-100" alt="@Model[0].Title">
-                
-                <div class="carousel-caption d-none d-md-block">
-                    <h1 class="top__news">@Model[0].Title</h1>
-                    <p class="top__news">@Model[0].ShortDescription</p>
-                    <div class="d-flex justify-content-end">
-                        <strong class="bg-warning p-1 rounded mt-5">Рейтинг: @string.Format("{0:0.00}", @Model[0].Rate)</strong>
-                    </div>
+        @if(Model != null){
 
+            <div class="carousel-inner">
+
+                <div class="carousel-item active">
+                    <a asp-controller="Article" asp-action="Details" asp-route-id="@Model[0].Id">
+                        <img src="@Model[0].ImageUrl" class="d-block w-100" alt="@Model[0].Title">
+
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="top__news">@Model[0].Title</h1>
+                            <p class="top__news">@Model[0].ShortDescription</p>
+                            <div class="d-flex justify-content-end">
+                                <strong class="bg-warning p-1 rounded mt-5">Рейтинг: @string.Format("{0:0.00}", @Model[0].Rate)</strong>
+                            </div>
+
+                        </div>
+                    </a>
                 </div>
-                </a>
-            </div>
 
-            <div class="carousel-item">
-                <a asp-controller="Article" asp-action="Details" asp-route-id="@Model[1].Id">
-                    <img src="@Model[1].ImageUrl" class="d-block w-100" alt="@Model[1].Title">
-                
-                <div class="carousel-caption d-none d-md-block">
-                    <h1 class="top__news">@Model[1].Title</h1>
-                    <p class="top__news">@Model[1].ShortDescription</p>
-                    <div class="d-flex justify-content-end">
-                        <strong class="bg-warning p-1 rounded mt-5">Рейтинг: @string.Format("{0:0.00}", @Model[1].Rate)</strong>
-                    </div>
+                <div class="carousel-item">
+                    <a asp-controller="Article" asp-action="Details" asp-route-id="@Model[1].Id">
+                        <img src="@Model[1].ImageUrl" class="d-block w-100" alt="@Model[1].Title">
+
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="top__news">@Model[1].Title</h1>
+                            <p class="top__news">@Model[1].ShortDescription</p>
+                            <div class="d-flex justify-content-end">
+                                <strong class="bg-warning p-1 rounded mt-5">Рейтинг: @string.Format("{0:0.00}", @Model[1].Rate)</strong>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-                </a>
-            </div>
 
-            <div class="carousel-item">
-                <a asp-controller="Article" asp-action="Details" asp-route-id="@Model[2].Id">
-                    <img src="@Model[2].ImageUrl" class="d-block w-100" alt="@Model[2].Title">
-                
-                <div class="carousel-caption d-none d-md-block">
-                    <h1 class="top__news">@Model[2].Title</h1>
-                    <p class="top__news">@Model[2].ShortDescription</p>
-                    <div class="d-flex justify-content-end">
-                        <strong class="bg-warning p-1 rounded mt-5">Рейтинг: @string.Format("{0:0.00}", @Model[2].Rate)</strong>
-                    </div>
+                <div class="carousel-item">
+                    <a asp-controller="Article" asp-action="Details" asp-route-id="@Model[2].Id">
+                        <img src="@Model[2].ImageUrl" class="d-block w-100" alt="@Model[2].Title">
+
+                        <div class="carousel-caption d-none d-md-block">
+                            <h1 class="top__news">@Model[2].Title</h1>
+                            <p class="top__news">@Model[2].ShortDescription</p>
+                            <div class="d-flex justify-content-end">
+                                <strong class="bg-warning p-1 rounded mt-5">Рейтинг: @string.Format("{0:0.00}", @Model[2].Rate)</strong>
+                            </div>
+                        </div>
+                    </a>
                 </div>
-                </a>
-            </div>
 
-        </div>
+            </div>
+        }
+        
 
         <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleCaptions" data-bs-slide="prev">
             <span class="carousel-control-prev-icon" aria-hidden="true"></span>

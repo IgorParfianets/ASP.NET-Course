@@ -14,5 +14,6 @@ public class UserDto
     public string RoleName { get; set; }
     public DateTime AccountCreated { get; set; }
     public DateTime LastVisit { get; set; }
+    public byte[]? Avatar { get; set; }
 
 }

@@ -1,13 +1,16 @@
 ﻿using System.Security.Claims;
 using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Core.DataTransferObjects;
+using AspNetArticle.Database.Entities;
 using AspNetArticle.MvcApp.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using Org.BouncyCastle.Asn1.Ocsp;
 using Serilog;
 
 namespace AspNetArticle.MvcApp.Controllers;
@@ -129,7 +132,7 @@ public class AccountController : Controller
 
     [HttpPost]
     public async Task<IActionResult> CheckUsername(string username)
-  {
+    {
         try
         {
             if (!string.IsNullOrEmpty(username))
@@ -140,7 +143,8 @@ public class AccountController : Controller
                 {
                     var currentUsername = (await _userService.GetUserByEmailAsync(email))?.UserName;
 
-                    bool isSameUser = currentUsername != null && currentUsername.Equals(username);
+                    bool isSameUser = currentUsername != null 
+                        && currentUsername.Equals(username);
 
                     if (isSameUser)
                         return Ok(true);
@@ -190,12 +194,19 @@ public class AccountController : Controller
     {
         try
         {
-            var userEmail = User.Identity?.Name;
-
-            if (ModelState.IsValid && userEmail != null)
+            if (ModelState.IsValid)
             {
                 var dto = _mapper.Map<UserDto>(model);
-                dto.Email = userEmail;
+
+                if (!string.IsNullOrEmpty(model.NewPassword) && !string.IsNullOrEmpty(model.OldPassword))
+                {
+                    var isCorrectPassword = await _userService.CheckUserByEmailAndPasswordAsync(model.Email, model.OldPassword);
+
+                    if (!isCorrectPassword)
+                        return View(model);
+
+                    dto.Password = model.NewPassword;
+                }
 
                 if (dto != null)
                 {
@@ -206,7 +217,7 @@ public class AccountController : Controller
                         : BadRequest();
                 }
             }
-            return BadRequest();
+            return View(model);
         }
         catch (Exception ex)
         {

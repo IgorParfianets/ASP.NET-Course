@@ -9,7 +9,7 @@
             @if (User.IsInRole("Admin"))
             {
                 <div class="dropdown">
-                    <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-sm btn-outline-light text-black dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                         Привет @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
@@ -17,19 +17,20 @@
                         <li><a asp-controller="Admin" asp-action="Articles" class="dropdown-item">Новости</a></li>
                         <li><a asp-controller="Admin" asp-action="Comments" class="dropdown-item">Коментарии</a></li>
                         <li><a href="/jobs" class="dropdown-item">Задачи</a></li>
+                        <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выход</a></li>
                     </ul>
                 </div>
             }
             else
             {
                 <div class="dropdown">
-                    <button class="btn btn-sm btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
+                    <button class="btn btn-sm btn-outline-light text-black dropdown-toggle" type="button" id="dropdownMenuButton1" data-bs-toggle="dropdown" aria-expanded="false">
                         Привет @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li><a class="dropdown-item" asp-action="Edit" asp-controller="Account">Настройки</a></li>
-                        <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выход</a></li>
                         <li><a asp-controller="" asp-action="" class="dropdown-item">Что то вставить</a></li>
+                        <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выход</a></li>  
                     </ul>
                 </div>
             }

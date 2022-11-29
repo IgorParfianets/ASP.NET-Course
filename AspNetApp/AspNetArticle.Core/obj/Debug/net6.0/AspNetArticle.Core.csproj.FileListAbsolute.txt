@@ -10,3 +10,15 @@ D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Core\obj\
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Core\obj\Debug\net6.0\refint\AspNetArticle.Core.dll
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Core\obj\Debug\net6.0\AspNetArticle.Core.pdb
 D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Core\obj\Debug\net6.0\ref\AspNetArticle.Core.dll
+D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Core\bin\Debug\net6.0\AspNetArticle.Core.deps.json
+D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Core\bin\Debug\net6.0\AspNetArticle.Core.dll
+D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Core\bin\Debug\net6.0\AspNetArticle.Core.pdb
+D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Core\obj\Debug\net6.0\AspNetArticle.Core.csproj.AssemblyReference.cache
+D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Core\obj\Debug\net6.0\AspNetArticle.Core.GeneratedMSBuildEditorConfig.editorconfig
+D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Core\obj\Debug\net6.0\AspNetArticle.Core.AssemblyInfoInputs.cache
+D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Core\obj\Debug\net6.0\AspNetArticle.Core.AssemblyInfo.cs
+D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Core\obj\Debug\net6.0\AspNetArticle.Core.csproj.CoreCompileInputs.cache
+D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Core\obj\Debug\net6.0\AspNetArticle.Core.dll
+D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Core\obj\Debug\net6.0\refint\AspNetArticle.Core.dll
+D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Core\obj\Debug\net6.0\AspNetArticle.Core.pdb
+D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Core\obj\Debug\net6.0\ref\AspNetArticle.Core.dll

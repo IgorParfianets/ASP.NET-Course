@@ -7,6 +7,7 @@ public class User : IBaseEntity
     public string PasswordHash { get; set; }
     public string Email { get; set; }   
     public bool Spam { get; set; }
+    public byte[]? Avatar { get; set; }
 
     public Guid RoleId { get; set; }
     public Role Role { get; set; }
@@ -15,5 +16,4 @@ public class User : IBaseEntity
     public DateTime LastVisit { get;set; }
 
     public List<Comment> Comments { get; set; } 
-    //public List<View> Views { get; set; }
 }

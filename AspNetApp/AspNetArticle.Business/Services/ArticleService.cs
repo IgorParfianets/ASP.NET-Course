@@ -9,22 +9,21 @@ using System.ServiceModel.Syndication;
 using System.Xml;
 using Microsoft.Extensions.Configuration;
 using Serilog;
+using System.Text.RegularExpressions;
 
 namespace AspNetArticle.Business.Services;
 
 public class ArticleService : IArticleService
 {
     private readonly IUnitOfWork _unitOfWork;
-    private readonly IConfiguration _configuration;
     private readonly IMapper _mapper;
 
     public ArticleService(IMapper mapper, 
-        IUnitOfWork unitOfWork, 
-        IConfiguration configuration)
+        IUnitOfWork unitOfWork 
+        )
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
-        _configuration = configuration;
     }
 
 
@@ -116,244 +115,41 @@ public class ArticleService : IArticleService
             ?.ArticleId;
     }
 
+
     public async Task AggregateArticlesFromExternalSourcesAsync()
     {
-        var onlinerSourceId = Guid.Parse(_configuration["Sources:Onliner"]);
-        var onlinerSourceUrl = (await _unitOfWork.Sources.GetByIdAsync(onlinerSourceId))?.RssUrl;
+        var sources = await _unitOfWork.Sources.GetAllAsync();
 
-        var devIoSourceId = Guid.Parse(_configuration["Sources:DevIo"]);
-        var devIoSourceUrl = (await _unitOfWork.Sources.GetByIdAsync(devIoSourceId))?.RssUrl;
+        Parallel.ForEach(sources, (source) => GetAllArticleDataFromRssAsync(source.Id, source.RssUrl).Wait());
 
-        await GetAllArticleDataFromOnlinerRssAsync(onlinerSourceId, onlinerSourceUrl);
-        await GetAllArticleDataFromDevIoRssAsync(devIoSourceId, devIoSourceUrl);
+        //foreach (var source in sources)
+        //{
+        //    await GetAllArticleDataFromRssAsync(source.Id, source.RssUrl);
+        //}
     }
-
 
     public async Task AddArticlesDataAsync()
     {
-        var onlinerSourceId = Guid.Parse(_configuration["Sources:Onliner"]);
-        var devIoSourceId = Guid.Parse(_configuration["Sources:DevIo"]);
-
-        await AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync(onlinerSourceId);
-        await AddArticleImageUrlToArticlesOnlinerAsync(onlinerSourceId);
-
-        await AddArticleTextToArticlesDevIoAsync(devIoSourceId);
-    }
-
-    //Onliner 
-    #region GetArticlesOnlinerRss
-
-    private async Task GetAllArticleDataFromOnlinerRssAsync(Guid sourceId, string? sourceRssUrl)
-    {
-        try
-        {
-            if (!string.IsNullOrEmpty(sourceRssUrl))
-            {
-                var list = new List<ArticleDto>();
-
-                using (var reader = XmlReader.Create(sourceRssUrl))
-                {
-                    var feed = SyndicationFeed.Load(reader);
-
-                    foreach (var item in feed.Items)
-                    {
-                        var articleDto = new ArticleDto()
-                        {
-                            Id = Guid.NewGuid(),
-                            Title = item.Title.Text,
-                            PublicationDate = item.PublishDate.UtcDateTime,
-                            ShortDescription = item.Summary.Text,
-                            Category = item.Categories.FirstOrDefault()?.Name,
-                            SourceId = sourceId,
-                            SourceUrl = item.Id
-                        };
-                        list.Add(articleDto);
-                    }
-                }
-                var oldArticleUrls = await _unitOfWork.Articles.Get()
-                    .Select(article => article.SourceUrl)
-                    .Distinct()
-                    .ToArrayAsync();
-
-                var entities = list.Where(dto => !oldArticleUrls.Contains(dto.SourceUrl))
-                    .Select(dto => _mapper.Map<Article>(dto)).ToArray();
-
-                // Command AddRangeArticlesCommand
-                await _unitOfWork.Articles.AddRangeAsync(entities);
-                await _unitOfWork.Commit();
-            }
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, $"{nameof(GetAllArticleDataFromOnlinerRssAsync)} with arguments SourceGuid {sourceId}, SourceUrl {sourceRssUrl}");
-            throw;
-        }
-        
-    }
-
-
-    #endregion
-
-    #region FixArticleOnlinerTextAndShortDescriptionMethods
-
-    
-    private async Task AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync(Guid sourceId)
-    {
-        var articlesIdWithEmptyTextIds = _unitOfWork.Articles.Get()
-            .Where(article => article.SourceId.Equals(sourceId) && string.IsNullOrEmpty(article.Text))
+        var articlesWithEmptyTextIds = _unitOfWork.Articles.Get()
+            .Where(article => string.IsNullOrEmpty(article.Text))
             .Select(article => article.Id)
             .ToList();
 
-        foreach (var articleId in articlesIdWithEmptyTextIds)
+        foreach (var articleId in articlesWithEmptyTextIds)
         {
-            await AddArticleTextToArticlesOnlinerAsync(articleId);
+            await AddArticleTextToArticles(articleId);
         }
     }
 
-    private async Task AddArticleTextToArticlesOnlinerAsync(Guid articleId)
+    private async Task GetAllArticleDataFromRssAsync(Guid sourceId, string? sourceUrl)
     {
         try
         {
-            var article = await _unitOfWork.Articles.GetByIdAsync(articleId);
-
-            if (article == null)
-            {
-                throw new ArgumentException($"Article with id: {articleId} doesn't exists",
-                    nameof(articleId));
-            }
-
-            var articleSourceUrl = article.SourceUrl;
-            var shortDescription = article.ShortDescription;
-
-            var web = new HtmlWeb();
-            var htmlDoc = web.Load(articleSourceUrl);
-            var nodes =
-                htmlDoc.DocumentNode.Descendants(0)
-                    .Where(n => n.HasClass("news-text"));
-
-            shortDescription = FixArticleOnlinerShortDescription(shortDescription);
-
-            if (nodes.Any())
-            {
-                var articleText = nodes.FirstOrDefault()?
-                    .ChildNodes
-                    .Where(node => (node.Name.Equals("p") || node.Name.Equals("div") || node.Name.Equals("h2"))
-                                   && !node.HasClass("news-reference")
-                                   && !node.HasClass("news-banner")
-                                   && !node.HasClass("news-widget")
-                                   && !node.HasClass("news-vote")
-                                   && !node.HasClass("news-incut")
-                                   && node.Attributes["style"] == null)
-                    .Select(node => node.OuterHtml)
-                    .Aggregate((i, j) => i + Environment.NewLine + j);
-
-                await _unitOfWork.Articles.UpdateArticleTextAsync(articleId, articleText);
-                await _unitOfWork.Articles.UpdateArticleShortDescriptionAsync(articleId, shortDescription);
-
-                await _unitOfWork.Commit();
-            }
-
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, $"{nameof(AddArticleTextToArticlesOnlinerAsync)} with ArticleGuid {articleId} failed");
-            throw;
-        }
-    }
-
-    private string FixArticleOnlinerShortDescription(string shortDescription)
-    {
-        if (!string.IsNullOrEmpty(shortDescription))
-        {
-
-            var htmlDoc = new HtmlDocument();
-            htmlDoc.LoadHtml(shortDescription);
-
-            var text = htmlDoc.DocumentNode.SelectNodes("p")[1].InnerText;
-
-            return text ?? string.Empty;
-        }
-        return string.Empty;
-    }
-    #endregion
-    #region FixArticleOnlinerImageMethod
-    private async Task AddArticleImageUrlToArticlesOnlinerAsync(Guid sourceId)
-    {
-        var articlesWithEmptyImageUrlIds = _unitOfWork.Articles.Get()
-            .Where(article => article.SourceId.Equals(sourceId) && string.IsNullOrEmpty(article.ImageUrl))
-            .Select(article => article.Id)
-            .ToList();
-
-        foreach (var articleId in articlesWithEmptyImageUrlIds)
-        {
-            await AddArticleImageUrlToArticlesAsync(articleId);
-        }
-    }
-
-    private async Task AddArticleImageUrlToArticlesAsync(Guid articleId)
-    {
-        try
-        {
-            var article = await _unitOfWork.Articles.GetByIdAsync(articleId);
-
-            if (article == null)
-            {
-                throw new ArgumentException($"Article with id: {articleId} doesn't exists",
-                    nameof(articleId));
-            }
-
-            var articleSourceUrl = article.SourceUrl;
-
-            var web = new HtmlWeb();
-            var htmlDoc = web.Load(articleSourceUrl);
-            var nodes =
-                htmlDoc.DocumentNode.Descendants(0) 
-                    .Where(n => n.HasClass("news-header__image"));
-
-            if (nodes.Any())
-            {
-                var articleImageUrl = nodes.FirstOrDefault()?.GetAttributeValue("style", null);
-
-                if (!string.IsNullOrEmpty(articleImageUrl))
-                {
-                    articleImageUrl = FixArticleOnlinerStringUrl(articleImageUrl);
-
-                    await _unitOfWork.Articles.UpdateArticleImageUrlAsync(articleId, articleImageUrl);
-                    await _unitOfWork.Commit();
-                }
-            }
-        }
-        catch (Exception ex)
-        {
-            Log.Error(ex, $"{nameof(AddArticleImageUrlToArticlesAsync)} with ArticleGuid {articleId} failed");
-            throw;
-        }
-    }  
-    
-    private string FixArticleOnlinerStringUrl(string url) 
-    {                                                    
-        if(url.StartsWith("background-image: url('") && url.EndsWith("');"))
-            return url
-                .Replace("background-image: url('", "")
-                .Replace("');", "");
-        
-        return url
-            .Replace("background-image: url(", "")
-            .Replace(");", "");
-    }
-    #endregion
-
-    //DevIo
-    #region GetArticleDevIoRss
-    private async Task GetAllArticleDataFromDevIoRssAsync(Guid sourceId, string? sourceRssUrl)
-    {
-        try
-        {
-            if (!string.IsNullOrEmpty(sourceRssUrl))
+            if (!string.IsNullOrEmpty(sourceUrl))
             {
                 var list = new List<ArticleDto>();
 
-                using (var reader = XmlReader.Create(sourceRssUrl))
+                using (var reader = XmlReader.Create(sourceUrl))
                 {
                     var feed = SyndicationFeed.Load(reader);
 
@@ -368,8 +164,13 @@ public class ArticleService : IArticleService
                             Category = item.Categories.FirstOrDefault()?.Name ?? "Обо Всём",
                             SourceId = sourceId,
                             SourceUrl = item.Id,
-                            ImageUrl = item.Links[1]?.Uri.AbsoluteUri
+                            ImageUrl = item.Links.Count > 1 ? item.Links[1].Uri.AbsoluteUri : null
                         };
+
+                        if (!string.IsNullOrEmpty(item.Summary?.Text))
+                            articleDto.ShortDescription =
+                                Regex.Replace(item.Summary.Text, @"<[^>]+>|&nbsp|\n|Читать далее.", " ").Trim();
+
                         if (!string.IsNullOrEmpty(articleDto.ShortDescription))
                             list.Add(articleDto);
                     }
@@ -382,36 +183,19 @@ public class ArticleService : IArticleService
                 var entities = list.Where(dto => !oldArticleUrls.Contains(dto.SourceUrl))
                     .Select(dto => _mapper.Map<Article>(dto)).ToArray();
 
+
                 await _unitOfWork.Articles.AddRangeAsync(entities);
                 await _unitOfWork.Commit();
             }
         }
         catch (Exception ex)
         {
-            Log.Error(ex, $"{nameof(GetAllArticleDataFromDevIoRssAsync)} with arguments SourceGuid {sourceId}, SourceUrl {sourceRssUrl}");
+            Log.Error(ex, $"{nameof(GetAllArticleDataFromRssAsync)} with arguments SourceGuid {sourceId}, SourceUrl {sourceUrl}");
             throw;
         }
-        
     }
 
-
-    #endregion
-
-    #region FixArticleDevIoTextMethods
-    private async Task AddArticleTextToArticlesDevIoAsync(Guid sourceId)
-    {
-        var articlesWithEmptyTextIds = _unitOfWork.Articles.Get()
-            .Where(article => article.SourceId.Equals(sourceId) && string.IsNullOrEmpty(article.Text))
-            .Select(article => article.Id)
-            .ToList();
-
-        foreach (var articleId in articlesWithEmptyTextIds)
-        {
-            await AddArticleTextToArticleDevIoAsync(articleId);
-        }
-    }
-
-    private async Task AddArticleTextToArticleDevIoAsync(Guid articleId)
+    private async Task AddArticleTextToArticles(Guid articleId)
     {
         try
         {
@@ -427,31 +211,82 @@ public class ArticleService : IArticleService
 
             var web = new HtmlWeb();
             var htmlDoc = web.Load(articleSourceUrl);
-            var nodes =
-                htmlDoc.DocumentNode.Descendants(0)
-                    .Where(n => n.HasClass("article__body"));
 
-            if (nodes.Any())
+            bool isOnlinerText = htmlDoc.DocumentNode.Descendants(0).Any(tg => tg.HasClass("news-text"));
+            bool isDevIoText = htmlDoc.DocumentNode.Descendants(0).Any(tg => tg.HasClass("article__body"));
+
+            if (isOnlinerText)
             {
-                var articleText = (nodes.FirstOrDefault()?.ChildNodes
-                        .Where(node => node.Name.Equals("div")))?
-                    .FirstOrDefault()?.ChildNodes
-                    .Where(node => node.Name.Equals("p"))
+                var nodes = htmlDoc.DocumentNode
+                     .Descendants(0)
+                     .Where(n => n.HasClass("news-text"));
+
+                var imageBlock = htmlDoc.DocumentNode
+                    .Descendants(0)
+                    .Where(n => n.HasClass("news-header__image"))
+                    .FirstOrDefault()?
+                    .GetAttributeValue("style", null);
+
+                string imageUrl = string.Empty;
+
+                if (imageBlock != null)
+                    imageUrl = Regex.Match(imageBlock, @"http[^>]+jpeg|http[^>]+jpg").Value;
+
+                var articleText = nodes.FirstOrDefault()?
+                    .ChildNodes
+                    .Where(node => (node.Name.Equals("p")
+                    || node.Name.Equals("div")
+                    || node.Name.Equals("h2"))
+                                   && !node.HasClass("news-reference")
+                                   && !node.HasClass("news-banner")
+                                   && !node.HasClass("news-widget")
+                                   && !node.HasClass("news-vote")
+                                   && !node.HasClass("news-incut")
+                                   && node.Attributes["style"] == null)
                     .Select(node => node.OuterHtml)
                     .Aggregate((i, j) => i + Environment.NewLine + j);
 
-                await _unitOfWork.Articles.UpdateArticleTextAsync(articleId, articleText);
+                if (!string.IsNullOrEmpty(articleText))
+                {
+                    articleText = Regex.Replace(articleText, @"<a([^>]+)>(.+?)<\/a>", " ");
+
+                    await _unitOfWork.Articles.UpdateArticleTextAsync(articleId, articleText);
+                }
+
+                if (!string.IsNullOrEmpty(imageUrl))
+                    await _unitOfWork.Articles.UpdateArticleImageUrlAsync(articleId, imageUrl);
 
                 await _unitOfWork.Commit();
+            }
+
+            if (isDevIoText)
+            {
+                var nodes = htmlDoc.DocumentNode
+                    .Descendants(0)
+                    .Where(n => n.HasClass("article__body"));
+
+                var articleText = (nodes.FirstOrDefault()?.ChildNodes
+                           .Where(node => node.Name.Equals("div")))?
+                       .FirstOrDefault()?.ChildNodes
+                       .Where(node => node.Name.Equals("p")
+                       || node.Name.Equals("ol")
+                       || node.Name.Equals("ul")
+                       || node.Name.Equals("h4")
+                       || node.Name.Equals("h3"))
+                       .Select(node => node.OuterHtml)
+                       .Aggregate((i, j) => i + Environment.NewLine + j);
+
+                if (!string.IsNullOrEmpty(articleText))
+                {
+                    await _unitOfWork.Articles.UpdateArticleTextAsync(articleId, articleText);
+                    await _unitOfWork.Commit();
+                }
             }
         }
         catch (Exception ex)
         {
-            Log.Error(ex, $"{nameof(AddArticleTextToArticleDevIoAsync)} with ArticleId {articleId}");
+            Log.Error(ex, $"{nameof(AddArticleTextToArticles)} with ArticleGuid {articleId} failed");
             throw;
         }
     }
-
-
-    #endregion
 }

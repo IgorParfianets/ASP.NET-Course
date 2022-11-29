@@ -14,10 +14,10 @@ namespace AspNetArticle.Api.Controllers
         private readonly IArticleService _articleService;
         private readonly IArticleRateService _articleRateService;
         private readonly ISendMessageService _sendMessageService;
-
         public ArticleResourceInitializer(IArticleService articleService,
-            IArticleRateService articleRateService, 
+            IArticleRateService articleRateService,
             ISendMessageService sendMessageService)
+
         {
             _articleService = articleService;
             _articleRateService = articleRateService;
@@ -34,20 +34,29 @@ namespace AspNetArticle.Api.Controllers
         {
             try
             {
-                //RecurringJob.AddOrUpdate(() => _articleService.AggregateArticlesFromExternalSourcesAsync(),
-                //    "*/5 * * * *");
 
-                //RecurringJob.AddOrUpdate(() => _articleService.AddArticlesDataAsync(),
-                //    "*/7 * * * *");
+                await _articleService.AggregateArticlesFromExternalSourcesAsync();
+                await _articleService.AddArticlesDataAsync();
+                //await _articleRateService.AddRateToArticlesAsync();
 
-                //RecurringJob.AddOrUpdate(() => _articleRateService.AddRateToArticlesAsync(),
-                //    "*/10 * * * *");
+
+                //await _articleService.AggregateArticlesFromExternalSourcesAsync();
+                //await _articleService.AddArticlesDataAsync();
+                ////RecurringJob.AddOrUpdate(() => _articleService.AggregateArticlesFromExternalSourcesAsync(),
+                ////    "*/5 * * * *");
+
+                ////RecurringJob.AddOrUpdate(() => _articleService.AddArticlesDataAsync(),
+                ////    "*/7 * * * *");
+
+                ////RecurringJob.AddOrUpdate(() => _articleRateService.AddRateToArticlesAsync(),
+                ////    "*/10 * * * *");
 
                 //await _articleService.AddArticlesDataAsync();
-                await _sendMessageService.GetArticlesAndUsersForMessage();
+                ////await _sendMessageService.GetArticlesAndUsersForMessage();
 
                 return Ok();
             }
+
             catch (Exception e)
             {
                 throw new Exception();

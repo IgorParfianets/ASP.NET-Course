@@ -12,14 +12,22 @@
 @if (User.Identity.IsAuthenticated && Model.Articles.Any())
 {
     <div class="d-flex justify-content-end m-4 p-3">
-        <form asp-controller="Article" asp-action="Index" method="get" class="d-flex me-3 ms-5">
+        <form asp-controller="Article" asp-action="Index" method="get" class="d-flex me-3 ms-5 p-3 bg-light rounded">
 
-            <select class="me-2 rounded-1" id="show-categories" asp-for="SelectedCategory" asp-items="Model.Categories">
-                <option value="">Все</option>
-            </select>
+            <div class="d-flex text-center  align-items-center">
 
-            <input asp-for="SearchString" class="form-control form-control-sm me-2" type="search" placeholder="Поиск новостей" aria-label="Search">
-            <button class="btn btn-outline-success btn-sm" type="submit">Поиск</button>
+                <label for="SelectedCategory" class="me-2"><strong>Категории: </strong></label>
+                <select class="me-2 rounded-1  form-control-sm" asp-for="SelectedCategory" asp-items="Model.Categories">
+                    <option value="">Все</option>
+                </select>
+
+                <input asp-for="SearchString" class="form-control form-control-sm me-2" type="search" placeholder="Поиск новостей" aria-label="Search">
+                <button class="btn btn-outline-success btn-sm" type="submit">Поиск</button>
+
+            </div>
+           
+
+            
 
         </form>
     </div>

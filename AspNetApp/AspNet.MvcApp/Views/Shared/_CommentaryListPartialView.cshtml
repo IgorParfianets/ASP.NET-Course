@@ -14,14 +14,21 @@
 
             <div class="container-sm">
                 <div class="d-flex justify-content-between">
-                    <div>
-                        <strong>Автор: @comment.Username</strong>
-                    </div>
+                    @if (User.IsInRole("Admin")){
+                        <div>
+                            <strong style="color:brown">Автор: @comment.Username</strong>
+                        </div>
+                    }
+                    else{
+                        <div>
+                            <strong>Автор: @comment.Username</strong>
+                        </div>
 
-                    <div class="">
-                        <small>E-mail: @comment.Email</small>
-                    </div>
-
+                        <div class="">
+                            <small>E-mail: @comment.Email</small>
+                        </div>
+                    }
+                   
                     @if (comment.IsEdited)
                     {
                         <div class="">

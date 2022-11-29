@@ -61,8 +61,8 @@ public class UserService : IUserService
                 });
             }
 
-            if (!(CreateMd5(userDto.Password)
-                    .Equals(entity.PasswordHash))) // todo for update password need separate method
+            if (!string.IsNullOrEmpty(userDto.Password) && !(CreateMd5(userDto.Password)
+                    .Equals(entity.PasswordHash))) 
             {
                 patchList.Add(new PatchModel()
                 {
@@ -79,6 +79,15 @@ public class UserService : IUserService
                     PropertyValue = userDto.Spam
                 });
             }
+
+            if (userDto.Avatar != null && !userDto.Avatar.Equals(entity.Avatar)) 
+            {
+                patchList.Add(new PatchModel()
+                {
+                    PropertyName = nameof(entity.Avatar),
+                    PropertyValue = userDto.Avatar
+                });
+            }
         }
         await _unitOfWork.Users.PatchAsync(id, patchList);
         return await _unitOfWork.Commit();
@@ -87,16 +96,17 @@ public class UserService : IUserService
     public async Task<bool> CheckUserByEmailAndPasswordAsync(string email, string password)
     {
         var user = await _unitOfWork.Users
-            .Get()
-            .FirstOrDefaultAsync(user => 
-            user.Email.Equals(email));
+             .Get()
+             .FirstOrDefaultAsync(user =>
+             user.Email.Equals(email));
 
-        if(user != null && user.PasswordHash.Equals(CreateMd5(password)))
+        if (user != null && user.PasswordHash.Equals(CreateMd5(password)))
         {
             user.LastVisit = DateTime.Now;
             await _unitOfWork.Commit();
             return true;
         }
+
         return false;
     }
 

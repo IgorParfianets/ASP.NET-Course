@@ -6,7 +6,6 @@ using AspNetArticle.Data.Abstractions;
 using AspNetArticle.Data.Repositories;
 using AspNetArticle.Database;
 using AspNetArticle.Database.Entities;
-using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Serilog;
 using Serilog.Events;

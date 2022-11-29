@@ -12,13 +12,6 @@ public interface IArticleService
     Task<IEnumerable<string>> GetArticlesCategoryAsync(); // +
     Task<Guid?> GetArticleIdByCommentId(Guid commentId); // +
 
-
     Task AggregateArticlesFromExternalSourcesAsync();
     Task AddArticlesDataAsync();
-
-    //Task AddArticleTextAndFixShortDescriptionToArticlesOnlinerAsync();
-    //Task AddArticleImageUrlToArticlesOnlinerAsync();
-    //Task AddArticleTextToArticlesDevIoAsync();
-    
-
 }

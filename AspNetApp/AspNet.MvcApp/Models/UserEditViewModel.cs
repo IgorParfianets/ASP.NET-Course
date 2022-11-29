@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AspNetArticle.Core;
+using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using System.Net;
 
@@ -15,17 +16,22 @@ public class UserEditViewModel
         "Account",
         HttpMethod = WebRequestMethods.Http.Post,
         ErrorMessage = "Это имя уже занято")]
-    public string UserName { get; set; } //todo Need to come up with own Username
+    public string UserName { get; set; } 
 
     public string Email { get; set; }
     [DataType(DataType.Password)]
-    public string NewPassword { get; set; }
+    public string? OldPassword { get; set; }
+    [DataType(DataType.Password)]
+    public string? NewPassword { get; set; }
 
     [Compare("NewPassword",
-        ErrorMessage = "Пароли не совпадают")]
+         ErrorMessage = "Пароли не совпадают")]
     [DataType(DataType.Password)]
-    public string ConfirmNewPassword { get; set; }
-    public string RoleName { get; set; }
+    public string? ConfirmNewPassword { get; set; }
     public bool Spam { get; set; }
-    public byte[] Avatar { get; set; }
+    public MembershipStatus Status { get; set; }
+
+    [DataType(DataType.Upload)]
+    public IFormFile? SaveAvatar { get; set; }
+    public string? LoadAvatar { get; set; }
 }

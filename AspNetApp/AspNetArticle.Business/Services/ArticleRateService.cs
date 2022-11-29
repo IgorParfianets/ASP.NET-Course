@@ -30,6 +30,7 @@ namespace AspNetArticle.Business.Services
             {
                 var articlesWithEmptyRateIds = _unitOfWork.Articles.Get()
                     .Where(article => article.Rate == null && !string.IsNullOrEmpty(article.Text))
+                    .Take(20)
                     .Select(article => article.Id)
                     .ToList();
 
@@ -103,12 +104,9 @@ namespace AspNetArticle.Business.Services
                     using (var sr = new StreamReader(responseStr))
                     {
                         var data = await sr.ReadToEndAsync();
-                        
                         var isprassResponce = JsonConvert.DeserializeObject<IsprassResponseObject[]>(data);
 
                         var affinJsonText = await File.ReadAllTextAsync(@affinPath);
-
-
                         var affinJsonObject = Affin.FromJson(affinJsonText);
                         
                         if (isprassResponce != null && affinJsonObject.Any())

@@ -6,59 +6,149 @@
 }
 
 
-<div class="col-auto container text-center w-25 mt-5 mb-5">
 
-    <h1 class="row-auto mt-5 mb-4">Профиль</h1>
-    <hr/>
-    <form asp-controller="Account" asp-action="Edit" method="post" enctype="multipart/form-data">
+
+
+<div class="d-flex flex-column container text-center w-50 mt-3 mb-5">
+
+    
+    <form class="align-self-center w-75 bg-white rounded pb-5 px-3" asp-controller="Account" asp-action="Edit" method="post" enctype="multipart/form-data">
+        <h1 class="row-auto mt-5 mb-4">Профиль</h1>
+        <hr />
         <input asp-for="Id" hidden />
+        <input asp-for="Email" hidden />
         <div class="position-relative d-block mb-3">
-            <a class="tooltipped tooltipped-s d-block">
-                <img class="avatar" alt="" src="~/image/DefaultAvatar.png"> <!-- Сюда источник авы -->
-                <span class="position-absolute bottom-25 start-75 translate-middle badge rounded-pill bg-warning" data-bs-html="true" data-bs-toggle="tooltip" data-bs-placement="bottom" title="Изменить аватар">
-                    + <input class="" type="image" />
-                </span>
-               
-            </a>
+
+            @if (!string.IsNullOrEmpty(Model.LoadAvatar)){
+                <img id="ava" class="avatar" alt="Аватар" src="data:image/jpeg;base64,@Model.LoadAvatar" >
+            }
+            else{
+                <img id="ava" class="avatar" alt="Аватар" src="~/image/DefaultAvatar.png">
+            }
+            
+            <span id="plus" class="position-absolute bottom-25 start-75 translate-middle badge rounded-pill" title="Изменить фото">
+                + 
+            </span>
+            <input asp-for="SaveAvatar" id="file" type="file" accept=".jpg, .jpeg, .png, .gif"/>
         </div>
-        <!-- <input class="" type="image" name="uploadedFile" /> -->
-        <div class="user-status-container position-relative hide-sm hide-md"></div>
-        <div class="row container m-0 gy-1">
+
+        <div class="row container m-0">
+            <div class="p-3 bg-light rounded">
+                <div class="d-flex align-items-center justify-content-between form-group my-1">
+                    <div class="offset-1 col-4 text-start">
+                        <label asp-for="Status"><strong><small>Статус: </small></strong></label>
+                    </div>
+                    <div class="col-6 status">
+                        <p><small>@Model.Status</small></p>
+                    </div>
+
+                </div>
+
+                <div class="d-flex align-items-center justify-content-between form-group my-1">
+                    <div class="offset-1 col-4 text-start">
+                        <label asp-for="Email"><strong><small>E-mail: </small></strong></label>
+                    </div>
+
+                    <div class="col-6 status">
+                        <p><small>@Model.Email</small></p>
+                    </div>
+
+                </div>
 
 
-            <div class="form-group">
+                <div class="d-flex align-items-center justify-content-between form-group my-1">
+                    <div class="offset-1 col-4 text-start">
+                        <label asp-for="UserName"><strong><small>Имя или Ник: </small></strong></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="UserName" placeholder="Имя или Ник" class="form-control form-control-sm" />
+                        <span asp-validation-for="UserName" class="validate"></span>
+                    </div>
+
+                </div>
+            </div>
+            
+            <div class="d-flex justify-content-end">
+                <span class="trigger-pass" id="trigger"><p>Сменить пароль</p></span>
+            </div>
+            
+
+            <div class="pass-block-hidden bg-light" id="change-password-block" style="transform:scaleY(0); height: 0px;">
+
+                <div class="d-flex align-items-center justify-content-between form-group">
+                    <div class="col-6 text-start">
+                        <label asp-for="OldPassword"><strong><small>Старый пароль: </small></strong></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="OldPassword" type="password" placeholder="Старый пароль" class="form-control form-control-sm" />
+                        <span asp-validation-for="OldPassword" class="validate"></span>
+                    </div>
+                    <hr />
+                </div>
+               
+                <div class="d-flex align-items-center justify-content-between form-group mt-1">
+
+                    <div class="col-6 text-start">
+                        <label asp-for="NewPassword"><strong><small>Новый пароль: </small></strong></label>
+                    </div>
+
+                    <div class="col-6 position-relative">
+
+                        <input asp-for="NewPassword" id="password" type="password" placeholder="Новый пароль" class="form-control form-control-sm" />
+
+                         <span class="show-pass" onclick="toggle()">
+                            <i class="far fa-eye" onclick="myFunction(this)"></i>
+                        </span>
+
+                        <span asp-validation-for="NewPassword" class="validate"></span>
+                        
+                    </div>  
+                </div>
+                <div class="d-flex justify-content-end">
+                    <p class="degree" id="test">Минимум 4 символа</p>
+                </div>
+                <div id="popover-password">
+                    <p><span id="result"></span></p>
+
+                    <div class="progress">
+                        <div id="password-strength" class="progress-bar" style="width: 0%"></div>
+                    </div>
+                </div>
+                <small class=" d-flex justify-content-center pb-1" style="font-weight: lighter; font-size: 10px;">0-9 Aa !#$%& больше 8</small>
+
+                <div class="d-flex align-items-center justify-content-between form-group">
+                    <div class="col-6 text-start">
+                        <label asp-for="ConfirmNewPassword"><strong><small>Повторите пароль: </small></strong></label>
+                    </div>
+                    <div class="col-6">
+                        <input asp-for="ConfirmNewPassword" type="password" placeholder="Повторите пароль" class="form-control form-control-sm" />
+                        <span asp-validation-for="ConfirmNewPassword" class="validate"></span>
+                    </div>
+
+                </div>
                 
-                <input asp-for="Avatar" type="image" class="form-control form-control-sm" />
             </div>
 
-            <div class="form-group">
-                <input asp-for="Email" placeholder="Ваш e-mail" class="form-control form-control-sm" disabled />
-            </div>
-
-
-            <div class="form-group">
-                <input asp-for="UserName" placeholder="Имя или Ник" class="form-control form-control-sm" />
-                <span asp-validation-for="UserName" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input asp-for="NewPassword" placeholder="Новый пароль" class="form-control form-control-sm" />
-                <span asp-validation-for="NewPassword" class="text-danger"></span>
-            </div>
-
-            <div class="form-group p-1">
+            <div class="form-group pt-2">
                 <label asp-for="Spam" class="form-check-label form-control-sm">Рассылка свежих новостей</label>
-                <input type="checkbox" asp-for="Spam" class="form-check-input mt-2" checked />
+                <input type="checkbox" asp-for="Spam" class="form-check-input mt-2" />
             </div>
             <hr />
+
             <div class="form-group">
                 <button type="submit" class="btn btn-primary btn-sm w-100">Обновить</button>
             </div>
+
         </div>
     </form>
 
 </div>
 
+@*<script src="https://kit.fontawesome.com/1c2c2462bf.js"></script>
+<script src="~/js/progress-streght-bar.js"></script>
+<script src="~/js/add-avatar.js"></script>
+<script src="~/js/change-password.js"></script>*@
 @section Scripts{
+    
     <partial name="_ValidationScriptsPartial" />
 }
