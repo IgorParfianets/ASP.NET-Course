@@ -6,7 +6,7 @@ const passBlock = document.getElementById("change-password-block");
 
 trigger.onclick = function () {
     if (stateClick) {
-        trigger.textContent = 'Спрятать'
+        trigger.textContent = 'Оставить прежним'
 
         passBlock.style.transform = 'scaleY(1)'
         passBlock.style.height = '160px'

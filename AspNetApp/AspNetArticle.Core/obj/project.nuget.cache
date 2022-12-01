@@ -1,8 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "7OoDf5CNoKKyWX85OW/OBmDzqbMv7OoiNzUP8CloUJFFChJgucCxi6XlsAKr8pqWDVcNCa6361pqeEKIeeOADg==",
+  "dgSpecHash": "um41cMaRQ2oSQmp0Je5qrdVY0Xk3/BKk0xZRb/F9vMy1sBFqDkGRDYB8bEEJLV+T+8M81Fyzh65PQ4BhHYNizg==",
   "success": true,
   "projectFilePath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Core\\AspNetArticle.Core.csproj",
-  "expectedPackageFiles": [],
+  "expectedPackageFiles": [
+    "C:\\Users\\Igor\\.nuget\\packages\\microsoft.aspnetcore.http.features\\5.0.17\\microsoft.aspnetcore.http.features.5.0.17.nupkg.sha512",
+    "C:\\Users\\Igor\\.nuget\\packages\\microsoft.extensions.primitives\\5.0.1\\microsoft.extensions.primitives.5.0.1.nupkg.sha512",
+    "C:\\Users\\Igor\\.nuget\\packages\\system.io.pipelines\\5.0.2\\system.io.pipelines.5.0.2.nupkg.sha512"
+  ],
   "logs": []
 }

@@ -64,7 +64,7 @@ namespace AspNetArticle.MvcApp.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Details(Guid id, CommentaryModel? model) 
+        public async Task<IActionResult> Details(Guid id, CreateCommentModel? model) 
         {
             try
             {
@@ -74,7 +74,7 @@ namespace AspNetArticle.MvcApp.Controllers
 
                     if (articleModel != null)
                     {
-                        var articleWithUsersComments = new ArticleWIthCommentaryViewModel
+                        var articleWithUsersComments = new ArticleDetailViewModel
                         {
                             Article = articleModel,
                             ExistComments = await _commentaryService.GetAllCommentsWithUsersByArticleIdAsync(model.ArticleId),
@@ -89,11 +89,11 @@ namespace AspNetArticle.MvcApp.Controllers
 
                     if (articleModel != null)
                     {
-                        var articleWithUsersComments = new ArticleWIthCommentaryViewModel
+                        var articleWithUsersComments = new ArticleDetailViewModel
                         {
                             Article = articleModel,
                             ExistComments = await _commentaryService.GetAllCommentsWithUsersByArticleIdAsync(id),
-                            Comment = new CommentaryModel() { ArticleId = id }
+                            Comment = new CreateCommentModel() { ArticleId = id }
                         };
                         return View(articleWithUsersComments);
                     }

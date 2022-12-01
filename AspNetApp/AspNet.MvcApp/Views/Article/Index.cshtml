@@ -9,31 +9,31 @@
     ViewData["Title"] = "Article Page";
 }
 
-@if (User.Identity.IsAuthenticated && Model.Articles.Any())
+
+@if (Model.Articles != null && Model.Articles.Any())
 {
-    <div class="d-flex justify-content-end m-4 p-3">
-        <form asp-controller="Article" asp-action="Index" method="get" class="d-flex me-3 ms-5 p-3 bg-light rounded">
+    @if (User.Identity.IsAuthenticated)
+    {
+        <div class="d-flex justify-content-end m-4 p-3">
+            <form asp-controller="Article" asp-action="Index" method="get" class="d-flex me-3 ms-5 p-3 bg-light rounded">
 
-            <div class="d-flex text-center  align-items-center">
+                <div class="d-flex text-center  align-items-center">
 
-                <label for="SelectedCategory" class="me-2"><strong>Категории: </strong></label>
-                <select class="me-2 rounded-1  form-control-sm" asp-for="SelectedCategory" asp-items="Model.Categories">
-                    <option value="">Все</option>
-                </select>
+                    <label for="SelectedCategory" class="me-2"><strong>Категории: </strong></label>
 
-                <input asp-for="SearchString" class="form-control form-control-sm me-2" type="search" placeholder="Поиск новостей" aria-label="Search">
-                <button class="btn btn-outline-success btn-sm" type="submit">Поиск</button>
+                    <select class="me-2 rounded-1  form-control-sm" asp-for="SelectedCategory" asp-items="Model.Categories">
+                        <option value="">Все</option>
+                    </select>
 
-            </div>
-           
+                    <input asp-for="SearchString" class="form-control form-control-sm me-2" type="search" placeholder="Поиск новостей" aria-label="Search">
+                    <button class="btn btn-outline-success btn-sm" type="submit">Поиск</button>
 
-            
+                </div>
 
-        </form>
-    </div>
-}
-@if (Model.Articles.Any())
-{
+            </form>
+        </div>
+    }
+
     <div class="d-flex row p-5 mt-4 mb-4 bg-white rounded justify-content-center">
 
         @foreach (var art in Model.Articles)
@@ -76,5 +76,28 @@
 }
 else
 {
-    <h2>На данный момент новостей нет</h2>
+    if (User.Identity.IsAuthenticated){
+        <div class="d-flex justify-content-end m-4 p-3">
+            <form asp-controller="Article" asp-action="Index" method="get" class="d-flex me-3 ms-5 p-3 bg-light rounded">
+
+                <div class="d-flex text-center  align-items-center">
+
+                    <label for="SelectedCategory" class="me-2"><strong>Категории: </strong></label>
+
+                    <select class="me-2 rounded-1  form-control-sm" asp-for="SelectedCategory" asp-items="Model.Categories">
+                        <option value="">Все</option>
+                    </select>
+
+                    <input asp-for="SearchString" class="form-control form-control-sm me-2" type="search" placeholder="Поиск новостей" aria-label="Search">
+                    <button class="btn btn-outline-success btn-sm" type="submit">Поиск</button>
+
+                </div>
+
+            </form>
+        </div>
+    }
+    <div class="d-flex justify-content-center bg-light rounded p-2">
+        <h2>Новостей нет</h2>
+    </div>
+    
 }

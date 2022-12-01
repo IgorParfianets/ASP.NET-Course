@@ -29,7 +29,7 @@ namespace AspNetArticle.MvcApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Create(CommentaryModel model)
+        public async Task<IActionResult> Create(CreateCommentModel model)
         {
             try
             {
@@ -65,7 +65,7 @@ namespace AspNetArticle.MvcApp.Controllers
         {
             try
             {
-                var comment = _mapper.Map<CommentaryModel>(await _commentaryService.GetCommentByIdAsync(id));
+                var comment = _mapper.Map<CreateCommentModel>(await _commentaryService.GetCommentByIdAsync(id));
 
                 if (comment != null)
                     return RedirectToAction("Details", "Article", comment);
@@ -80,7 +80,7 @@ namespace AspNetArticle.MvcApp.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Update(CommentaryModel model) 
+        public async Task<IActionResult> Update(CreateCommentModel model) 
         {
             try
             {

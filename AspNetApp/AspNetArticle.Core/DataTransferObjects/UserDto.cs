@@ -15,5 +15,4 @@ public class UserDto
     public DateTime AccountCreated { get; set; }
     public DateTime LastVisit { get; set; }
     public byte[]? Avatar { get; set; }
-
 }

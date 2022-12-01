@@ -1,10 +1,16 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@400;700&display=swap');
 
+
+/* button color #88A5BF*/
 :root {
     --textColor: #DFDFDF;
     --textLinkHover: #FFFFFF;
     --bgColorMain: #E4EBF2;
     --bgColorHeader: #6C7073;
+}
+
+button {
+    background-color: #373C40;
 }
 
 p {
@@ -122,6 +128,14 @@ input[type="text"]:focus {
    /* box-shadow: 0 0 0 .4 10px 10px;*/
 }
 
+.comment-avatar {
+    width: 75px;
+    height: 75px; 
+    border-radius: 50%; 
+    background-size: auto 75px;
+    padding: 0 0;
+}
+
 input[type=file]{
     display: none;
 }
@@ -171,8 +185,8 @@ span#plus:hover{
     border-radius: 6px;
     padding: 3px;
 }
-
-    .trigger-pass:hover {
-        text-decoration: underline;
-        background-color: #f8f9fa;
-    }
+ 
+.trigger-pass:hover {
+    text-decoration: underline;
+    background-color: #f8f9fa;
+}

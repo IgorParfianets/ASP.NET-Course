@@ -11,7 +11,6 @@
 
 <div class="d-flex flex-column container text-center w-50 mt-3 mb-5">
 
-    
     <form class="align-self-center w-75 bg-white rounded pb-5 px-3" asp-controller="Account" asp-action="Edit" method="post" enctype="multipart/form-data">
         <h1 class="row-auto mt-5 mb-4">Профиль</h1>
         <hr />
@@ -55,7 +54,6 @@
 
                 </div>
 
-
                 <div class="d-flex align-items-center justify-content-between form-group my-1">
                     <div class="offset-1 col-4 text-start">
                         <label asp-for="UserName"><strong><small>Имя или Ник: </small></strong></label>
@@ -64,7 +62,6 @@
                         <input asp-for="UserName" placeholder="Имя или Ник" class="form-control form-control-sm" />
                         <span asp-validation-for="UserName" class="validate"></span>
                     </div>
-
                 </div>
             </div>
             

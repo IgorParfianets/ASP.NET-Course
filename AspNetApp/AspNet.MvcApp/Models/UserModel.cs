@@ -11,5 +11,6 @@ namespace AspNetArticle.MvcApp.Models
         public DateTime AccountCreated { get; set; }
         public DateTime LastVisit { get; set; }
         public MembershipStatus Status { get; set; }
+        public string? Avatar { get; set; }
     }
 }

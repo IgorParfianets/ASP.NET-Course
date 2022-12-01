@@ -17,20 +17,12 @@
             <input asp-for="UserName" placeholder="Имя или ник" class="form-control form-control-sm" />
             <span asp-validation-for="UserName" class="validate"></span>
         </div>
-        
-
-@*        <div class="form-floating mb-3">
-            <input type="email" class="form-control validate" id="floatingInput" placeholder="name@example.com">
-            <label for="floatingInput" class="validate">Email address</label>
-        </div>
-*@
 
         <div class="form-group">
             <input asp-for="Email" placeholder="Ваш e-mail" class="form-control form-control-sm" />
             <span asp-validation-for="Email" class="validate"></span>
         </div>
         
-        <!--Here will be toggle-->
         <div class="form-group position-relative">
             <input asp-for="Password" id="password" placeholder="Придумайте пароль"class="form-control form-control-sm" />
 

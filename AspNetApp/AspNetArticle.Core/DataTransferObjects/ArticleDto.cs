@@ -13,5 +13,5 @@ public class ArticleDto // Можно рабить на 2 класса ArticleAn
     public string? ImageUrl { get; set; }
     public double? Rate { get; set; }
 
-    public List<CommentDto> Comments { get; set; }
+    public List<CommentDto> Comments { get; set; } // unnecessary
 }

@@ -9,8 +9,6 @@
         public bool HasNextPage => PageNumber < TotalPages;
         public bool HasLastPage => PageNumber < TotalPages - 1;
 
-
-
         public PageViewModel(int count, int pageNumber, int pageSize)
         {
             PageNumber = pageNumber;
