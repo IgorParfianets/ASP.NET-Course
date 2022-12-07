@@ -1,11 +1,9 @@
-﻿using AspNetArticle.Core;
-using AspNetArticle.Core.Abstractions;
+﻿using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Core.DataTransferObjects;
 using AspNetArticle.Data.Abstractions;
 using AspNetArticle.Database.Entities;
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using System.Xml.Linq;
 
 namespace AspNetArticle.Business.Services
 {

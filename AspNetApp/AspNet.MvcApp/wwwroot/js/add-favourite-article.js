@@ -2,11 +2,11 @@
 
 
 document.getElementById("favourite").onclick = function () {
-    if (stateClick) {
+    if (state) {
         document.getElementById("star").src = "/image/star_disable.png";
-        stateClick = false;
+        state = false;
     } else {
         document.getElementById("star").src = "/image/star_funny.png";
-        stateClick = true;
+        state = true;
     }
 }

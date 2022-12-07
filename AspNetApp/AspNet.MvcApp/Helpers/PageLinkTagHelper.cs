@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Razor.TagHelpers;
 using AspNetArticle.MvcApp.Models;
+using AspNetArticle.Core;
 
 namespace AspNetArticle.MvcApp.Helpers
 {
@@ -22,6 +23,7 @@ namespace AspNetArticle.MvcApp.Helpers
         public PageViewModel? PageModel { get; set; }
         public string PageAction { get; set; } = "";
         public string Category { get; set; }
+        public Raiting Raiting { get; set; }
         public string Search { get; set; }
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
@@ -80,7 +82,7 @@ namespace AspNetArticle.MvcApp.Helpers
             else
             {
                 link.Attributes["href"] = urlHelper.Action(PageAction, 
-                    new { page = pageNumber, selectedCategory = Category,  searchString = Search });
+                    new { page = pageNumber, selectedCategory = Category, selectedRaiting = Raiting, searchString = Search });
             }
 
             item.AddCssClass("page-item");

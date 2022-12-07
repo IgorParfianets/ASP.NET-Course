@@ -15,7 +15,7 @@
 
             <div class="d-flex w-100 h-100 gap-2">
                 <!-- For image and data -->
-                <div class="d-flex flex-column col-2 justify-content-center align-items-center rounded p-1 m-1">
+                <div class="d-flex flex-column col-2 justify-content-start align-items-center rounded p-1 m-1">
 
                     <div class="d-flex row py-2">
                         @if (!string.IsNullOrEmpty(comment.Avatar))
@@ -45,32 +45,47 @@
                 </div>
 
                 <!-- For Date and Description -->
-                <div class="d-flex flex-fill flex-column col-10 justify-content-center align-items-center bg-white rounded m-1">
+                <div class="d-flex flex-fill flex-column col-10 justify-content-center align-items-center m-1">
                     <!-- For Date -->
-                    <div class="row h-25 w-100" style="background-color:#E4EBF2;">
-                        <div class="d-flex justify-content-around">
+                    <div class=" d-flex row w-100 " style="background-color:#E4EBF2;">
+                        <div class="d-flex justify-content-between pb-2">
+                            
+                            <!-- Date of comment -->
+                            <div class="d-flex ">
+                                <partial name="_DateCommentary" model="comment.PublishedDate">
+                                    @if (comment.IsEdited)
+                                    {
+                                        <div>
+                                            <small style="font-size: 12px; font-weight:200; color:forestgreen;">&nbsp(отредактирован)</small>
+                                        </div> 
+                                    }
+                            </div>
 
-                            <small>@comment.PublishedDate.ToString("f")</small>
-                            @if (User.Identity.IsAuthenticated)
-                            {
-                                @if (User.Identity.Name.Equals(comment.Email) || User.IsInRole("Admin"))
+                            <!-- Buttons -->
+                            <div class="d-flex">
+                                @if (User.Identity.IsAuthenticated)
                                 {
-
-                                    <div>
-                                        <a asp-controller="Commentary" asp-action="Update" asp-route-id="@comment.CommentId" class="btn-sm btn-outline-success"><small>Редактировать</small></a>
-                                    </div>
-                                    <div>
-                                        <a asp-controller="Commentary" asp-action="Delete" asp-route-id="@comment.CommentId" class="btn-sm btn-outline-danger"><small>Удалить</small></a>
-                                    </div>
+                                    @if (User.Identity.Name.Equals(comment.Email) || User.IsInRole("Admin"))
+                                    {
+                                        <div>
+                                            <a asp-controller="Commentary" asp-action="Update" asp-route-id="@comment.CommentId" class="btn-sm btn-outline-success"><small>Редактировать</small></a>
+                                        </div>
+                                        <div>
+                                            <a asp-controller="Commentary" asp-action="Delete" asp-route-id="@comment.CommentId" class="btn-sm btn-outline-danger"><small>Удалить</small></a>
+                                        </div>
+                                    }
                                 }
-                            }
+                            </div>
+                            
+
                         </div>
-                        
                     </div>
 
                     <!-- For Description -->
-                    <div class="row h-75 w-100">
-                        @comment.CommentDescription
+                    <div class="overflow-auto row w-100 h-100 bg-white rounded p-1" style="font-weight: lighter;">
+                        <p>
+                            <small>@comment.CommentDescription</small>
+                        </p>
                     </div>
 
                 </div>
@@ -84,7 +99,9 @@ else
     <h4>Комментариев нет</h4>
 }
 
-
+@section Scripts{
+    <partial name="_ValidationScriptsPartial" />
+}
 
 
 @*@if (Model.ExistComments.Any())

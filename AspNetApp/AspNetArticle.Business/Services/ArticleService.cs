@@ -10,6 +10,7 @@ using System.Xml;
 using Microsoft.Extensions.Configuration;
 using Serilog;
 using System.Text.RegularExpressions;
+using AspNetArticle.Core;
 
 namespace AspNetArticle.Business.Services;
 
@@ -75,7 +76,7 @@ public class ArticleService : IArticleService
         await _unitOfWork.Commit();
     }
 
-    public async Task<IEnumerable<ArticleDto>> GetArticlesByCategoryAndSearchStringAsync(string selectedCategory, string searchString)
+    public async Task<IEnumerable<ArticleDto>> GetFilteredArticles(string selectedCategory, Raiting selectedRaiting, string searchString)
     {
         var articles =  _unitOfWork.Articles.Get();
 
@@ -87,6 +88,18 @@ public class ArticleService : IArticleService
         if (!string.IsNullOrEmpty(selectedCategory))
         {
             articles = articles.Where(art => art.Category.Equals(selectedCategory));
+        }
+
+        if (!selectedRaiting.Equals(Raiting.None))
+        {
+            if (selectedRaiting.Equals(Raiting.TopRaiting))
+            {
+                articles = articles.Where(art => art.Rate >= 0).OrderByDescending(art => art.Rate);
+            }
+            else
+            {
+                articles = articles.Where(art => art.Rate < 0).OrderBy(art => art.Rate);
+            } 
         }
 
         var result = (await articles.ToListAsync())

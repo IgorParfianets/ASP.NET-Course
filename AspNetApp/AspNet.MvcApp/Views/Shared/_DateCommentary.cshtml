@@ -1,0 +1,29 @@
+﻿@model DateTime
+
+@{
+    Layout = null;
+}
+
+<div class="d-flex" style="font-weight: lighter;">
+
+    @if ((DateTime.Now - Model).Days >= 1)
+    {
+        <div>@((DateTime.Now - Model).Days) дней назад</div>
+    }
+
+    else if ((DateTime.Now - Model).Hours < 24 && (DateTime.Now - Model).Hours >= 1)
+    {
+        <div>@((DateTime.Now - Model).Hours) часов назад</div>
+    }
+
+    else if ((DateTime.Now - Model).Minutes < 60 && (DateTime.Now - Model).Minutes >= 1)
+    {
+        <div>@((DateTime.Now - Model).Minutes) минут назад</div>
+    }
+
+    else if ((DateTime.Now - Model).Seconds < 60)
+    {
+        <div>@((DateTime.Now - Model).Seconds) секунд назад</div>
+    }
+
+</div>

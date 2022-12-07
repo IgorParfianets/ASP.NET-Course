@@ -12,12 +12,18 @@
 
 @if (Model.Articles != null && Model.Articles.Any())
 {
+    <div class="d-flex justify-content-end m-4 p-3">
+    
     @if (User.Identity.IsAuthenticated)
     {
-        <div class="d-flex justify-content-end m-4 p-3">
             <form asp-controller="Article" asp-action="Index" method="get" class="d-flex me-3 ms-5 p-3 bg-light rounded">
 
                 <div class="d-flex text-center  align-items-center">
+
+                    <label for="SelectedRaiting" class="me-2"><strong>Рейтинг: </strong></label>
+
+                    <select class="me-2 rounded-1  form-control-sm" asp-for="SelectedRaiting" asp-items="Model.Raiting">
+                    </select>
 
                     <label for="SelectedCategory" class="me-2"><strong>Категории: </strong></label>
 
@@ -31,8 +37,8 @@
                 </div>
 
             </form>
-        </div>
     }
+    </div>
 
     <div class="d-flex row p-5 mt-4 mb-4 bg-white rounded justify-content-center">
 
@@ -67,7 +73,8 @@
 
             <page-link page-model="Model.PageViewModel" 
                   page-action="Index"
-                  category="@(Model.SelectedCategory)" 
+                  category="@(Model.SelectedCategory)"
+                  raiting="@(Model.SelectedRaiting)"
                   search="@(Model.SearchString)">
               </page-link>
 
@@ -81,6 +88,11 @@ else
             <form asp-controller="Article" asp-action="Index" method="get" class="d-flex me-3 ms-5 p-3 bg-light rounded">
 
                 <div class="d-flex text-center  align-items-center">
+
+                    <label for="SelectedRaiting" class="me-2"><strong>Рейтинг: </strong></label>
+
+                    <select class="me-2 rounded-1  form-control-sm" asp-for="SelectedRaiting" asp-items="Model.Raiting">
+                    </select>
 
                     <label for="SelectedCategory" class="me-2"><strong>Категории: </strong></label>
 

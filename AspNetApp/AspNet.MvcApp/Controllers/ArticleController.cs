@@ -1,10 +1,12 @@
-﻿using AspNetArticle.Core.Abstractions;
+﻿using AspNetArticle.Core;
+using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Database.Entities;
 using AspNetArticle.MvcApp.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace AspNetArticle.MvcApp.Controllers
@@ -26,16 +28,15 @@ namespace AspNetArticle.MvcApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string selectedCategory, string searchString, int page = 1)
+        public async Task<IActionResult> Index(string selectedCategory, Raiting selectedRaiting, string searchString, int page = 1)
         {
             try
             {
                 int pageSize = 5;
 
                 var searchingArticles =
-                    (await _articleService.GetArticlesByCategoryAndSearchStringAsync(selectedCategory, searchString))
+                    (await _articleService.GetFilteredArticles(selectedCategory, selectedRaiting, searchString))
                     .Select(dto => _mapper.Map<ArticleModel>(dto))
-                    .OrderByDescending(art => art.Rate)
                     .ToList();
 
                 var existCategories = (await _articleService.GetArticlesCategoryAsync())
@@ -46,11 +47,35 @@ namespace AspNetArticle.MvcApp.Controllers
                 if (searchingArticles != null)
                 {
                     int countArticles = searchingArticles.Count();
-                    var items = searchingArticles.Skip((page - 1) * pageSize).Take(pageSize).ToList();
+
+                    var items = searchingArticles.Skip((page - 1) * pageSize)
+                        .Take(pageSize)
+                        .ToList();
 
                     model.Articles = items;
                     model.Categories = new SelectList(existCategories);
+
+                    model.Raiting = new SelectList(new List<SelectListItem>()
+                    {
+                       new SelectListItem()
+                       {
+                           Text =  "Все",
+                           Value = Raiting.None.ToString()
+                       },
+                       new SelectListItem()
+                       {
+                           Text =  "Только хорошие",
+                           Value = Raiting.TopRaiting.ToString()
+                       },
+                       new SelectListItem()
+                       {
+                           Text = "Только плохие",
+                           Value = Raiting.LowRaiting.ToString()
+                       }
+                    }, "Value", "Text");
+
                     model.SelectedCategory = selectedCategory;
+                    model.SelectedRaiting = selectedRaiting;
                     model.PageViewModel = new PageViewModel(countArticles, page, pageSize);
                 }
                 return View(model);

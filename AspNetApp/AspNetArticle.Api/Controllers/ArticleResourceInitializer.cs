@@ -35,9 +35,9 @@ namespace AspNetArticle.Api.Controllers
             try
             {
 
-                await _articleService.AggregateArticlesFromExternalSourcesAsync();
-                await _articleService.AddArticlesDataAsync();
-                //await _articleRateService.AddRateToArticlesAsync();
+                //await _articleService.AggregateArticlesFromExternalSourcesAsync();
+                //await _articleService.AddArticlesDataAsync();
+                await _articleRateService.AddRateToArticlesAsync();
 
 
                 //await _articleService.AggregateArticlesFromExternalSourcesAsync();
@@ -52,7 +52,7 @@ namespace AspNetArticle.Api.Controllers
                 ////    "*/10 * * * *");
 
                 //await _articleService.AddArticlesDataAsync();
-                ////await _sendMessageService.GetArticlesAndUsersForMessage();
+                //await _sendMessageService.GetArticlesAndUsersForMessage();
 
                 return Ok();
             }
