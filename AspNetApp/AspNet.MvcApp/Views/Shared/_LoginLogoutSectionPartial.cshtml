@@ -28,8 +28,8 @@
                         Привет @User.Claims.FirstOrDefault(cl => ClaimTypes.Actor.Equals(cl.Type))?.Value
                     </button>
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
-                        <li><a class="dropdown-item" asp-action="Edit" asp-controller="Account">Настройки</a></li>
-                        <li><a asp-controller="" asp-action="" class="dropdown-item">Избранное</a></li>
+                        <li><a class="dropdown-item" asp-controller="Account" asp-action="Edit">Настройки</a></li>
+                        <li><a class="dropdown-item" asp-controller="Account" asp-action="FavouriteArticles">Избранное</a></li>
                         <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выход</a></li>  
                     </ul>
                 </div>

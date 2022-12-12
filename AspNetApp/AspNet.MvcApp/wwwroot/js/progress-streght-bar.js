@@ -9,7 +9,7 @@ password.addEventListener("keyup", function () {
 });
 
 // for toggle
-let state = false;
+let stateClick = false;
 function toggle() {
     if (stateClick) {
         document.getElementById("password").setAttribute("type", "password");

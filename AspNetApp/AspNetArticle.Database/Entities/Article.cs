@@ -18,5 +18,4 @@ public class Article : IBaseEntity
     public Source Source { get; set; }
 
     public List<Comment> Comments { get; set; }
-    //public List<View> Views { get; set; }
 }

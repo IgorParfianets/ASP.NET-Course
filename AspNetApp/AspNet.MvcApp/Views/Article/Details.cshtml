@@ -12,7 +12,10 @@
 }
 
 <div class="container d-sm-flex col-10">
-    <div class="container d-sm-flex text-center w-100">
+    <div  class="position-relative container d-sm-flex text-center w-100">
+        <div id="pop-message" > <!-- class="alert fade show" role="alert" -->
+
+        </div>
         <div class="m-5 p-5 bg-white" style="border-radius: 8px;">
 
                 <div class=" d-flex justify-content-between mb-3">
@@ -20,8 +23,12 @@
 
                     @if (User.Identity.IsAuthenticated)
                     {
-                        <span class="text-end" id="favourite" data-bs-toggle="tooltip" title="Добавить в избранное" onclick="addArticle()">
-                            <img id="star" class="d-inline-block " onclick="changeStar(this)" src="~/image/star_disable.png" style="width: 7%">
+                        <form method="get" id="test" hidden>
+                            <input name="@nameof(Model.Article.Id)" asp-for="Article.Id">
+                        </form>
+
+                        <span class="text-end" id="favourite" onclick="passData(@Model.Article.Id)" data-bs-toggle="tooltip" title="Добавить в избранное">
+                            <img id="star" class="d-inline-block" src="~/image/star_disable.png" style="width: 7%">
                         </span>
                     }
 

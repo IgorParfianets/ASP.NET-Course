@@ -11,5 +11,7 @@ public interface IUnitOfWork
     IRepository<User> Users { get; }
     IRepository<Role> Roles { get; }
     IRepository<Comment> Comments { get; }
+    IRepository<FavouriteArticle> FavouriteArticle { get; }
+
     Task<int> Commit();
 }

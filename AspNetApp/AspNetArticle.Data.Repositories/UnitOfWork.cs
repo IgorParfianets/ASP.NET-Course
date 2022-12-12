@@ -13,12 +13,15 @@ public class UnitOfWork : IUnitOfWork
     public IRepository<Role> Roles { get; }
     public IRepository<Source> Sources { get; }
     public IRepository<Comment> Comments { get; }
+    public IRepository<FavouriteArticle> FavouriteArticle { get; }
 
     public UnitOfWork(AggregatorContext context,
         IExtendedArticleRepository articles,
         IRepository<User> users,
         IRepository<Role> roles,
-        IRepository<Source> sources, IRepository<Comment> comments)
+        IRepository<Source> sources, 
+        IRepository<Comment> comments,
+        IRepository<FavouriteArticle> favouriteArticle)
     {
         _dataBase = context;
         Articles = articles;
@@ -26,6 +29,7 @@ public class UnitOfWork : IUnitOfWork
         Roles = roles;
         Sources = sources;
         Comments = comments;
+        FavouriteArticle = favouriteArticle;
     }
 
     public async Task<int> Commit()

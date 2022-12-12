@@ -95,6 +95,27 @@ namespace AspNetArticle.Database.Migrations
                     b.ToTable("Comments");
                 });
 
+            modelBuilder.Entity("AspNetArticle.Database.Entities.FavouriteArticle", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("ArticleId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ArticleId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("FavouriteArticles");
+                });
+
             modelBuilder.Entity("AspNetArticle.Database.Entities.Role", b =>
                 {
                     b.Property<Guid>("Id")
@@ -196,6 +217,25 @@ namespace AspNetArticle.Database.Migrations
 
                     b.HasOne("AspNetArticle.Database.Entities.User", "User")
                         .WithMany("Comments")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Article");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("AspNetArticle.Database.Entities.FavouriteArticle", b =>
+                {
+                    b.HasOne("AspNetArticle.Database.Entities.Article", "Article")
+                        .WithMany()
+                        .HasForeignKey("ArticleId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("AspNetArticle.Database.Entities.User", "User")
+                        .WithMany()
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
