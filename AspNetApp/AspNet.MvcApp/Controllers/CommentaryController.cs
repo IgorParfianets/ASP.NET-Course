@@ -33,7 +33,7 @@ namespace AspNetArticle.MvcApp.Controllers
         {
             try
             {
-                if (model != null)
+                if (ModelState.IsValid)
                 {
                     var userEmail = User.Identity.Name;
                     var userId = (await _userService.GetUserByEmailAsync(userEmail))?.Id;
@@ -51,7 +51,7 @@ namespace AspNetArticle.MvcApp.Controllers
                         }
                     }
                 }
-                return BadRequest();
+                return BadRequest(); // если не валид то куда
             }
             catch (Exception ex)
             {
@@ -84,7 +84,7 @@ namespace AspNetArticle.MvcApp.Controllers
         {
             try
             {
-                if (model != null)
+                if (ModelState.IsValid)
                 {
                     var userId = (await _userService.GetUserByIdAsync(model.UserId))?.Id;
 

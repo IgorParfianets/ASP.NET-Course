@@ -133,12 +133,12 @@ public class ArticleService : IArticleService
     {
         var sources = await _unitOfWork.Sources.GetAllAsync();
 
-        Parallel.ForEach(sources, (source) => GetAllArticleDataFromRssAsync(source.Id, source.RssUrl).Wait());
+        //Parallel.ForEach(sources, (source) => GetAllArticleDataFromRssAsync(source.Id, source.RssUrl).Wait());
 
-        //foreach (var source in sources)
-        //{
-        //    await GetAllArticleDataFromRssAsync(source.Id, source.RssUrl);
-        //}
+        foreach (var source in sources)
+        {
+            await GetAllArticleDataFromRssAsync(source.Id, source.RssUrl);
+        }
     }
 
     public async Task AddArticlesDataAsync()

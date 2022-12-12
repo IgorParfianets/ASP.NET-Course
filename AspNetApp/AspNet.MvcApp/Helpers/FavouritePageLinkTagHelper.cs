@@ -26,7 +26,6 @@ namespace AspNetArticle.MvcApp.Helpers
 
         public override void Process(TagHelperContext context, TagHelperOutput output)
         {
-
             if (PageModel == null)
                 throw new Exception("PageModel is not set");
 

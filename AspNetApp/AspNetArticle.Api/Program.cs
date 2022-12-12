@@ -40,12 +40,14 @@ namespace AspNetArticle.Api
             builder.Services.AddScoped<ICommentaryService, CommentaryService>();
             builder.Services.AddScoped<IArticleRateService, ArticleRateService>();
             builder.Services.AddScoped<ISendMessageService, SendMessageService>();
+            builder.Services.AddScoped<IFavouriteArticleService, FavouriteArticleService>();
 
             builder.Services.AddScoped<IExtendedArticleRepository, ExtendedArticleRepository>();
             builder.Services.AddScoped<IRepository<User>, Repository<User>>();
             builder.Services.AddScoped<IRepository<Role>, Repository<Role>>();
             builder.Services.AddScoped<IRepository<Source>, Repository<Source>>();
             builder.Services.AddScoped<IRepository<Comment>, Repository<Comment>>();
+            builder.Services.AddScoped<IRepository<FavouriteArticle>, Repository<FavouriteArticle>>();
 
             builder.Services.AddScoped<IJwtUtil, JwtUtil>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();

@@ -281,16 +281,19 @@ public class AccountController : Controller
             if(favouriteArticle != null)
             {
                 var userEmail = User.Identity?.Name;
-                var userId = (await _userService.GetUserByEmailAsync(userEmail))?.Id;
+                if (userEmail == null)
+                    throw new ArgumentNullException();
 
-                if (userId != null)
+                var userId = (await _userService.GetUserByEmailAsync(userEmail)).Id;
+
+                if (userId != Guid.Empty)
                 {
                     if (favouriteArticle.Answer) 
                     {
                         var favouriteArticleDto = new FavouriteArticleDto()
                         {
                             Id = Guid.NewGuid(),
-                            UserId = (Guid)userId,
+                            UserId = userId,
                             ArticleId = favouriteArticle.ArticleId,
                         };
                         var result = await _favouriteArticleService.CreateFavouriteArticle(favouriteArticleDto);
@@ -303,7 +306,7 @@ public class AccountController : Controller
                     {
                         var favouriteArticleDto = new FavouriteArticleDto()
                         {                           
-                            UserId = (Guid)userId,
+                            UserId = userId,
                             ArticleId = favouriteArticle.ArticleId,
                         };
                         await _favouriteArticleService.RemoveFavouriteArticle(favouriteArticleDto);
@@ -326,9 +329,12 @@ public class AccountController : Controller
     public async Task<string> CheckFavourite([FromBody] FavouriteArticleModel favouriteArticle) // User.Identities.Any(identity => identity.IsAuthenticated)
     {
         var userEmail = User.Identity?.Name;
-        var userId = (await _userService.GetUserByEmailAsync(userEmail))?.Id;
+        if (userEmail == null)
+            throw new ArgumentNullException();
 
-        bool isExist = await _favouriteArticleService.CheckFavouriteArticle((Guid)userId, favouriteArticle.ArticleId);
+        var userId = (await _userService.GetUserByEmailAsync(userEmail)).Id;
+
+        bool isExist = await _favouriteArticleService.CheckFavouriteArticle(userId, favouriteArticle.ArticleId);
         var dictionary = new Dictionary<string, bool>() { { "exist", isExist } };
         var json = JsonConvert.SerializeObject(dictionary);
 

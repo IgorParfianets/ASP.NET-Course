@@ -35,7 +35,8 @@ namespace AspNetArticle.Business.Services
             {
                 var articles = (await _unitOfWork.Articles
                         .Get()
-                        .Where(art => art.PublicationDate > DateTime.Today)
+                        .Take(5)
+                        //.Where(art => art.PublicationDate > DateTime.Today)
                         .Select(art => $"{art.Title}\n{art.SourceUrl}\n")
                         .ToListAsync())
                     .Aggregate((i, j) => i + Environment.NewLine + j);
@@ -43,7 +44,7 @@ namespace AspNetArticle.Business.Services
                 var sb = new StringBuilder();
                 sb.Append("Свежие новости\n\n");
                 sb.Append(articles);
-                sb.Append("\n\nПереходите по ссылкам на наш новостной портал\n");
+                sb.Append("\n\nПереходите по ссылкам на новостной портал\n");
 
                 foreach (var email in usersEmails)
                 {
@@ -74,7 +75,8 @@ namespace AspNetArticle.Business.Services
 
                 using (var smtp = new SmtpClient())
                 {
-                    await smtp.ConnectAsync(_mailSettings.Host, _mailSettings.Port, SecureSocketOptions.StartTls);
+                    smtp.Timeout = (int)TimeSpan.FromSeconds(5).TotalMilliseconds;
+                    await smtp.ConnectAsync(_mailSettings.Host, _mailSettings.Port, true);
                     await smtp.AuthenticateAsync(_mailSettings.Mail, _mailSettings.Password);
                     await smtp.SendAsync(message);
 

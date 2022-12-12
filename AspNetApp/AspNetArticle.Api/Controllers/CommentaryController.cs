@@ -62,5 +62,35 @@ namespace AspNetArticle.Api.Controllers
 
             return BadRequest(); // todo need to clarify which StatusCode
         }
+
+        //[HttpPut("{id}")]
+        //public async Task<IActionResult> UpdateComment([FromBody] Guid commentId, AddCommentRequestModel model)
+        //{
+        //    var dto = _mapper.Map<CommentDto>(model);
+
+        //    if (dto == null)
+        //        return BadRequest();
+
+        //    var result = await _commentaryService.CreateCommentAsync(dto);
+        //    if (result > 0)
+        //        return Ok();
+
+        //    return BadRequest(); // todo need to clarify which StatusCode
+        //}
+
+        //[HttpDelete("{id}")]
+        //public async Task<IActionResult> DeleteComment(Guid commentId)
+        //{
+        //    //var dto = _mapper.Map<CommentDto>(model);
+
+        //    //if (dto == null)
+        //    //    return BadRequest();
+
+        //    //var result = await _commentaryService.CreateCommentAsync(dto);
+        //    //if (result > 0)
+        //    //    return Ok();
+
+        //    return BadRequest(); // todo need to clarify which StatusCode
+        //}
     }
 }

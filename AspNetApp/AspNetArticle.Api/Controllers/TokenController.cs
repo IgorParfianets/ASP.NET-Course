@@ -44,7 +44,6 @@ namespace AspNetArticle.Api.Controllers
                 {
                     return BadRequest();
                 }
-
                 var isPassCorrect = await _userService.CheckUserByEmailAndPasswordAsync(model.Email, model.Password);
 
                 if (!isPassCorrect)
@@ -53,8 +52,6 @@ namespace AspNetArticle.Api.Controllers
                 }
 
                 var response = _jwtUtil.GenerateToken(user);
-
-
                 return Ok(response);
             }
             catch (Exception e)

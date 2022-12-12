@@ -28,7 +28,7 @@
                         </form>
 
                         <span class="text-end" id="favourite" onclick="passData(@Model.Article.Id)" data-bs-toggle="tooltip" title="Добавить в избранное">
-                            <img id="star" class="d-inline-block" src="~/image/star_disable.png" style="width: 7%">
+                        <img id="star" class="d-inline-block" src="~/image/star_disable.png" style="width: 7%; cursor:pointer;">
                         </span>
                     }
 
@@ -39,6 +39,12 @@
             <div class="my-5">
                 <img src="@Model.Article.ImageUrl"/>
             </div>
+
+            <!-- Button Go Back -->
+
+            @*<div class="position-fixed" style="top: 500px; right: 10%; z-index:100;">
+                <a class="btn btn-primary" href="">Вернуться назад</a>
+            </div>*@
 
             <div class="bg-light p-5 text-start" style="border-radius: 6px;">
                 <article-text article-text="@Model.Article.Text"></article-text>
