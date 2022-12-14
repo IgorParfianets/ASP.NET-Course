@@ -1,24 +1,24 @@
-﻿let stateClick = true;
+﻿let stateClickShow = true;
 
 const trigger = document.getElementById("trigger");
 const passBlock = document.getElementById("change-password-block");
 
 
 trigger.onclick = function () {
-    if (stateClick) {
+    if (stateClickShow) {
         trigger.textContent = 'Оставить прежним'
 
         passBlock.style.transform = 'scaleY(1)'
         passBlock.style.height = '160px'
         passBlock.style.paddingTop = '15px'
 
-        stateClick = false;
+        stateClickShow = false;
     } else {
         trigger.textContent = 'Сменить пароль'
 
         passBlock.style.transform = 'scaleY(0)'
         passBlock.style.height = '0px'   
         
-        stateClick = true;
+        stateClickShow = true;
     }
 }

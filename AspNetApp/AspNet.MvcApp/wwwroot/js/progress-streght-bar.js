@@ -9,14 +9,14 @@ password.addEventListener("keyup", function () {
 });
 
 // for toggle
-let stateClick = false;
+let stateClickEye = false;
 function toggle() {
-    if (stateClick) {
+    if (stateClickEye) {
         document.getElementById("password").setAttribute("type", "password");
-        stateClick = false;
+        stateClickEye = false;
     } else {
         document.getElementById("password").setAttribute("type", "text");
-        stateClick = true;
+        stateClickEye = true;
     }
 }
 

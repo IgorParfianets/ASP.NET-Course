@@ -285,7 +285,8 @@ public class ArticleService : IArticleService
                        || node.Name.Equals("ol")
                        || node.Name.Equals("ul")
                        || node.Name.Equals("h4")
-                       || node.Name.Equals("h3"))
+                       || node.Name.Equals("h3")
+                       || node.Name.Equals("figure"))
                        .Select(node => node.OuterHtml)
                        .Aggregate((i, j) => i + Environment.NewLine + j);
 

@@ -105,8 +105,7 @@ namespace AspNetArticle.Api
                         ClockSkew = TimeSpan.Zero
                     };
                 });
-            // Configuration
-            //builder.Configuration.AddJsonFile("hashingsalt.json"); //todo remove for custom configuration
+
             var app = builder.Build();
 
             app.UseStaticFiles();

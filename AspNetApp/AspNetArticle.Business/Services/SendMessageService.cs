@@ -35,14 +35,18 @@ namespace AspNetArticle.Business.Services
             {
                 var articles = (await _unitOfWork.Articles
                         .Get()
+                        .Where(art => art.PublicationDate > DateTime.Today)
+                        .OrderByDescending(art => art.Rate)
                         .Take(5)
-                        //.Where(art => art.PublicationDate > DateTime.Today)
                         .Select(art => $"{art.Title}\n{art.SourceUrl}\n")
-                        .ToListAsync())
+                        .ToArrayAsync())
                     .Aggregate((i, j) => i + Environment.NewLine + j);
 
+                if (string.IsNullOrEmpty(articles))
+                    return;
+
                 var sb = new StringBuilder();
-                sb.Append("Свежие новости\n\n");
+                sb.Append("Топ 5 хороших новостей за сегодня\n\n");
                 sb.Append(articles);
                 sb.Append("\n\nПереходите по ссылкам на новостной портал\n");
 

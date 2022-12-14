@@ -34,25 +34,18 @@ namespace AspNetArticle.Api.Controllers
         {
             try
             {
+                await _articleRateService.AddRateToArticlesAsync();
+                //RecurringJob.AddOrUpdate(() => _articleService.AggregateArticlesFromExternalSourcesAsync(),
+                //    "0 21 * * *");
 
-                //await _articleService.AggregateArticlesFromExternalSourcesAsync();
-                //await _articleService.AddArticlesDataAsync();
-                //await _articleRateService.AddRateToArticlesAsync();
+                //RecurringJob.AddOrUpdate(() => _articleService.AddArticlesDataAsync(),
+                //    "1 21 * * *");
 
+                //RecurringJob.AddOrUpdate(() => _articleRateService.AddRateToArticlesAsync(),
+                //    "2,3,4,5,6,7 21 * * *");
 
-                //await _articleService.AggregateArticlesFromExternalSourcesAsync();
-                //await _articleService.AddArticlesDataAsync();
-                ////RecurringJob.AddOrUpdate(() => _articleService.AggregateArticlesFromExternalSourcesAsync(),
-                ////    "*/5 * * * *");
-
-                ////RecurringJob.AddOrUpdate(() => _articleService.AddArticlesDataAsync(),
-                ////    "*/7 * * * *");
-
-                ////RecurringJob.AddOrUpdate(() => _articleRateService.AddRateToArticlesAsync(),
-                ////    "*/10 * * * *");
-
-                //await _articleService.AddArticlesDataAsync();
-                await _sendMessageService.GetArticlesAndUsersForMessage();
+                //RecurringJob.AddOrUpdate(() => _sendMessageService.GetArticlesAndUsersForMessage(),
+                //    "8 21 * * *");
 
                 return Ok();
             }

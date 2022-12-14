@@ -58,15 +58,15 @@ namespace AspNetArticle.Business.Services
                     nameof(articleId));
             }
 
-            var htmlDoc = new HtmlDocument();
-            htmlDoc.LoadHtml(text);
+            //var htmlDoc = new HtmlDocument();
+            //htmlDoc.LoadHtml(text);
 
-            var textWithoutHtml = htmlDoc.DocumentNode
-                .SelectNodes("p")
-                .Select(t => t.InnerText)
-                .Aggregate((i, j) => i + " " + j);
+            ////var textWithoutHtml = htmlDoc.DocumentNode
+            ////    .SelectNodes("p")
+            ////    .Select(t => t.InnerText)
+            ////    .Aggregate((i, j) => i + " " + j);
 
-            textWithoutHtml = Regex.Replace(textWithoutHtml, @"<[^>]+>|&nbsp|\n;", " ")
+            var textWithoutHtml = Regex.Replace(text, @"<[^>]+>|&nbsp;|\n;", " ")
                 .Trim()
                 .ToLower();
             
@@ -77,13 +77,8 @@ namespace AspNetArticle.Business.Services
         {
             try
             {
-                var article = await _unitOfWork.Articles.GetByIdAsync(articleId);
-
-                if (article == null)
-                {
-                    throw new ArgumentException($"Article with id: {articleId} doesn't exists",
-                        nameof(articleId));
-                }
+                if (string.IsNullOrEmpty(articleFixedText))
+                    throw new Exception();
 
                 using (var client = new HttpClient())
                 {
