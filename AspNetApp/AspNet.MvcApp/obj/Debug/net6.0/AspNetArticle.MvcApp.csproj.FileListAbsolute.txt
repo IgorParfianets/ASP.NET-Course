@@ -630,3 +630,5 @@ D:\Developing\ArticleApp\AspNetApp\AspNet.MvcApp\obj\Debug\net6.0\refint\AspNetA
 D:\Developing\ArticleApp\AspNetApp\AspNet.MvcApp\obj\Debug\net6.0\AspNetArticle.MvcApp.pdb
 D:\Developing\ArticleApp\AspNetApp\AspNet.MvcApp\obj\Debug\net6.0\AspNetArticle.MvcApp.genruntimeconfig.cache
 D:\Developing\ArticleApp\AspNetApp\AspNet.MvcApp\obj\Debug\net6.0\ref\AspNetArticle.MvcApp.dll
+D:\Программирование\ArticleApp\AspNetApp\AspNet.MvcApp\bin\Debug\net6.0\AsoNetArticle.Data.CQS.dll
+D:\Программирование\ArticleApp\AspNetApp\AspNet.MvcApp\bin\Debug\net6.0\AsoNetArticle.Data.CQS.pdb

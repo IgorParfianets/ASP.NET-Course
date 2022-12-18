@@ -21,14 +21,14 @@ namespace AspNetArticle.Data.Repositories
             }
         }
 
-        public async Task UpdateArticleShortDescriptionAsync(Guid id, string shortDescription)
-        {
-            var article = await DbSet.FirstOrDefaultAsync(a => a.Id.Equals(id));
-            if (article != null)
-            {
-                article.ShortDescription = shortDescription;
-            }
-        }
+        //public async Task UpdateArticleShortDescriptionAsync(Guid id, string shortDescription)
+        //{
+        //    var article = await DbSet.FirstOrDefaultAsync(a => a.Id.Equals(id));
+        //    if (article != null)
+        //    {
+        //        article.ShortDescription = shortDescription;
+        //    }
+        //}
         public async Task UpdateArticleImageUrlAsync(Guid id, string imageUrl)
         {
             var article = await DbSet.FirstOrDefaultAsync(a => a.Id.Equals(id));

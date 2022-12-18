@@ -1,6 +1,4 @@
-﻿
-using AspNetArticle.Database.Entities;
-using MediatR;
+﻿using MediatR;
 
 namespace AsoNetArticle.Data.CQS.Queries
 {

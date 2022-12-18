@@ -1,3 +1,5 @@
+using AsoNetArticle.Data.CQS.Commands;
+using AsoNetArticle.Data.CQS.Queries;
 using AspNetArticle.Business.Models;
 using AspNetArticle.Business.Services;
 using AspNetArticle.Core.Abstractions;
@@ -9,6 +11,7 @@ using AspNetArticle.Database.Entities;
 using AspNetArticle.MvcApp.Filters;
 using Hangfire;
 using Hangfire.SqlServer;
+using MediatR;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.EntityFrameworkCore;
 using NETCore.MailKit.Extensions;
@@ -96,19 +99,8 @@ namespace AspNet.MvcApp
             //MailKit
             builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
 
-            //builder.Services.AddMailKit(optionsBuilder =>
-            //    {
-            //        var mailKitOptions = new MailKitOptions()
-            //        {
-            //            Server = builder.Configuration.GetValue<string>("MailSettings:Mail"),
-            //            SenderName = builder.Configuration.GetValue<string>("MailSettings:DisplayName"),
-            //            Password = builder.Configuration.GetValue<string>("MailSettings:Password"),
-            //            SenderEmail = builder.Configuration.GetValue<string>("MailSettings:Host"),
-            //            Port = builder.Configuration.GetValue<int>("MailSettings:Port"),
-            //        };
-            //        optionsBuilder.UseMailKit(mailKitOptions);
-            //    }
-            //);
+            //MediatR
+            builder.Services.AddMediatR(typeof(GetArticleByIdQuery).Assembly);
 
             var app = builder.Build();
 

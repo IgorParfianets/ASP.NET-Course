@@ -23,7 +23,7 @@ namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
             .ToArrayAsync(cancellationToken);
 
             var entity = request.Articles
-           .Where(dto => !oldArticleUrls.Contains(dto.SourceUrl))
+           .Where(art => !oldArticleUrls.Contains(art.SourceUrl))
            .ToArray();
 
             await _context.Articles.AddRangeAsync(entity);

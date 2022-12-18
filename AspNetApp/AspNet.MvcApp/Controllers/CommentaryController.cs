@@ -35,7 +35,7 @@ namespace AspNetArticle.MvcApp.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    var userEmail = User.Identity.Name;
+                    var userEmail = User.Identity?.Name;
                     var userId = (await _userService.GetUserByEmailAsync(userEmail))?.Id;
 
                     var dto = _mapper.Map<CommentDto>(model);
@@ -51,7 +51,12 @@ namespace AspNetArticle.MvcApp.Controllers
                         }
                     }
                 }
-                return BadRequest(); // если не валид то куда
+                ModelState.AddModelError("", "Комментарий пуст");
+
+                return Redirect($"~/Article/Details/{model.ArticleId}");
+                //var articleId = model.ArticleId;
+                //return RedirectToAction("Details", "Article", articleId);
+                //return BadRequest(); // если не валид то куда
             }
             catch (Exception ex)
             {
@@ -107,7 +112,10 @@ namespace AspNetArticle.MvcApp.Controllers
                         }
                     }
                 }
-                return RedirectToAction("Details", "Article", model);
+                ModelState.AddModelError("", "Комментарий пуст");
+
+                return Redirect($"~/Article/Details/{model.ArticleId}");
+                //return RedirectToAction("Details", "Article", model);
             }
             catch (Exception ex)
             {

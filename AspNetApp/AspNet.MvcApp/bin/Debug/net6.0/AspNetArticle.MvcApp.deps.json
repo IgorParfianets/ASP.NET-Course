@@ -2654,8 +2654,20 @@
           "System.Xml.ReaderWriter": "4.3.0"
         }
       },
+      "AsoNetArticle.Data.CQS/1.0.0": {
+        "dependencies": {
+          "AspNetArticle.Core": "1.0.0",
+          "AspNetArticle.Database": "1.0.0",
+          "MediatR": "11.0.0",
+          "MediatR.Extensions.Microsoft.DependencyInjection": "11.0.0"
+        },
+        "runtime": {
+          "AsoNetArticle.Data.CQS.dll": {}
+        }
+      },
       "AspNetArticle.Business/1.0.0": {
         "dependencies": {
+          "AsoNetArticle.Data.CQS": "1.0.0",
           "AspNetArticle.Core": "1.0.0",
           "AspNetArticle.Data.Abstractions": "1.0.0",
           "AutoMapper": "11.0.1",
@@ -4163,6 +4175,11 @@
       "sha512": "sha512-5zJ0XDxAIg8iy+t4aMnQAu0MqVbqyvfoUVl1yDV61xdo3Vth45oA2FoY4pPkxYAH5f8ixpmTqXeEIya95x0aCQ==",
       "path": "system.xml.xdocument/4.3.0",
       "hashPath": "system.xml.xdocument.4.3.0.nupkg.sha512"
+    },
+    "AsoNetArticle.Data.CQS/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "AspNetArticle.Business/1.0.0": {
       "type": "project",

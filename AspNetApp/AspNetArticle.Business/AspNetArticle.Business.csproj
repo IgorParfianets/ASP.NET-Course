@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\AsoNetArticle.Data.CQS\AsoNetArticle.Data.CQS.csproj" />
     <ProjectReference Include="..\AspNetArticle.Core\AspNetArticle.Core.csproj" />
     <ProjectReference Include="..\AspNetArticle.Data.Abstraction\AspNetArticle.Data.Abstractions.csproj" />
   </ItemGroup>

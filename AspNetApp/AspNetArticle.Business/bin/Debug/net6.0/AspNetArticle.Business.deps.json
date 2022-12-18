@@ -8,6 +8,7 @@
     ".NETCoreApp,Version=v6.0": {
       "AspNetArticle.Business/1.0.0": {
         "dependencies": {
+          "AsoNetArticle.Data.CQS": "1.0.0",
           "AspNetArticle.Core": "1.0.0",
           "AspNetArticle.Data.Abstractions": "1.0.0",
           "AutoMapper": "11.0.1",
@@ -647,6 +648,17 @@
           }
         }
       },
+      "AsoNetArticle.Data.CQS/1.0.0": {
+        "dependencies": {
+          "AspNetArticle.Core": "1.0.0",
+          "AspNetArticle.Database": "1.0.0",
+          "MediatR": "11.0.0",
+          "MediatR.Extensions.Microsoft.DependencyInjection": "11.0.0"
+        },
+        "runtime": {
+          "AsoNetArticle.Data.CQS.dll": {}
+        }
+      },
       "AspNetArticle.Core/1.0.0": {
         "dependencies": {
           "Microsoft.AspNetCore.Http.Features": "5.0.17"
@@ -1086,6 +1098,11 @@
       "sha512": "sha512-CeWTdRNfRaSh0pm2gDTJFwVaXfTq6Xwv/sA887iwPTneW7oMtMlpvDIO+U60+3GWTB7Aom6oQwv5VZVUhQRdPQ==",
       "path": "system.windows.extensions/4.7.0",
       "hashPath": "system.windows.extensions.4.7.0.nupkg.sha512"
+    },
+    "AsoNetArticle.Data.CQS/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
     },
     "AspNetArticle.Core/1.0.0": {
       "type": "project",

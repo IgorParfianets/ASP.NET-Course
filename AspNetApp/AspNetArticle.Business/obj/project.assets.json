@@ -1006,6 +1006,22 @@
           }
         }
       },
+      "AsoNetArticle.Data.CQS/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "AspNetArticle.Core": "1.0.0",
+          "AspNetArticle.Database": "1.0.0",
+          "MediatR": "11.0.0",
+          "MediatR.Extensions.Microsoft.DependencyInjection": "11.0.0"
+        },
+        "compile": {
+          "bin/placeholder/AsoNetArticle.Data.CQS.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AsoNetArticle.Data.CQS.dll": {}
+        }
+      },
       "AspNetArticle.Core/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
@@ -2632,6 +2648,11 @@
         "version.txt"
       ]
     },
+    "AsoNetArticle.Data.CQS/1.0.0": {
+      "type": "project",
+      "path": "../AsoNetArticle.Data.CQS/AsoNetArticle.Data.CQS.csproj",
+      "msbuildProject": "../AsoNetArticle.Data.CQS/AsoNetArticle.Data.CQS.csproj"
+    },
     "AspNetArticle.Core/1.0.0": {
       "type": "project",
       "path": "../AspNetArticle.Core/AspNetArticle.Core.csproj",
@@ -2650,6 +2671,7 @@
   },
   "projectFileDependencyGroups": {
     "net6.0": [
+      "AsoNetArticle.Data.CQS >= 1.0.0",
       "AspNetArticle.Core >= 1.0.0",
       "AspNetArticle.Data.Abstractions >= 1.0.0",
       "AutoMapper >= 11.0.1",
@@ -2690,6 +2712,9 @@
         "net6.0": {
           "targetAlias": "net6.0",
           "projectReferences": {
+            "D:\\Программирование\\ArticleApp\\AspNetApp\\AsoNetArticle.Data.CQS\\AsoNetArticle.Data.CQS.csproj": {
+              "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AsoNetArticle.Data.CQS\\AsoNetArticle.Data.CQS.csproj"
+            },
             "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Core\\AspNetArticle.Core.csproj": {
               "projectPath": "D:\\Программирование\\ArticleApp\\AspNetApp\\AspNetArticle.Core\\AspNetArticle.Core.csproj"
             },

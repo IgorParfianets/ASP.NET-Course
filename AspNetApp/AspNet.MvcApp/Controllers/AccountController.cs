@@ -144,7 +144,7 @@ public class AccountController : Controller
         {
             if (!string.IsNullOrEmpty(username))
             {
-                var email = User.Identity.Name;
+                var email = User.Identity?.Name;
 
                 if(email != null)
                 {

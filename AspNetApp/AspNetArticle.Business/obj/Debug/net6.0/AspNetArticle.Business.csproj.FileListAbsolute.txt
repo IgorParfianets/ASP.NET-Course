@@ -36,3 +36,5 @@ D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Business\obj\Debug\net6.0\AspNe
 D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Business\obj\Debug\net6.0\refint\AspNetArticle.Business.dll
 D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Business\obj\Debug\net6.0\AspNetArticle.Business.pdb
 D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Business\obj\Debug\net6.0\ref\AspNetArticle.Business.dll
+D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Business\bin\Debug\net6.0\AsoNetArticle.Data.CQS.dll
+D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Business\bin\Debug\net6.0\AsoNetArticle.Data.CQS.pdb

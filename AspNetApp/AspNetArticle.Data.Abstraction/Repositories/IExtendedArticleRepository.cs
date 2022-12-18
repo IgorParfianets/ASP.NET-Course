@@ -6,9 +6,7 @@ namespace AspNetArticle.Data.Abstractions.Repositories
     {
         Task UpdateArticleTextAsync(Guid id, string text);
         Task UpdateArticleImageUrlAsync(Guid id, string imageUrl);
-
-        Task UpdateArticleShortDescriptionAsync(Guid id, string shortDescription);
-
+        //Task UpdateArticleShortDescriptionAsync(Guid id, string shortDescription);
         Task UpdateArticleRateAsync(Guid id, double rate);
     }
 }

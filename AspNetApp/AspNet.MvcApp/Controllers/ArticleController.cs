@@ -89,7 +89,7 @@ namespace AspNetArticle.MvcApp.Controllers
 
 
         [HttpGet]
-        public async Task<IActionResult> Details(Guid id, CreateCommentModel? model) 
+        public async Task<IActionResult> Details(Guid id, CreateCommentModel? model)
         {
             try
             {
@@ -131,26 +131,5 @@ namespace AspNetArticle.MvcApp.Controllers
                 return BadRequest();
             }
         }
-
-        //[HttpGet]
-        //public async Task<IActionResult> Details(CommentaryModel model)
-        //{
-        //    var article = await _articleService.GetArticleByIdAsync(model.ArticleId);
-
-        //    if (article != null)
-        //    {
-        //        var articleWithUsersComments = new ArticleWIthCommentaryViewModel
-        //        {
-        //            Article = article,
-        //            ExistComments = await _commentaryService.GetAllCommentsWithUsersByArticleIdAsync(model.ArticleId),
-        //            Comment = model
-
-        //        };
-
-        //        return View(articleWithUsersComments); todo trouble multiple endpoints
-        //    }
-
-        //    return View();
-        //}
     }
 }

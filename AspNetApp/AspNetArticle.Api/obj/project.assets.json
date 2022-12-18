@@ -1573,10 +1573,27 @@
           }
         }
       },
+      "AsoNetArticle.Data.CQS/1.0.0": {
+        "type": "project",
+        "framework": ".NETCoreApp,Version=v6.0",
+        "dependencies": {
+          "AspNetArticle.Core": "1.0.0",
+          "AspNetArticle.Database": "1.0.0",
+          "MediatR": "11.0.0",
+          "MediatR.Extensions.Microsoft.DependencyInjection": "11.0.0"
+        },
+        "compile": {
+          "bin/placeholder/AsoNetArticle.Data.CQS.dll": {}
+        },
+        "runtime": {
+          "bin/placeholder/AsoNetArticle.Data.CQS.dll": {}
+        }
+      },
       "AspNetArticle.Business/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v6.0",
         "dependencies": {
+          "AsoNetArticle.Data.CQS": "1.0.0",
           "AspNetArticle.Core": "1.0.0",
           "AspNetArticle.Data.Abstractions": "1.0.0",
           "AutoMapper": "11.0.1",
@@ -3970,6 +3987,11 @@
         "useSharedDesignerContext.txt",
         "version.txt"
       ]
+    },
+    "AsoNetArticle.Data.CQS/1.0.0": {
+      "type": "project",
+      "path": "../AsoNetArticle.Data.CQS/AsoNetArticle.Data.CQS.csproj",
+      "msbuildProject": "../AsoNetArticle.Data.CQS/AsoNetArticle.Data.CQS.csproj"
     },
     "AspNetArticle.Business/1.0.0": {
       "type": "project",

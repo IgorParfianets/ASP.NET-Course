@@ -240,3 +240,5 @@ D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Api\obj\Debug\net6.0\refint\Asp
 D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Api\obj\Debug\net6.0\AspNetArticle.Api.pdb
 D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Api\obj\Debug\net6.0\AspNetArticle.Api.genruntimeconfig.cache
 D:\Developing\ArticleApp\AspNetApp\AspNetArticle.Api\obj\Debug\net6.0\ref\AspNetArticle.Api.dll
+D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Api\bin\Debug\net6.0\AsoNetArticle.Data.CQS.dll
+D:\Программирование\ArticleApp\AspNetApp\AspNetArticle.Api\bin\Debug\net6.0\AsoNetArticle.Data.CQS.pdb

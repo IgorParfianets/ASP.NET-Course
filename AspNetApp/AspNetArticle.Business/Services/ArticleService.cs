@@ -11,6 +11,9 @@ using Microsoft.Extensions.Configuration;
 using Serilog;
 using System.Text.RegularExpressions;
 using AspNetArticle.Core;
+using MediatR;
+using AsoNetArticle.Data.CQS.Queries;
+using AsoNetArticle.Data.CQS.Commands;
 
 namespace AspNetArticle.Business.Services;
 
@@ -18,29 +21,35 @@ public class ArticleService : IArticleService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
 
-    public ArticleService(IMapper mapper, 
-        IUnitOfWork unitOfWork 
-        )
+    public ArticleService(IMapper mapper,
+        IUnitOfWork unitOfWork,
+        IMediator mediator)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
+        _mediator = mediator;
     }
 
 
     public async Task<ArticleDto> GetArticleByIdAsync(Guid id)
     {
-        return _mapper.Map<ArticleDto>(await _unitOfWork.Articles.GetByIdAsync(id));
+        //return _mapper.Map<ArticleDto>(await _unitOfWork.Articles.GetByIdAsync(id));
+        return _mapper.Map<ArticleDto>(await _mediator.Send(new GetArticleByIdQuery() { Id = id}));
     }
 
     public async Task<IEnumerable<ArticleDto>> GetAllArticlesAsync() 
     {
-        var articleDto = await _unitOfWork.Articles
-            .Get()
-            .Select(entity => _mapper.Map<ArticleDto>(entity))
-            .ToListAsync();
+        //var articleDto = await _unitOfWork.Articles
+        //    .Get()
+        //    .Select(entity => _mapper.Map<ArticleDto>(entity))
+        //    .ToListAsync();
 
-        return articleDto;
+        var articleDto = (await _mediator.Send(new GetAllArticlesQuery()))
+           .Select(entity => _mapper.Map<ArticleDto>(entity));
+
+        return await articleDto.ToArrayAsync();
     }
 
     public async Task<List<ArticleDto>> GetArticlesByNameAndSourcesAsync(string? name, Guid? category) // todo can remove unnecessary
@@ -64,74 +73,90 @@ public class ArticleService : IArticleService
         return result;
     }
 
-    public async Task RemoveArticleToArchiveByIdAsync(Guid id)
-    {
-        var entities = await  _unitOfWork.Articles
-            .Get()
-            .Where(ent => ent.SourceId == id)
-            .ToListAsync();
-        
-        _unitOfWork.Articles.RemoveRange(entities);
-        
-        await _unitOfWork.Commit();
-    }
-
     public async Task<IEnumerable<ArticleDto>> GetFilteredArticles(string selectedCategory, Raiting selectedRaiting, string searchString)
     {
-        var articles =  _unitOfWork.Articles.Get();
-
-        if (!string.IsNullOrEmpty(searchString))
+        var articles = await _mediator.Send(new GetArticlesFilteredQuery()
         {
-            articles = articles.Where(art => art.Title.Contains(searchString));
-        }
+            SelectedCategory = selectedCategory,
+            SelectedRaiting = selectedRaiting,
+            SearchString = searchString
+        });
 
-        if (!string.IsNullOrEmpty(selectedCategory))
+        if (articles != null && articles.Any())
         {
-            articles = articles.Where(art => art.Category.Equals(selectedCategory));
+            return articles.Select(art => _mapper.Map<ArticleDto>(art))
+                .ToArray();
         }
+        return Array.Empty<ArticleDto>();
 
-        if (!selectedRaiting.Equals(Raiting.None))
-        {
-            if (selectedRaiting.Equals(Raiting.TopRaiting))
-            {
-                articles = articles.Where(art => art.Rate >= 0).OrderByDescending(art => art.Rate);
-            }
-            else
-            {
-                articles = articles.Where(art => art.Rate < 0).OrderBy(art => art.Rate);
-            } 
-        }
+        //if (!string.IsNullOrEmpty(searchString))
+        //{
+        //    articles = articles.Where(art => art.Title.Contains(searchString));
+        //}
 
-        var result = (await articles.ToListAsync())
-            .Select(ent => _mapper.Map<ArticleDto>(ent))
-            .ToList();
+        //if (!string.IsNullOrEmpty(selectedCategory) && articles.Any(art => art.Category != null))
+        //{
+        //    articles = articles.Where(art => art.Category.Equals(selectedCategory));
+        //}
 
-        return result;
+        //if (!selectedRaiting.Equals(Raiting.None))
+        //{
+        //    if (selectedRaiting.Equals(Raiting.TopRaiting))
+        //    {
+        //        articles = articles.Where(art => art.Rate >= 0).OrderByDescending(art => art.Rate);
+        //    }
+        //    else
+        //    {
+        //        articles = articles.Where(art => art.Rate < 0).OrderBy(art => art.Rate);
+        //    } 
+        //}
+        //var result = (await articles.ToArrayAsync())
+        //    .Select(ent => _mapper.Map<ArticleDto>(ent))
+        ////    .ToArray();
+        //var result = articles.Select(ent => _mapper.Map<ArticleDto>(ent))
+        //    .ToArray();
+
+        //return result;
     }
 
     public async Task<IEnumerable<string>> GetArticlesCategoryAsync()
     {
-        var categories = await _unitOfWork.Articles
-            .Get()
-            .Select(art => art.Category)
-            .Distinct()
-            .ToListAsync();
+        var categories = await _mediator.Send(new GetArticleCategoriesQuery());
 
-        return categories;
+        return categories.ToArray();
+        //var categories = await _unitOfWork.Articles
+        //    .Get()
+        //    .Select(art => art.Category)
+        //    .Distinct()
+        //    .ToListAsync();
+
+        //var articles = await _mediator.Send(new GetAllArticlesQuery());
+
+        //if(articles != null && articles.Any())
+        //{
+        //    return await articles.Select(art => art.Category)
+        //    .Distinct()
+        //    .ToArrayAsync();
+
+        //}
+        //return await categories ?? Array.Empty<string>();
     }
 
     public async Task<Guid?> GetArticleIdByCommentId(Guid commentId)
     {
-        return (await _unitOfWork.Comments
-            .Get()
-            .FirstOrDefaultAsync(com => com.Id.Equals(commentId)))
-            ?.ArticleId;
+        return await _mediator.Send(new GetArticleIdByCommentIdQuery() { CommentId = commentId });
+
+        //return (await _unitOfWork.Comments
+        //    .Get()
+        //    .FirstOrDefaultAsync(com => com.Id.Equals(commentId)))
+        //    ?.ArticleId;
     }
 
 
     public async Task AggregateArticlesFromExternalSourcesAsync()
     {
-        var sources = await _unitOfWork.Sources.GetAllAsync();
+        var sources = await _mediator.Send(new GetAllSourcesQuery());
+        //var sources = await _unitOfWork.Sources.GetAllAsync();
 
         //Parallel.ForEach(sources, (source) => GetAllArticleDataFromRssAsync(source.Id, source.RssUrl).Wait());
 
@@ -143,12 +168,13 @@ public class ArticleService : IArticleService
 
     public async Task AddArticlesDataAsync()
     {
-        var articlesWithEmptyTextIds = _unitOfWork.Articles.Get()
-            .Where(article => string.IsNullOrEmpty(article.Text))
-            .Select(article => article.Id)
-            .ToList();
+        var articlesWithEmptyTextIds = await _mediator.Send(new GetArticlesIdWithEmptyTextQuery());
+        //var articlesWithEmptyTextIds = _unitOfWork.Articles.Get()
+        //    .Where(article => string.IsNullOrEmpty(article.Text))
+        //    .Select(article => article.Id)
+        //    .ToList();
 
-        foreach (var articleId in articlesWithEmptyTextIds)
+        foreach (var articleId in articlesWithEmptyTextIds ?? Array.Empty<Guid>())
         {
             await AddArticleTextToArticles(articleId);
         }
@@ -188,17 +214,20 @@ public class ArticleService : IArticleService
                             list.Add(articleDto);
                     }
                 }
-                var oldArticleUrls = await _unitOfWork.Articles.Get()
-                    .Select(article => article.SourceUrl)
-                    .Distinct()
-                    .ToArrayAsync();
+                var result = list.Select(art => _mapper.Map<Article>(art));
 
-                var entities = list.Where(dto => !oldArticleUrls.Contains(dto.SourceUrl))
-                    .Select(dto => _mapper.Map<Article>(dto)).ToArray();
+                await _mediator.Send(new AddArticleDataFromRssFeedCommand() { Articles = result });
+                //var oldArticleUrls = await _unitOfWork.Articles.Get()
+                //    .Select(article => article.SourceUrl)
+                //    .Distinct()
+                //    .ToArrayAsync();
+
+                //var entities = list.Where(dto => !oldArticleUrls.Contains(dto.SourceUrl))
+                //    .Select(dto => _mapper.Map<Article>(dto)).ToArray();
 
 
-                await _unitOfWork.Articles.AddRangeAsync(entities);
-                await _unitOfWork.Commit();
+                //await _unitOfWork.Articles.AddRangeAsync(entities);
+                //await _unitOfWork.Commit();
             }
         }
         catch (Exception ex)
@@ -212,7 +241,8 @@ public class ArticleService : IArticleService
     {
         try
         {
-            var article = await _unitOfWork.Articles.GetByIdAsync(articleId);
+            var article = await _mediator.Send(new GetArticleByIdQuery() { Id = articleId });
+            //var article = await _unitOfWork.Articles.GetByIdAsync(articleId);
 
             if (article == null)
             {
@@ -259,17 +289,22 @@ public class ArticleService : IArticleService
                     .Select(node => node.OuterHtml)
                     .Aggregate((i, j) => i + Environment.NewLine + j);
 
-                if (!string.IsNullOrEmpty(articleText))
-                {
-                    articleText = Regex.Replace(articleText, @"<a([^>]+)>(.+?)<\/a>", " ");
+                await _mediator.Send(new UpdateArticleOnlinerCommand() {
+                    ArticleId = articleId,
+                    Text = articleText,
+                    ImageUrl = imageUrl
+                });
+                //if (!string.IsNullOrEmpty(articleText))
+                //{
+                //    articleText = Regex.Replace(articleText, @"<a([^>]+)>(.+?)<\/a>", " ");
 
-                    await _unitOfWork.Articles.UpdateArticleTextAsync(articleId, articleText);
-                }
+                //    await _unitOfWork.Articles.UpdateArticleTextAsync(articleId, articleText);
+                //}
 
-                if (!string.IsNullOrEmpty(imageUrl))
-                    await _unitOfWork.Articles.UpdateArticleImageUrlAsync(articleId, imageUrl);
+                //if (!string.IsNullOrEmpty(imageUrl))
+                //    await _unitOfWork.Articles.UpdateArticleImageUrlAsync(articleId, imageUrl);
 
-                await _unitOfWork.Commit();
+                //await _unitOfWork.Commit();
             }
 
             if (isDevIoText)
@@ -290,11 +325,16 @@ public class ArticleService : IArticleService
                        .Select(node => node.OuterHtml)
                        .Aggregate((i, j) => i + Environment.NewLine + j);
 
-                if (!string.IsNullOrEmpty(articleText))
+                await _mediator.Send(new UpdateArticleDevIoCommand()
                 {
-                    await _unitOfWork.Articles.UpdateArticleTextAsync(articleId, articleText);
-                    await _unitOfWork.Commit();
-                }
+                    ArticleId = articleId,
+                    Text = articleText,
+                });
+                //if (!string.IsNullOrEmpty(articleText))
+                //{
+                //    await _unitOfWork.Articles.UpdateArticleTextAsync(articleId, articleText);
+                //    await _unitOfWork.Commit();
+                //}
             }
         }
         catch (Exception ex)

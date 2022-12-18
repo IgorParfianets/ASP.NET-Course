@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace AsoNetArticle.Data.CQS.Queries
 {
-    public class GetAllArticlesQueryHandler : IRequestHandler<GetAllArticlesQuery, IEnumerable<Article>>
+    public class GetAllArticlesQueryHandler : IRequestHandler<GetAllArticlesQuery, IQueryable<Article>>
     {
         private readonly AggregatorContext _context;
 
@@ -19,11 +19,9 @@ namespace AsoNetArticle.Data.CQS.Queries
             _context = context;
         }
 
-        public async Task<IEnumerable<Article>> Handle(GetAllArticlesQuery request, CancellationToken cancellationToken)
+        public async Task<IQueryable<Article>> Handle(GetAllArticlesQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Articles
-                .AsNoTracking()
-                .ToListAsync(cancellationToken);
+            return _context.Articles.AsNoTracking();
         }
     }
 }
