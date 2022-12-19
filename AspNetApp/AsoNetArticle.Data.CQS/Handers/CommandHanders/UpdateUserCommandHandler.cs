@@ -7,7 +7,7 @@ using System.Collections.Generic;
 
 namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
 {
-    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, Unit>
+    public class UpdateUserCommandHandler : IRequestHandler<UpdateUserCommand, int>
     {
         private readonly AggregatorContext _context;
 
@@ -16,7 +16,7 @@ namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
             _context = context;
         }
 
-        public async Task<Unit> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
+        public async Task<int> Handle(UpdateUserCommand request, CancellationToken cancellationToken)
         {
             var entity = await _context.Users.FirstOrDefaultAsync(entity => entity.Id.Equals(request.UserId));
 
@@ -29,7 +29,7 @@ namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
             dbEntityEntry.CurrentValues.SetValues(nameValuePropertiesPairs);
             dbEntityEntry.State = EntityState.Modified;
 
-            return Unit.Value;
+            return await _context.SaveChangesAsync();
         }
     }
 }

@@ -27,7 +27,7 @@ namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
                 if (!string.IsNullOrEmpty(request.ImageUrl))
                     article.ImageUrl = request.ImageUrl;
 
-                _context.SaveChanges();
+               await _context.SaveChangesAsync();
             } 
             return Unit.Value;
         }

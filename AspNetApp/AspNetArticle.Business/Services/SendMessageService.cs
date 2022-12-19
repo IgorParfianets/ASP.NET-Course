@@ -1,9 +1,11 @@
 ﻿using System.Text;
+using AsoNetArticle.Data.CQS.Queries;
 using AspNetArticle.Business.Models;
 using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Data.Abstractions;
 using MailKit.Net.Smtp;
 using MailKit.Security;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using MimeKit;
@@ -14,33 +16,44 @@ namespace AspNetArticle.Business.Services
     public class SendMessageService : ISendMessageService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMediator _mediator;
         private readonly MailSettings _mailSettings;
 
         public SendMessageService(IUnitOfWork unitOfWork,
-            IOptions<MailSettings> mailSettings)
+            IOptions<MailSettings> mailSettings,
+            IMediator mediator)
         {
             _unitOfWork = unitOfWork;
             _mailSettings = mailSettings.Value;
+            _mediator = mediator;
         }
 
         public async Task GetArticlesAndUsersForMessage()
         {
-            var usersEmails = await _unitOfWork.Users
-                .Get()
-                .Where(user => user.Spam)
-                .Select(user => user.Email)
-                .ToListAsync();
+            var usersEmails = await _mediator.Send(new GetUserEmailsForSendSpamQuery());
+            //var usersEmails = await _unitOfWork.Users
+            //    .Get()
+            //    .Where(user => user.Spam)
+            //    .Select(user => user.Email)
+            //    .ToListAsync();
 
-            if (usersEmails.Any())
+            if (usersEmails != null && usersEmails.Any())
             {
-                var articles = (await _unitOfWork.Articles
-                        .Get()
+                var articles = (await _mediator.Send(new GetAllArticlesQuery()))
                         .Where(art => art.PublicationDate > DateTime.Today)
                         .OrderByDescending(art => art.Rate)
                         .Take(5)
                         .Select(art => $"{art.Title}\n{art.SourceUrl}\n")
-                        .ToArrayAsync())
+                        .ToArray()
                     .Aggregate((i, j) => i + Environment.NewLine + j);
+                //var articles = (await _unitOfWork.Articles
+                //        .Get()
+                //        .Where(art => art.PublicationDate > DateTime.Today)
+                //        .OrderByDescending(art => art.Rate)
+                //        .Take(5)
+                //        .Select(art => $"{art.Title}\n{art.SourceUrl}\n")
+                //        .ToArrayAsync())
+                //    .Aggregate((i, j) => i + Environment.NewLine + j);
 
                 if (string.IsNullOrEmpty(articles))
                     return;

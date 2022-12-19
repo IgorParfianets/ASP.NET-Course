@@ -7,7 +7,6 @@ using HtmlAgilityPack;
 using Microsoft.EntityFrameworkCore;
 using System.ServiceModel.Syndication;
 using System.Xml;
-using Microsoft.Extensions.Configuration;
 using Serilog;
 using System.Text.RegularExpressions;
 using AspNetArticle.Core;
@@ -49,7 +48,7 @@ public class ArticleService : IArticleService
         var articleDto = (await _mediator.Send(new GetAllArticlesQuery()))
            .Select(entity => _mapper.Map<ArticleDto>(entity));
 
-        return await articleDto.ToArrayAsync();
+        return articleDto;
     }
 
     public async Task<List<ArticleDto>> GetArticlesByNameAndSourcesAsync(string? name, Guid? category) // todo can remove unnecessary

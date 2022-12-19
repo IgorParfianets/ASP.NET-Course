@@ -1,9 +1,12 @@
-﻿using AspNetArticle.Core;
+﻿using AsoNetArticle.Data.CQS.Commands;
+using AsoNetArticle.Data.CQS.Queries;
+using AspNetArticle.Core;
 using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Core.DataTransferObjects;
 using AspNetArticle.Data.Abstractions;
 using AspNetArticle.Database.Entities;
 using AutoMapper;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
@@ -13,31 +16,36 @@ public class UserService : IUserService
 {
     private readonly IUnitOfWork _unitOfWork;
     private readonly IMapper _mapper;
+    private readonly IMediator _mediator;
     private readonly IConfiguration _configuration;
 
-    public UserService(IMapper mapper, 
-        IUnitOfWork unitOfWork, 
-        IConfiguration configuration)
+    public UserService(IMapper mapper,
+        IUnitOfWork unitOfWork,
+        IConfiguration configuration,
+        IMediator mediator)
     {
         _mapper = mapper;
         _unitOfWork = unitOfWork;
         _configuration = configuration;
+        _mediator = mediator;
     }
 
     public async Task<int> RegisterUserAsync(UserDto userDto, string password) 
     {
         var entity = _mapper.Map<User>(userDto);
-        entity.PasswordHash = CreateMd5(password); 
+        entity.PasswordHash = CreateMd5(password);
 
-        await _unitOfWork.Users.AddAsync(entity);
-        var result = _unitOfWork.Commit();
+        ////await _unitOfWork.Users.AddAsync(entity);
+        ////var result = _unitOfWork.Commit();
+        var result = await _mediator.Send(new AddUserCommand() { User = entity });
 
-        return await result;
+        return result;
     }
 
     public async Task<UserDto?> GetUserByIdAsync(Guid id)
     {
-        var entity = await _unitOfWork.Users.GetByIdAsync(id);
+        //var entity = await _unitOfWork.Users.GetByIdAsync(id);
+        var entity = await _mediator.Send(new GetUserByIdQuery() { UserId = id });
         var user = _mapper.Map<UserDto>(entity);
 
         return user;
@@ -45,7 +53,8 @@ public class UserService : IUserService
 
     public async Task<int> UpdateUserAsync(Guid id, UserDto userDto) 
     {
-        var entity = await _unitOfWork.Users.GetByIdAsync(id);
+        //var entity = await _unitOfWork.Users.GetByIdAsync(id);
+        var entity = await _mediator.Send(new GetUserByIdQuery() { UserId = id });
 
         var patchList = new List<PatchModel>();
 
@@ -89,16 +98,19 @@ public class UserService : IUserService
                 });
             }
         }
-        await _unitOfWork.Users.PatchAsync(id, patchList);
-        return await _unitOfWork.Commit();
+        var result = await _mediator.Send(new UpdateUserCommand() { UserId = id, PatchData = patchList });
+        return result;
+        //await _unitOfWork.Users.PatchAsync(id, patchList);
+        //return await _unitOfWork.Commit();
     }
 
     public async Task<bool> CheckUserByEmailAndPasswordAsync(string email, string password)
     {
-        var user = await _unitOfWork.Users
-             .Get()
-             .FirstOrDefaultAsync(user =>
-             user.Email.Equals(email));
+        var user = await _mediator.Send(new GetUserByEmailQuery() { Email = email });
+        //var user = await _unitOfWork.Users
+        //     .Get()
+        //     .FirstOrDefaultAsync(user =>
+        //     user.Email.Equals(email));
 
         if (user != null && user.PasswordHash.Equals(CreateMd5(password)))
         {
@@ -110,42 +122,59 @@ public class UserService : IUserService
         return false;
     }
 
-    public async Task<bool> IsExistUserEmailAsync(string email) 
+    public async Task<bool> IsExistUserEmailAsync(string email) // check debug
     {
-        return await _unitOfWork.Users
-            .Get()
-            .AnyAsync(user => 
-                user.Email.Equals(email));
+        var user = await _mediator.Send(new GetUserByEmailQuery() { Email = email });
+
+        return user != null;
+        //return await _unitOfWork.Users
+        //    .Get()
+        //    .AnyAsync(user => 
+        //        user.Email.Equals(email));
     }
 
     public async Task<bool> IsExistUsernameAsync(string newUsername) 
     {
-        return await _unitOfWork.Users
-          .Get()
-          .AnyAsync(user =>
-             user.UserName.Equals(newUsername));
+        var user = await _mediator.Send(new GetUserByUsernameQuery() { Username = newUsername });
+
+        return user != null;
+        //return await _unitOfWork.Users
+        //  .Get()
+        //  .AnyAsync(user =>
+        //     user.UserName.Equals(newUsername));
     }
 
     public async Task<UserDto> GetUserByEmailAsync(string email)
     {
-        var user = await _unitOfWork.Users
-            .FindBy(us => us.Email.Equals(email),
-                us => us.Role)
-            .Select(user => _mapper.Map<UserDto>(user))
-            .FirstOrDefaultAsync();
+        var user = await _mediator.Send(new GetUserByEmailQuery() { Email = email });
 
-        return user;
+        if (user is null)
+            throw new NullReferenceException();
+
+        
+        //var user = await _unitOfWork.Users
+        //    .FindBy(us => us.Email.Equals(email),
+        //        us => us.Role)
+        //    .Select(user => _mapper.Map<UserDto>(user))
+        //    .FirstOrDefaultAsync();
+
+        return _mapper.Map<UserDto>(user);
     }
 
     public async Task<IEnumerable<UserDto>> GetAllUsersAsync()
     {
-        var users = await _unitOfWork.Users
-            .Get()
-            .Include(dto => dto.Role)
-            .Select(user => _mapper.Map<UserDto>(user))
-            .ToListAsync();
+        var users = await _mediator.Send(new GetAllUsersQuery());
 
-        return users;
+        if (users is null)
+            throw new NullReferenceException();
+
+        //var users = await _unitOfWork.Users
+        //    .Get()
+        //    .Include(dto => dto.Role)
+        //    .Select(user => _mapper.Map<UserDto>(user))
+        //    .ToListAsync();
+
+        return users.Select(user => _mapper.Map<UserDto>(user));
     }
 
     private string CreateMd5(string password)

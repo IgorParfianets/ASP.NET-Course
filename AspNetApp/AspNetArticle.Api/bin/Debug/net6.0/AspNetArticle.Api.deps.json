@@ -8,7 +8,6 @@
     ".NETCoreApp,Version=v6.0": {
       "AspNetArticle.Api/1.0.0": {
         "dependencies": {
-          "AsoNetArticle.Data.CQS": "1.0.0",
           "AspNetArticle.Business": "1.0.0",
           "AspNetArticle.Core": "1.0.0",
           "AspNetArticle.Data.Abstractions": "1.0.0",

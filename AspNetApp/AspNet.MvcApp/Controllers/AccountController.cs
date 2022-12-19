@@ -296,11 +296,9 @@ public class AccountController : Controller
                             UserId = userId,
                             ArticleId = favouriteArticle.ArticleId,
                         };
-                        var result = await _favouriteArticleService.CreateFavouriteArticle(favouriteArticleDto);
+                        await _favouriteArticleService.CreateFavouriteArticle(favouriteArticleDto);
 
-                        return result > 0 
-                            ? Ok()
-                            : BadRequest();
+                        return Ok();
                     }
                     else 
                     {

@@ -20,7 +20,7 @@ namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
             return await _context.Comments
                 .Where(com => com.UserId.Equals(request.UserId))
                 .Include(com => com.Article)
-                .ToListAsync(cancellationToken);
+                .ToArrayAsync(cancellationToken);
         }
     }
 }

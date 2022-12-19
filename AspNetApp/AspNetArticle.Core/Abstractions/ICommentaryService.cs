@@ -5,8 +5,8 @@ namespace AspNetArticle.Core.Abstractions
     public interface ICommentaryService
     {
         Task<CommentDto> GetCommentByIdAsync(Guid id);
-        Task<int> CreateCommentAsync(CommentDto dto); 
-        Task<int> UpdateCommentAsync(CommentDto dto);
+        Task CreateCommentAsync(CommentDto dto); 
+        Task UpdateCommentAsync(CommentDto dto);
         Task<IEnumerable<CommentDto>> GetAllCommentsByUserIdAsync(Guid id);
         Task<IEnumerable<CommentDto>> GelAllCommentsAsync();
         Task<IEnumerable<CommentaryWithUserDto>> GetAllCommentsWithUsersByArticleIdAsync(Guid id);

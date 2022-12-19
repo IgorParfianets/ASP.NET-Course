@@ -8,19 +8,26 @@ using AspNetArticle.Core.Abstractions;
 using HtmlAgilityPack;
 using System.Text.RegularExpressions;
 using Serilog;
+using MediatR;
+using AsoNetArticle.Data.CQS.Handers.QueryHanders;
+using AsoNetArticle.Data.CQS.Queries;
+using AsoNetArticle.Data.CQS.Commands;
 
 namespace AspNetArticle.Business.Services
 {
     public class ArticleRateService : IArticleRateService
     {
         private readonly IUnitOfWork _unitOfWork;
+        private readonly IMediator _mediator;
         private readonly IConfiguration _configuration;
 
         public ArticleRateService(IUnitOfWork unitOfWork,
-            IConfiguration configuration)
+            IConfiguration configuration,
+            IMediator mediator)
         {
             _unitOfWork = unitOfWork;
             _configuration = configuration;
+            _mediator = mediator;
         }
 
 
@@ -28,13 +35,14 @@ namespace AspNetArticle.Business.Services
         {
             try
             {
-                var articlesWithEmptyRateIds = _unitOfWork.Articles.Get()
-                    .Where(article => article.Rate == null && !string.IsNullOrEmpty(article.Text))
-                    .Take(20)
-                    .Select(article => article.Id)
-                    .ToList();
+                var articlesWithEmptyRateIds = await _mediator.Send(new GetArticlesIdWithEmptyRateQuery());
+                //var articlesWithEmptyRateIds = _unitOfWork.Articles.Get()
+                //    .Where(article => article.Rate == null && !string.IsNullOrEmpty(article.Text))
+                //    .Take(20)
+                //    .Select(article => article.Id)
+                //    .ToList();
 
-                foreach (var articleId in articlesWithEmptyRateIds)
+                foreach (var articleId in articlesWithEmptyRateIds ?? Array.Empty<Guid>())
                 {
                     string articleFixedText = await RemoveHtmlTagsFromArticleTestAsync(articleId);
                     await RateArticleAsync(articleId, articleFixedText);
@@ -50,7 +58,8 @@ namespace AspNetArticle.Business.Services
 
         private async Task<string> RemoveHtmlTagsFromArticleTestAsync(Guid articleId)
         {
-            var text = (await _unitOfWork.Articles.GetByIdAsync(articleId))?.Text;
+            //var text = (await _unitOfWork.Articles.GetByIdAsync(articleId))?.Text;
+            var text = (await _mediator.Send(new GetArticleByIdQuery() { Id = articleId }))?.Text;
 
             if (string.IsNullOrEmpty(text))
             {
@@ -125,8 +134,9 @@ namespace AspNetArticle.Business.Services
                             if(numberRecognizedWords > 0)
                                 resultRate = overallRate / numberRecognizedWords;
 
-                            await _unitOfWork.Articles.UpdateArticleRateAsync(articleId, resultRate);
-                            await _unitOfWork.Commit();
+                            await _mediator.Send(new UpdateArticleRateCommand() { ArticleId = articleId, Rate = resultRate });
+                            //await _unitOfWork.Articles.UpdateArticleRateAsync(articleId, resultRate);
+                            //await _unitOfWork.Commit();
 
                             Thread.Sleep(500);
                         }

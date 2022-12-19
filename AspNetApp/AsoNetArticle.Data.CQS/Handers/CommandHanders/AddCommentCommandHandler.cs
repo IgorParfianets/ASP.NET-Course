@@ -3,7 +3,7 @@ using MediatR;
 
 namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
 {
-    public class AddCommentCommandHandler : IRequestHandler<AddCommentCommand, int>
+    public class AddCommentCommandHandler : IRequestHandler<AddCommentCommand, Unit>
     {
         public readonly AggregatorContext _context;
 
@@ -12,10 +12,12 @@ namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
             _context = context;
         }
 
-        public async Task<int> Handle(AddCommentCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(AddCommentCommand request, CancellationToken cancellationToken)
         {
             await _context.Comments.AddAsync(request.Comment);
-            return await _context.SaveChangesAsync(cancellationToken);
+            await _context.SaveChangesAsync(cancellationToken);
+
+            return Unit.Value;
         }
     }
 }

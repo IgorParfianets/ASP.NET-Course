@@ -4,7 +4,7 @@ using MediatR;
 
 namespace AsoNetArticle.Data.CQS.Handers
 {
-    public class AddCommentCommand : IRequest<int>
+    public class AddCommentCommand : IRequest
     {
         public Comment Comment { get; set; }
     }

@@ -5,7 +5,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
 {
-    public class UpdateArticleRateCommandHandler : IRequestHandler<UpdateArticleRateCommand, int>
+    public class UpdateArticleRateCommandHandler : IRequestHandler<UpdateArticleRateCommand, Unit>
     {
         private readonly AggregatorContext _context;
 
@@ -14,15 +14,16 @@ namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
             _context = context;
         }
 
-        public async Task<int> Handle(UpdateArticleRateCommand request, CancellationToken cancellationToken)
+        public async Task<Unit> Handle(UpdateArticleRateCommand request, CancellationToken cancellationToken)
         {
             var article = await _context.Articles.FirstOrDefaultAsync(a => a.Id.Equals(request.ArticleId));
 
             if (article != null)
             {
                 article.Rate = request.Rate;
+                await _context.SaveChangesAsync(cancellationToken);
             }
-            return await _context.SaveChangesAsync(cancellationToken);
+            return Unit.Value;
         }
     }
 }

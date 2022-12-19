@@ -3,7 +3,7 @@ using MediatR;
 
 namespace AsoNetArticle.Data.CQS.Queries
 {
-    public class GetAllArticlesQuery : IRequest<IQueryable<Article>>
+    public class GetAllArticlesQuery : IRequest<IEnumerable<Article>>
     {
     }
 }

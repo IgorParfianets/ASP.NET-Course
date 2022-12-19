@@ -19,7 +19,8 @@ namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
         {
             return await _context.Users
                 .AsNoTracking()
-                .ToListAsync();
+                .Include(user =>user.Role)
+                .ToArrayAsync();
         }
     }
 }

@@ -26,9 +26,8 @@ namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
             if (article != null)
             {
                 article.Text = request.Text;
+                await _context.SaveChangesAsync();
             }
-
-            _context.SaveChanges();
             return Unit.Value;
         }
     }

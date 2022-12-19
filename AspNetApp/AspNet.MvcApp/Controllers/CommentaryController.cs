@@ -44,11 +44,9 @@ namespace AspNetArticle.MvcApp.Controllers
                     {
                         dto.UserId = userId.Value;
 
-                        var result = await _commentaryService.CreateCommentAsync(dto);
-                        if (result > 0)
-                        {
-                            return Redirect($"~/Article/Details/{model.ArticleId}"); 
-                        }
+                        await _commentaryService.CreateCommentAsync(dto);
+                        
+                        return Redirect($"~/Article/Details/{model.ArticleId}"); 
                     }
                 }
                 ModelState.AddModelError("", "Комментарий пуст");
@@ -105,14 +103,12 @@ namespace AspNetArticle.MvcApp.Controllers
                             IsEdited = true
                         };
 
-                        var result = await _commentaryService.UpdateCommentAsync(dto);
-                        if (result > 0)
-                        {
-                            return Redirect($"~/Article/Details/{model.ArticleId}"); 
-                        }
+                        await _commentaryService.UpdateCommentAsync(dto);
+                        return Redirect($"~/Article/Details/{model.ArticleId}"); 
+                        
                     }
                 }
-                ModelState.AddModelError("", "Комментарий пуст");
+                //ModelState.AddModelError("", "Комментарий пуст");
 
                 return Redirect($"~/Article/Details/{model.ArticleId}");
                 //return RedirectToAction("Details", "Article", model);

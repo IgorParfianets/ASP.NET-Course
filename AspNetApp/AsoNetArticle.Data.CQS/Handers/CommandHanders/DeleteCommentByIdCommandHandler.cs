@@ -19,8 +19,10 @@ namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
             var entity = await _context.Comments.FirstOrDefaultAsync(com => com.Id.Equals(request.Id));
 
             if(entity != null)
+            {
                 _context.Remove(entity);
-
+                await _context.SaveChangesAsync();
+            }              
             return Unit.Value;
         }
     }

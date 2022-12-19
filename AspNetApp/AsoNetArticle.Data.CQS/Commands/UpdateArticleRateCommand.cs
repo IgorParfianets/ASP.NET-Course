@@ -2,9 +2,9 @@
 
 namespace AsoNetArticle.Data.CQS.Commands
 {
-    public class UpdateArticleRateCommand : IRequest<int>
+    public class UpdateArticleRateCommand : IRequest
     {
-        public int ArticleId { get; set; }
+        public Guid ArticleId { get; set; }
         public double Rate { get; set; }
     }
 }
