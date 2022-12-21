@@ -18,7 +18,6 @@ namespace AspNetArticle.Api.Controllers
         /// 
         /// </summary>
         /// <param name="sourceService"></param>
-        /// <param name="mapper"></param>
         public SourceController(ISourceService sourceService)
         {
             _sourceService = sourceService;
@@ -50,7 +49,7 @@ namespace AspNetArticle.Api.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
                 return StatusCode(500);
             }
         }
@@ -79,10 +78,9 @@ namespace AspNetArticle.Api.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
                 return StatusCode(500);
-            }
-            
+            }          
         }
     }
 }

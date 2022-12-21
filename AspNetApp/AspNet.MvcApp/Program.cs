@@ -30,7 +30,6 @@ namespace AspNet.MvcApp
         {
             var builder = WebApplication.CreateBuilder(args);
 
-            // For Logger Serilog 
             builder.Host.UseSerilog((ctx, lc) =>
                 lc.WriteTo.File(
                         @"C:\Users\Igor\Desktop\data.log",
@@ -39,8 +38,6 @@ namespace AspNet.MvcApp
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
-
-            //------------------------------------------------------------
 
             builder.Services.AddScoped<IArticleService, ArticleService>();
             builder.Services.AddScoped<ISourceService, SourceService>();
@@ -60,7 +57,6 @@ namespace AspNet.MvcApp
 
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();           
 
-            // Authentication configuration
             builder.Services
                 .AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme)
                 .AddCookie(options =>
@@ -72,8 +68,6 @@ namespace AspNet.MvcApp
 
             builder.Services.AddAuthorization(); 
 
-            
-            // Db Context
             var connectionString = builder.Configuration.GetConnectionString("Default");
             builder.Services.AddDbContext<AggregatorContext>(optionBuilder =>
             optionBuilder.UseSqlServer(connectionString)); 
@@ -110,7 +104,8 @@ namespace AspNet.MvcApp
             builder.Services.AddMediatR(typeof(AddArticleDataFromRssFeedCommand).Assembly);
             builder.Services.AddMediatR(typeof(UpdateArticleOnlinerCommand).Assembly);
             builder.Services.AddMediatR(typeof(UpdateArticleDevIoCommand).Assembly);
-
+            builder.Services.AddMediatR(typeof(GetSourceByIdQuery).Assembly);
+            
             builder.Services.AddMediatR(typeof(GetArticlesIdWithEmptyRateQuery).Assembly);
             builder.Services.AddMediatR(typeof(UpdateArticleRateCommand).Assembly);
             builder.Services.AddMediatR(typeof(GetCommentByIdQuery).Assembly);
@@ -152,7 +147,6 @@ namespace AspNet.MvcApp
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //app.UseSession(); 
             app.MapHangfireDashboard("/jobs", options: new DashboardOptions()
             {
                 Authorization = new[] { new HangfireDashboardAuthorizationFilter() }

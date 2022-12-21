@@ -18,7 +18,6 @@ public class Repository<T> : IRepository<T> where T : class, IBaseEntity
         DbSet = dataBase.Set<T>();
     }
 
-    //Add
     public virtual async Task AddAsync(T entity)
     {
         await DbSet.AddAsync(entity);
@@ -29,7 +28,6 @@ public class Repository<T> : IRepository<T> where T : class, IBaseEntity
         await DbSet.AddRangeAsync(entities);
     }
 
-    // Find
     public virtual IQueryable<T> FindBy(Expression<Func<T, bool>> searchExpression, 
         params Expression<Func<T, object>>[] includes)
     {
@@ -43,8 +41,6 @@ public class Repository<T> : IRepository<T> where T : class, IBaseEntity
 
         return result;
     }
-
-    // Get
     public virtual IQueryable<T> Get()
     {
         return DbSet;
@@ -60,8 +56,6 @@ public class Repository<T> : IRepository<T> where T : class, IBaseEntity
         return await DbSet.FirstOrDefaultAsync(entiry => entiry.Id.Equals(id));
 
     }
-
-    //Update
     public virtual void Update(T entity)
     {
         DbSet.Update(entity);
@@ -81,7 +75,6 @@ public class Repository<T> : IRepository<T> where T : class, IBaseEntity
         dbEntityEntry.State = EntityState.Modified;
     }
 
-    //Delete
     public virtual void Remove(T entity)
     {
         DbSet.Remove(entity);

@@ -72,7 +72,7 @@ namespace AspNetArticle.Api.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
                 return StatusCode(500);
             }
         }
@@ -104,7 +104,7 @@ namespace AspNetArticle.Api.Controllers
                 if (response == null)
                 {
                     Log.Warning($"TokenResponse failed");
-                    return StatusCode(228); // something other case
+                    return StatusCode(228); 
                 }
 
                 await _jwtUtil.RemoveRefreshTokenAsync(request.RefreshToken);
@@ -114,7 +114,7 @@ namespace AspNetArticle.Api.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
                 return StatusCode(500);
             }
         }
@@ -141,7 +141,7 @@ namespace AspNetArticle.Api.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
                 return StatusCode(500);
             }
         }

@@ -111,24 +111,5 @@ namespace AspNetArticle.MvcApp.Controllers
                 throw new Exception($"Method {nameof(Articles)} is failed, stack trace {e.StackTrace}. {e.Message}");
             }
         }
-
-        [HttpGet]
-        public async Task<IActionResult> Comments()
-        {
-            try
-            {
-                var comments = await _commentaryService.GelAllCommentsAsync();
-
-                if (comments != null)
-                    return View(comments);
-
-                return View();
-            }
-            catch (Exception e)
-            {
-                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
-                throw new Exception($"Method {nameof(Comments)} is failed, stack trace {e.StackTrace}. {e.Message}");
-            }
-        }
     }
 }

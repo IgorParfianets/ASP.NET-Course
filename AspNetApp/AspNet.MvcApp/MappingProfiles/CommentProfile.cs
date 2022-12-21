@@ -13,7 +13,6 @@ public class CommentProfile : Profile
 {
     public CommentProfile()
     {
-        // For Entity -> Dto & Dto -> Entity
         CreateMap<Comment, CommentDto>()
             .ForMember(dto => dto.Id,
                 opt
@@ -40,8 +39,6 @@ public class CommentProfile : Profile
             opt
                 => opt.MapFrom(comment => comment.User.Email));
 
-
-
         CreateMap<CommentDto, Comment>()
             .ForMember(comment => comment.Id, 
                 opt 
@@ -55,33 +52,6 @@ public class CommentProfile : Profile
             .ForMember(comment => comment.IsEdited,
             opt
                 => opt.MapFrom(dto => dto.IsEdited));
-
-        //CreateMap<Comment, CommentaryWithUserDto>()
-        //    .ForMember(dto => dto.CommentId,
-        //        opt
-        //            => opt.MapFrom(comment => comment.Id))
-        //    .ForMember(dto => dto.CommentDescription,
-        //        opt
-        //            => opt.MapFrom(comment => comment.Description))
-        //    .ForMember(dto => dto.PublishedDate,
-        //        opt
-        //            => opt.MapFrom(comment => comment.PublicationDate))
-        //    .ForMember(dto => dto.UserId,
-        //        opt
-        //            => opt.MapFrom(comment => comment.UserId))
-        //    .ForMember(dto => dto.Username,
-        //        opt
-        //            => opt.MapFrom(comment => comment.User.UserName))
-        //    .ForMember(dto => dto.Email,
-        //        opt
-        //            => opt.MapFrom(comment => comment.User.Email))
-        //    .ForMember(dto => dto.AccountCreated,
-        //        opt
-        //            => opt.MapFrom(comment => comment.User.AccountCreated))
-        //    .ForMember(comment => comment.IsEdited,
-        //        opt
-        //            => opt.MapFrom(dto => dto.IsEdited));
-
 
         CreateMap<CreateCommentModel, CommentDto>()
             .ForMember(dto => dto.Id,

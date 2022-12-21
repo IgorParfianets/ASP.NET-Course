@@ -6,6 +6,7 @@
     public class UpdateCommentRequestModel
     {
         public Guid Id { get; set; }
+        public Guid ArticleId { get; set; }
         public string Description { get; set; }
     }
 }

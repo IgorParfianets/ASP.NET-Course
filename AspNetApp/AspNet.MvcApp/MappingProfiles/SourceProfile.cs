@@ -8,7 +8,6 @@ public class SourceProfile : Profile
 {
     public SourceProfile()
     {
-        // For Entity -> Dto & Dto -> Entity
         CreateMap<Source, SourceDto>()
             .ForMember(dto => dto.Id,
                 opt =>
@@ -37,6 +36,5 @@ public class SourceProfile : Profile
             .ForMember(source => source.Url, 
                 opt => 
                     opt.MapFrom(dto => dto.Url));
-
     }
 }

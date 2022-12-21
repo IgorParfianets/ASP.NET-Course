@@ -39,7 +39,7 @@ namespace AspNetArticle.Api.Controllers
 
                 if (articles == null)
                 {
-                    Log.Warning("No articles in database");
+                    Log.Warning("Articles not found in database");
                     return NotFound();
                 }
                 Log.Information("Articles successfully received", articles);
@@ -47,7 +47,7 @@ namespace AspNetArticle.Api.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
                 return StatusCode(500);
             }
         }
@@ -77,7 +77,7 @@ namespace AspNetArticle.Api.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
                 return StatusCode(500);
             }
         }

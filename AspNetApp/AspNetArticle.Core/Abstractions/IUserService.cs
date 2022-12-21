@@ -7,8 +7,8 @@ public interface IUserService
     Task<UserDto?> GetUserByIdAsync(Guid id);
     Task<int> UpdateUserAsync(Guid id, UserDto userDto);
     Task<bool> CheckUserByEmailAndPasswordAsync(string email, string password);
-    Task<bool> IsExistUserEmailAsync(string email); // для Remote (Check Email)
-    Task<bool> IsExistUsernameAsync(string newUsername); // для Remote (Check Username)
+    Task<bool> IsExistUserEmailAsync(string email); 
+    Task<bool> IsExistUsernameAsync(string newUsername); 
     Task<UserDto> GetUserByEmailAsync(string email);
     Task<UserDto?> GetUserByRefreshTokenAsync(Guid token);
     Task<IEnumerable<UserDto>> GetAllUsersAsync(); 

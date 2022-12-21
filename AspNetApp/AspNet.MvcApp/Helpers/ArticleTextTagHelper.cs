@@ -13,9 +13,6 @@ namespace AspNetArticle.MvcApp.Helpers
             output.TagMode = TagMode.StartTagAndEndTag;
             output.TagName = "div";
 
-            //var sb = new StringBuilder();
-            //sb.Append(ArticleText);
-
             output.PreContent.SetHtmlContent(ArticleText);
         }
     }

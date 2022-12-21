@@ -23,7 +23,7 @@ namespace AspNetArticle.Business.Services
             _mediator = mediator;
         }
 
-        public async Task<string> GetRoleNameByIdAsync(Guid id) // not implement for CQS
+        public async Task<string> GetRoleNameByIdAsync(Guid id) 
         {
             var role = await _unitOfWork.Roles.GetByIdAsync(id);
 
@@ -35,10 +35,6 @@ namespace AspNetArticle.Business.Services
         public async Task<Guid?> GetRoleIdByNameAsync(string name)
         {
             var roleId = await _mediator.Send(new GetRoleIdByNameQuery() { RoleName = name });
-            //var role = await _unitOfWork.Roles
-            //    .FindBy(role => 
-            //        role.Name.Equals(name))
-            //    .FirstOrDefaultAsync();
 
             return roleId != null
                 ? roleId

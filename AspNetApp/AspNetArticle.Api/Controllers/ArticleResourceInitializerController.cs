@@ -4,9 +4,13 @@ using AutoMapper;
 using Hangfire;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace AspNetArticle.Api.Controllers
 {
+    /// <summary>
+    /// Initialize resourse article's data
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ArticleResourceInitializerController : ControllerBase
@@ -14,6 +18,13 @@ namespace AspNetArticle.Api.Controllers
         private readonly IArticleService _articleService;
         private readonly IArticleRateService _articleRateService;
         private readonly ISendMessageService _sendMessageService;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="articleService"></param>
+        /// <param name="articleRateService"></param>
+        /// <param name="sendMessageService"></param>
         public ArticleResourceInitializerController(IArticleService articleService,
             IArticleRateService articleRateService,
             ISendMessageService sendMessageService)
@@ -46,12 +57,14 @@ namespace AspNetArticle.Api.Controllers
                 RecurringJob.AddOrUpdate(() => _sendMessageService.GetArticlesAndUsersForMessage(),
                     "56 9,15 * * *");
 
+                Log.Information("Background jobs initialized succesfully");
                 return Ok();
             }
 
             catch (Exception e)
             {
-                throw new Exception();
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+                return StatusCode(500);
             }
         }
     }

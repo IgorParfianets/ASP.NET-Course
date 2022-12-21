@@ -67,7 +67,7 @@ namespace AspNetArticle.Api
 
             var connectionString = builder.Configuration.GetConnectionString("Default");
             builder.Services.AddDbContext<AggregatorContext>(optionBuilder =>
-                optionBuilder.UseSqlServer(connectionString)); // For DB (connectionString in config files)
+                optionBuilder.UseSqlServer(connectionString)); 
 
             //Hangfire config
             builder.Services.AddHangfire(configuration => configuration
@@ -86,7 +86,7 @@ namespace AspNetArticle.Api
 
             builder.Services.AddHangfireServer();
             // Mapper
-            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // For Mapping to collect all profiles
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); 
 
             //SendMessage
             builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
@@ -112,6 +112,7 @@ namespace AspNetArticle.Api
             builder.Services.AddMediatR(typeof(GetAllCommentsQuery).Assembly);
             builder.Services.AddMediatR(typeof(GetAllCommentsWithUsersByArticleIdQuery).Assembly);
             builder.Services.AddMediatR(typeof(DeleteCommentByIdCommand).Assembly);
+            builder.Services.AddMediatR(typeof(GetSourceByIdQuery).Assembly);
 
             builder.Services.AddMediatR(typeof(AddFavouriteArticleCommand).Assembly);
             builder.Services.AddMediatR(typeof(GetFavouriteArticleByUserIdAndArticleIdQuery).Assembly);
@@ -180,4 +181,4 @@ namespace AspNetArticle.Api
             app.Run();
         }
     }
-} // todo add XmlLog
+} 

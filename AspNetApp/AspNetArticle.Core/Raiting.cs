@@ -3,6 +3,7 @@
     public enum Raiting
     {
         None,
+        All,
         TopRaiting,
         LowRaiting
     }

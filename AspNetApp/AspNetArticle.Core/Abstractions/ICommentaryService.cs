@@ -11,8 +11,6 @@ namespace AspNetArticle.Core.Abstractions
         Task<IEnumerable<CommentDto>> GelAllCommentsAsync();
         Task<IEnumerable<CommentaryWithUserDto>> GetAllCommentsWithUsersByArticleIdAsync(Guid id);
         Task DeleteCommentById(Guid id);
-
-        //specific methods
         Task<IEnumerable<CommentDto>> GetCommentsByUserIdAndArticleId(Guid article, Guid user);
     }
 }

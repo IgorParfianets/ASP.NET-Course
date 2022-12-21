@@ -4,6 +4,19 @@
         <name>AspNetArticle.Api</name>
     </assembly>
     <members>
+        <member name="T:AspNetArticle.Api.Controllers.ArticleResourceInitializerController">
+            <summary>
+            Initialize resourse article's data
+            </summary>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.ArticleResourceInitializerController.#ctor(AspNetArticle.Core.Abstractions.IArticleService,AspNetArticle.Core.Abstractions.IArticleRateService,AspNetArticle.Core.Abstractions.ISendMessageService)">
+            <summary>
+            
+            </summary>
+            <param name="articleService"></param>
+            <param name="articleRateService"></param>
+            <param name="sendMessageService"></param>
+        </member>
         <member name="M:AspNetArticle.Api.Controllers.ArticleResourceInitializerController.AddSourceArticles">
             <summary>
             Initialize Onliner and DevIo source articles
@@ -40,12 +53,13 @@
             Comments resource controller
             </summary>
         </member>
-        <member name="M:AspNetArticle.Api.Controllers.CommentaryController.#ctor(AspNetArticle.Core.Abstractions.ICommentaryService,AutoMapper.IMapper)">
+        <member name="M:AspNetArticle.Api.Controllers.CommentaryController.#ctor(AspNetArticle.Core.Abstractions.ICommentaryService,AutoMapper.IMapper,AspNetArticle.Core.Abstractions.IUserService)">
             <summary>
             
             </summary>
             <param name="commentaryService"></param>
             <param name="mapper"></param>
+            <param name="userService"></param>
         </member>
         <member name="M:AspNetArticle.Api.Controllers.CommentaryController.GetCommentById(System.Guid)">
             <summary>
@@ -102,7 +116,7 @@
         </member>
         <member name="M:AspNetArticle.Api.Controllers.FavouriteArticleController.CreateFavouriteArticle(AspNetArticle.Api.Models.Request.AddFavouriteArticleRequestModel)">
             <summary>
-            
+            Add/Remove favourite article
             </summary>
             <param name="model"></param>
             <returns></returns>
@@ -117,7 +131,6 @@
             
             </summary>
             <param name="sourceService"></param>
-            <param name="mapper"></param>
         </member>
         <member name="M:AspNetArticle.Api.Controllers.SourceController.GetSourceById(System.Guid)">
             <summary>

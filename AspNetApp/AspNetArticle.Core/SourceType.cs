@@ -1,6 +1,6 @@
 ﻿namespace AspNetArticle.Core;
 
-public enum SourceType // Remove from Entity
+public enum SourceType 
 {
     Rss,
     Api

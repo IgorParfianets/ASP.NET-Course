@@ -1,8 +1,5 @@
 ﻿@import url('https://fonts.googleapis.com/css2?family=Playfair+Display+SC:wght@400;700&display=swap');
 
-
-/* button color #88A5BF*/
-/* Common config */
 :root {
     --textColor: #DFDFDF;
     --textLinkHover: #FFFFFF;
@@ -24,10 +21,11 @@ a{
     color: black;
     transition: color 100ms;
 }
-
-a:hover {
-    color: var(--textLinkHover);
+    
+a:hover {        
+    color: cadetblue;
 }
+    
 
 body {
     background-color: #E4EBF2;

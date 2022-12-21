@@ -58,7 +58,7 @@ namespace AspNetArticle.MvcApp.Controllers
                        new SelectListItem()
                        {
                            Text =  "Все",
-                           Value = Raiting.None.ToString()
+                           Value = Raiting.All.ToString()
                        },
                        new SelectListItem()
                        {

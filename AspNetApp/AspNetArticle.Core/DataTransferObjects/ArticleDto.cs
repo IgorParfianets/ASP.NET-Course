@@ -1,6 +1,6 @@
 ﻿namespace AspNetArticle.Core.DataTransferObjects;
 
-public class ArticleDto // Можно рабить на 2 класса ArticleAndCommentariesDto
+public class ArticleDto 
 {
     public Guid Id { get; set; }
     public string Title { get; set; }
@@ -13,5 +13,5 @@ public class ArticleDto // Можно рабить на 2 класса ArticleAn
     public string? ImageUrl { get; set; }
     public double? Rate { get; set; }
 
-    public List<CommentDto> Comments { get; set; } // unnecessary
+    public List<CommentDto> Comments { get; set; } 
 }

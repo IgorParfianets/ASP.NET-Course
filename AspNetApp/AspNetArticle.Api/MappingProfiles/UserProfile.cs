@@ -9,7 +9,6 @@ public class UserProfile : Profile
 {
     public UserProfile()
     {
-        // For Entity -> Dto & Dto -> Entity
         CreateMap<User, UserDto>()
             .ForMember(dto => dto.Id,
                 opt =>
@@ -33,9 +32,7 @@ public class UserProfile : Profile
                 opt =>
                     opt.MapFrom(user => user.Role.Name));
 
-
-
-        CreateMap<UserDto, User>() // FROM dto TO entity
+        CreateMap<UserDto, User>() 
             .ForMember(user => user.Id, 
                 opt => 
                     opt.MapFrom(dto => Guid.NewGuid()))
@@ -48,9 +45,9 @@ public class UserProfile : Profile
             .ForMember(user => user.Email, 
                 opt => 
                     opt.MapFrom(dto => dto.Email))
-            .ForMember(user => user.AccountCreated, //for entity
+            .ForMember(user => user.AccountCreated, 
                 opt => 
-                    opt.MapFrom(dto => DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm"))) // from dto
+                    opt.MapFrom(dto => DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm"))) 
             .ForMember(user => user.LastVisit, 
                 opt => 
                     opt.MapFrom(dto => DateTime.Now.ToString("dddd, dd MMMM yyyy HH:mm")))
@@ -73,23 +70,5 @@ public class UserProfile : Profile
                     opt.MapFrom(dto => dto.Password));
 
         CreateMap<UpdateUserRequestModel, UserDto>();
-        //    .ForMember(user => user.Id,
-        //        opt =>
-        //            opt.MapFrom(dto => dto.Id))
-        //    .ForMember(user => user.Email,
-        //        opt =>
-        //            opt.MapFrom(dto => dto.Email))
-        //    .ForMember(user => user.Password,
-        //        opt =>
-        //            opt.MapFrom(dto => dto.OldPassword))
-        //    .ForMember(user => user.Spam,
-        //        opt =>
-        //            opt.MapFrom(dto => dto.Spam))
-        //    .ForMember(user => user.Email,
-        //        opt =>
-        //            opt.MapFrom(dto => dto.Email))
-        //    .ForMember(user => user.Password,
-        //        opt =>
-        //            opt.MapFrom(dto => dto.OldPassword));
     }
 }

@@ -15,7 +15,6 @@
                     <ul class="dropdown-menu" aria-labelledby="dropdownMenuButton1">
                         <li><a asp-controller="Admin" asp-action="Users" class="dropdown-item">Пользователи</a></li>
                         <li><a asp-controller="Admin" asp-action="Articles" class="dropdown-item">Новости</a></li>
-                        <li><a asp-controller="Admin" asp-action="Comments" class="dropdown-item">Коментарии</a></li>
                         <li><a href="/jobs" class="dropdown-item">Задачи</a></li>
                         <li><a class="dropdown-item" asp-controller="Account" asp-action="Logout">Выход</a></li>
                     </ul>
@@ -39,7 +38,7 @@
     else
     {
         <div class="me-5">
-            <a class="py-2 d-none d-md-inline-block" asp-action="Login" asp-controller="Account">Вход</a>
+            <a class="py-2 d-none d-md-inline-block header_button" asp-action="Login" asp-controller="Account">Вход</a>
         </div>
     }
 </div>

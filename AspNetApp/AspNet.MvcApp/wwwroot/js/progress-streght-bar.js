@@ -8,7 +8,6 @@ password.addEventListener("keyup", function () {
     checkStrength(pass);
 });
 
-// for toggle
 let stateClickEye = false;
 function toggle() {
     if (stateClickEye) {
@@ -29,9 +28,6 @@ function checkStrength(password) {
     const strength = calcStrength(password);
     checkPasswordStrength(password, strength);
 }
-
-
-
 
 function calcStrength(password) {
     let strength = 0;

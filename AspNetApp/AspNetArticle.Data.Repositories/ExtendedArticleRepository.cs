@@ -20,15 +20,6 @@ namespace AspNetArticle.Data.Repositories
                 article.Text = text;
             }
         }
-
-        //public async Task UpdateArticleShortDescriptionAsync(Guid id, string shortDescription)
-        //{
-        //    var article = await DbSet.FirstOrDefaultAsync(a => a.Id.Equals(id));
-        //    if (article != null)
-        //    {
-        //        article.ShortDescription = shortDescription;
-        //    }
-        //}
         public async Task UpdateArticleImageUrlAsync(Guid id, string imageUrl)
         {
             var article = await DbSet.FirstOrDefaultAsync(a => a.Id.Equals(id));
@@ -37,7 +28,6 @@ namespace AspNetArticle.Data.Repositories
                 article.ImageUrl = imageUrl;
             }
         }
-
         public async Task UpdateArticleRateAsync(Guid id, double rate)
         {
             var article = await DbSet.FirstOrDefaultAsync(a => a.Id.Equals(id));

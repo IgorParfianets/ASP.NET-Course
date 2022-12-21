@@ -4,11 +4,10 @@ using AutoMapper;
 
 namespace AspNetArticle.MvcApp.MappingProfiles;
 
-public class ArticleProfile : Profile //to do     ещё не закончено
+public class ArticleProfile : Profile 
 {
     public ArticleProfile()
     {
-        // For Entity -> Dto & Dto -> Entity
         CreateMap<Article, ArticleDto>()
             .ForMember(dto => dto.Id, opt => opt.MapFrom(article => article.Id))
             .ForMember(dto => dto.Title, opt => opt.MapFrom(article => article.Title))
@@ -24,8 +23,5 @@ public class ArticleProfile : Profile //to do     ещё не закончено
             .ForMember(article => article.Text, opt => opt.MapFrom(dto => dto.Text))
             .ForMember(article => article.PublicationDate, opt => opt.MapFrom(dto => dto.PublicationDate))
             .ForMember(article => article.Comments, opt => opt.MapFrom(dto => dto.Comments));
-
-        // For ArticleDto -> ArticleModel 
-
     }
 }

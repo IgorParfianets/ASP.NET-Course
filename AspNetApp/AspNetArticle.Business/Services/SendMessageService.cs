@@ -31,29 +31,16 @@ namespace AspNetArticle.Business.Services
         public async Task GetArticlesAndUsersForMessage()
         {
             var usersEmails = await _mediator.Send(new GetUserEmailsForSendSpamQuery());
-            //var usersEmails = await _unitOfWork.Users
-            //    .Get()
-            //    .Where(user => user.Spam)
-            //    .Select(user => user.Email)
-            //    .ToListAsync();
 
             if (usersEmails != null && usersEmails.Any())
             {
                 var articles = (await _mediator.Send(new GetAllArticlesQuery()))
-                        .Where(art => art.PublicationDate > DateTime.Today)
+                        .Where(art => art.PublicationDate > DateTime.Today.ToUniversalTime())
                         .OrderByDescending(art => art.Rate)
                         .Take(5)
                         .Select(art => $"{art.Title}\n{art.SourceUrl}\n")
                         .ToArray()
                     .Aggregate((i, j) => i + Environment.NewLine + j);
-                //var articles = (await _unitOfWork.Articles
-                //        .Get()
-                //        .Where(art => art.PublicationDate > DateTime.Today)
-                //        .OrderByDescending(art => art.Rate)
-                //        .Take(5)
-                //        .Select(art => $"{art.Title}\n{art.SourceUrl}\n")
-                //        .ToArrayAsync())
-                //    .Aggregate((i, j) => i + Environment.NewLine + j);
 
                 if (string.IsNullOrEmpty(articles))
                     return;

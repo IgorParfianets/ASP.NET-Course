@@ -36,11 +36,6 @@ namespace AspNetArticle.Business.Services
             try
             {
                 var articlesWithEmptyRateIds = await _mediator.Send(new GetArticlesIdWithEmptyRateQuery());
-                //var articlesWithEmptyRateIds = _unitOfWork.Articles.Get()
-                //    .Where(article => article.Rate == null && !string.IsNullOrEmpty(article.Text))
-                //    .Take(20)
-                //    .Select(article => article.Id)
-                //    .ToList();
 
                 foreach (var articleId in articlesWithEmptyRateIds ?? Array.Empty<Guid>())
                 {
@@ -58,7 +53,6 @@ namespace AspNetArticle.Business.Services
 
         private async Task<string> RemoveHtmlTagsFromArticleTestAsync(Guid articleId)
         {
-            //var text = (await _unitOfWork.Articles.GetByIdAsync(articleId))?.Text;
             var text = (await _mediator.Send(new GetArticleByIdQuery() { Id = articleId }))?.Text;
 
             if (string.IsNullOrEmpty(text))
@@ -130,9 +124,6 @@ namespace AspNetArticle.Business.Services
                                 resultRate = overallRate / numberRecognizedWords;
 
                             await _mediator.Send(new UpdateArticleRateCommand() { ArticleId = articleId, Rate = resultRate });
-                            //await _unitOfWork.Articles.UpdateArticleRateAsync(articleId, resultRate);
-                            //await _unitOfWork.Commit();
-
                             Thread.Sleep(500);
                         }
                     }

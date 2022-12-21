@@ -8,6 +8,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using System.Security.Claims;
 
 namespace AspNetArticle.Api.Controllers
 {
@@ -63,7 +64,7 @@ namespace AspNetArticle.Api.Controllers
 
                 if (users == null)
                 {
-                    Log.Warning("No users in database");
+                    Log.Warning("Users not found in database");
                     return NotFound();
                 }
 
@@ -72,7 +73,7 @@ namespace AspNetArticle.Api.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
                 return StatusCode(500);
             }
         }
@@ -105,7 +106,7 @@ namespace AspNetArticle.Api.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
                 return StatusCode(500);
             }
         }
@@ -156,7 +157,7 @@ namespace AspNetArticle.Api.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
                 return StatusCode(500);
             }
         }
@@ -175,6 +176,14 @@ namespace AspNetArticle.Api.Controllers
         {
             try
             {
+                var userEmail = User.Claims.FirstOrDefault(i => i.Type == ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userEmail))
+                {
+                    Log.Warning("ClaimTypes.NameIdentifier is null");
+                    return BadRequest();
+                }
+
+                var userId = (await _userService.GetUserByEmailAsync(userEmail)).Id;
 
                 var dto = _mapper.Map<UserDto>(model);
 
@@ -192,7 +201,7 @@ namespace AspNetArticle.Api.Controllers
 
                 if (dto != null)
                 {
-                    var result = await _userService.UpdateUserAsync(model.Id, dto);
+                    var result = await _userService.UpdateUserAsync(userId, dto);
 
                     if(result == 0)
                     {
@@ -209,7 +218,7 @@ namespace AspNetArticle.Api.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
                 return StatusCode(500);
             }
         }

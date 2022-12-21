@@ -18,8 +18,8 @@
 
             <nav class="d-flex w-75  m-3 justify-content-between bg-light rounded">
                 <div class="d-flex py-2 mx-5 gap-5">
-                    <a class="" asp-controller="Home" asp-action="Index">Home</a>
-                    <a class="" asp-controller="Article" asp-action="Index">Новости</a>
+                    <a class="header_button" asp-controller="Home" asp-action="Index">Home</a>
+                    <a class="header_button" asp-controller="Article" asp-action="Index">Новости</a>
                 </div>
               
                 <div class="d-flex align-content-end">
@@ -62,11 +62,7 @@
 
 <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 <script src="~/lib/jquery/dist/jquery.min.js"></script>
-@*<script src="~/js/add-avatar.js"></script>
-<script src="~/js/change-password.js"></script>*@
 <script src="https://kit.fontawesome.com/1c2c2462bf.js"></script>
-@*<script src="~/js/progress-streght-bar.js"></script>*@
-@*<script src="~/js/bootstrap.js"></script>*@
     
 @await RenderSectionAsync("Scripts", required: false)
 </body>

@@ -34,43 +34,16 @@ public class ArticleService : IArticleService
 
     public async Task<ArticleDto> GetArticleByIdAsync(Guid id)
     {
-        //return _mapper.Map<ArticleDto>(await _unitOfWork.Articles.GetByIdAsync(id));
         return _mapper.Map<ArticleDto>(await _mediator.Send(new GetArticleByIdQuery() { Id = id}));
     }
 
     public async Task<IEnumerable<ArticleDto>> GetAllArticlesAsync() 
     {
-        //var articleDto = await _unitOfWork.Articles
-        //    .Get()
-        //    .Select(entity => _mapper.Map<ArticleDto>(entity))
-        //    .ToListAsync();
-
         var articleDto = (await _mediator.Send(new GetAllArticlesQuery()))
            .Select(entity => _mapper.Map<ArticleDto>(entity));
 
         return articleDto;
     }
-
-    //public async Task<List<ArticleDto>> GetArticlesByNameAndSourcesAsync(string? name, Guid? category) // todo can remove unnecessary
-    //{
-    //    var entities = _unitOfWork.Articles.Get();
-
-    //    if (!string.IsNullOrEmpty(name))
-    //    {
-    //        entities = entities.Where(ent => ent.Title.Contains(name));
-    //    }
-
-    //    if (category != null && !Guid.Empty.Equals(category))
-    //    {
-    //        entities = entities.Where(ent => ent.SourceId.Equals(category));
-    //    }
-
-    //    var result = (await entities.ToListAsync())
-    //        .Select(ent => _mapper.Map<ArticleDto>(ent))
-    //        .ToList();
-
-    //    return result;
-    //}
 
     public async Task<IEnumerable<ArticleDto>> GetFilteredArticles(string selectedCategory, Raiting selectedRaiting, string searchString)
     {
@@ -87,35 +60,6 @@ public class ArticleService : IArticleService
                 .ToArray();
         }
         return Array.Empty<ArticleDto>();
-
-        //if (!string.IsNullOrEmpty(searchString))
-        //{
-        //    articles = articles.Where(art => art.Title.Contains(searchString));
-        //}
-
-        //if (!string.IsNullOrEmpty(selectedCategory) && articles.Any(art => art.Category != null))
-        //{
-        //    articles = articles.Where(art => art.Category.Equals(selectedCategory));
-        //}
-
-        //if (!selectedRaiting.Equals(Raiting.None))
-        //{
-        //    if (selectedRaiting.Equals(Raiting.TopRaiting))
-        //    {
-        //        articles = articles.Where(art => art.Rate >= 0).OrderByDescending(art => art.Rate);
-        //    }
-        //    else
-        //    {
-        //        articles = articles.Where(art => art.Rate < 0).OrderBy(art => art.Rate);
-        //    } 
-        //}
-        //var result = (await articles.ToArrayAsync())
-        //    .Select(ent => _mapper.Map<ArticleDto>(ent))
-        ////    .ToArray();
-        //var result = articles.Select(ent => _mapper.Map<ArticleDto>(ent))
-        //    .ToArray();
-
-        //return result;
     }
 
     public async Task<IEnumerable<string>> GetArticlesCategoryAsync()
@@ -126,41 +70,17 @@ public class ArticleService : IArticleService
             throw new ArgumentNullException($"{nameof(categories)} reference null");
 
         return categories.ToArray();
-        //var categories = await _unitOfWork.Articles
-        //    .Get()
-        //    .Select(art => art.Category)
-        //    .Distinct()
-        //    .ToListAsync();
-
-        //var articles = await _mediator.Send(new GetAllArticlesQuery());
-
-        //if(articles != null && articles.Any())
-        //{
-        //    return await articles.Select(art => art.Category)
-        //    .Distinct()
-        //    .ToArrayAsync();
-
-        //}
-        //return await categories ?? Array.Empty<string>();
     }
 
     public async Task<Guid?> GetArticleIdByCommentId(Guid commentId)
     {
         return await _mediator.Send(new GetArticleIdByCommentIdQuery() { CommentId = commentId });
-
-        //return (await _unitOfWork.Comments
-        //    .Get()
-        //    .FirstOrDefaultAsync(com => com.Id.Equals(commentId)))
-        //    ?.ArticleId;
     }
 
 
     public async Task AggregateArticlesFromExternalSourcesAsync()
     {
         var sources = await _mediator.Send(new GetAllSourcesQuery());
-        //var sources = await _unitOfWork.Sources.GetAllAsync();
-
-        //Parallel.ForEach(sources, (source) => GetAllArticleDataFromRssAsync(source.Id, source.RssUrl).Wait());
 
         foreach (var source in sources)
         {
@@ -171,10 +91,6 @@ public class ArticleService : IArticleService
     public async Task AddArticlesDataAsync()
     {
         var articlesWithEmptyTextIds = await _mediator.Send(new GetArticlesIdWithEmptyTextQuery());
-        //var articlesWithEmptyTextIds = _unitOfWork.Articles.Get()
-        //    .Where(article => string.IsNullOrEmpty(article.Text))
-        //    .Select(article => article.Id)
-        //    .ToList();
 
         foreach (var articleId in articlesWithEmptyTextIds ?? Array.Empty<Guid>())
         {
@@ -219,17 +135,6 @@ public class ArticleService : IArticleService
                 var result = list.Select(art => _mapper.Map<Article>(art));
 
                 await _mediator.Send(new AddArticleDataFromRssFeedCommand() { Articles = result });
-                //var oldArticleUrls = await _unitOfWork.Articles.Get()
-                //    .Select(article => article.SourceUrl)
-                //    .Distinct()
-                //    .ToArrayAsync();
-
-                //var entities = list.Where(dto => !oldArticleUrls.Contains(dto.SourceUrl))
-                //    .Select(dto => _mapper.Map<Article>(dto)).ToArray();
-
-
-                //await _unitOfWork.Articles.AddRangeAsync(entities);
-                //await _unitOfWork.Commit();
             }
         }
         catch (Exception e)
@@ -244,7 +149,6 @@ public class ArticleService : IArticleService
         try
         {
             var article = await _mediator.Send(new GetArticleByIdQuery() { Id = articleId });
-            //var article = await _unitOfWork.Articles.GetByIdAsync(articleId);
 
             if (article == null)
             {
@@ -296,17 +200,6 @@ public class ArticleService : IArticleService
                     Text = articleText,
                     ImageUrl = imageUrl
                 });
-                //if (!string.IsNullOrEmpty(articleText))
-                //{
-                //    articleText = Regex.Replace(articleText, @"<a([^>]+)>(.+?)<\/a>", " ");
-
-                //    await _unitOfWork.Articles.UpdateArticleTextAsync(articleId, articleText);
-                //}
-
-                //if (!string.IsNullOrEmpty(imageUrl))
-                //    await _unitOfWork.Articles.UpdateArticleImageUrlAsync(articleId, imageUrl);
-
-                //await _unitOfWork.Commit();
             }
 
             if (isDevIoText)
@@ -332,11 +225,6 @@ public class ArticleService : IArticleService
                     ArticleId = articleId,
                     Text = articleText,
                 });
-                //if (!string.IsNullOrEmpty(articleText))
-                //{
-                //    await _unitOfWork.Articles.UpdateArticleTextAsync(articleId, articleText);
-                //    await _unitOfWork.Commit();
-                //}
             }
         }
         catch (Exception e)

@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', async function () {
         articleId: artId
     }
 
-    exist = await checkData(urlCheck, data) // toString text
+    exist = await checkData(urlCheck, data) 
     answer = exist["exist"]
 
     if (answer) {

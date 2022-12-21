@@ -9,7 +9,6 @@ public class ArticleProfile : Profile
 {
     public ArticleProfile()
     {
-        // For Entity -> Dto & Dto -> Entity
         CreateMap<Article, ArticleDto>()
             .ForMember(dto => dto.Id,
                 opt
@@ -46,8 +45,6 @@ public class ArticleProfile : Profile
             .ForMember(article => article.Text, opt => opt.MapFrom(dto => dto.Text))
             .ForMember(article => article.PublicationDate, opt => opt.MapFrom(dto => dto.PublicationDate))
             .ForMember(article => article.Comments, opt => opt.MapFrom(dto => dto.Comments));
-
-        // For ArticleDto -> ArticleModel 
 
         CreateMap<ArticleDto, ArticleModel>()
             .ForMember(article => article.Id, 

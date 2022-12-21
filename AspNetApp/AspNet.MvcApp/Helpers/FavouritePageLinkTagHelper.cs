@@ -1,5 +1,4 @@
-﻿using AspNetArticle.Core;
-using AspNetArticle.MvcApp.Models;
+﻿using AspNetArticle.MvcApp.Models;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.AspNetCore.Mvc.Routing;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;

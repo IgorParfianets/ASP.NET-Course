@@ -52,106 +52,88 @@ namespace AspNetArticle.Api.Controllers
                 var userEmail = User.Claims.FirstOrDefault(i => i.Type == ClaimTypes.NameIdentifier)?.Value;
                 if (string.IsNullOrEmpty(userEmail))
                 {
-                    Log.Warning("No articles in database");
-                    return NotFound();
-                }
-
-                var user = await _userService.GetUserByEmailAsync(userEmail);
-                if (user == null)
-                {
-                    Log.Warning("No articles in database");
+                    Log.Warning("ClaimTypes.NameIdentifier is null");
                     return BadRequest();
                 }
 
-                var favouriteArticles = await _favouriteArticleService.GetAllFavouriteArticles(user.Id);
+                var userId = (await _userService.GetUserByEmailAsync(userEmail)).Id;
+
+                var favouriteArticles = await _favouriteArticleService.GetAllFavouriteArticles(userId);
                 if (favouriteArticles == null)
                 {
-                    Log.Warning("No articles in database");
-                    return NotFound();
+                    Log.Warning("Articles not found in database");
+                    return BadRequest();
                 }
+                Log.Information("Articles successfully received", favouriteArticles);
                 return Ok(favouriteArticles);
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
                 return StatusCode(500);
             }
         }
 
         /// <summary>
-        /// 
+        /// Add/Remove favourite article
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
         [HttpPost]
         [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(typeof(Exception), StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateFavouriteArticle([FromBody] AddFavouriteArticleRequestModel model)
         {
             try
             {
                 if (model != null)
                 {
+                    var userEmail = User.Claims.FirstOrDefault(i => i.Type == ClaimTypes.NameIdentifier)?.Value;
+                    if (string.IsNullOrEmpty(userEmail))
+                    {
+                        Log.Warning("ClaimTypes.NameIdentifier is null");
+                        return BadRequest();
+                    }
 
-                    //var userId = (await _userService.GetUserByEmailAsync(userEmail)).Id;
+                    var userId = (await _userService.GetUserByEmailAsync(userEmail)).Id;
 
-                    //if (userId != Guid.Empty)
-                    //{
-                    //    if (favouriteArticle.Answer)
-                    //    {
-                    //        var favouriteArticleDto = new FavouriteArticleDto()
-                    //        {
-                    //            Id = Guid.NewGuid(),
-                    //            UserId = userId,
-                    //            ArticleId = favouriteArticle.ArticleId,
-                    //        };
-                    //        await _favouriteArticleService.CreateFavouriteArticle(favouriteArticleDto);
+                    if (model.Answer)
+                    {
+                        var favouriteArticleDto = new FavouriteArticleDto()
+                        {
+                            Id = Guid.NewGuid(),
+                            UserId = userId,
+                            ArticleId = model.ArticleId
+                        };
+                        await _favouriteArticleService.CreateFavouriteArticle(favouriteArticleDto);
 
-                    //        return Ok();
-                    //    }
-                    //    else
-                    //    {
-                    //        var favouriteArticleDto = new FavouriteArticleDto()
-                    //        {
-                    //            UserId = userId,
-                    //            ArticleId = favouriteArticle.ArticleId,
-                    //        };
-                    //        await _favouriteArticleService.RemoveFavouriteArticle(favouriteArticleDto);
+                        Log.Information("Favourite article added successfully");
+                        return Ok();
+                    }
+                    else
+                    {
+                        var favouriteArticleDto = new FavouriteArticleDto()
+                        {
+                            UserId = userId,
+                            ArticleId = model.ArticleId
+                        };
+                        await _favouriteArticleService.RemoveFavouriteArticle(favouriteArticleDto);
 
-                    //        return Ok();
-                    //    }
-                    //}
+                        Log.Information("Favourite article removed successfully");
+                        return NoContent();
+                    }
                 }
+                Log.Warning("Model is invalid", model);
                 return BadRequest();
             }
-            catch (Exception)
+            catch (Exception e)
             {
-
-                throw;
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+                return StatusCode(500);
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="model"></param>
-        /// <returns></returns>
-        //[HttpDelete]
-        //[Authorize]
-        //public async Task<IActionResult> DeleteFavouriteArticle([FromBody] AddFavouriteArticleRequestModel model)
-        //{
-        //    try
-        //    {
-        //        var user = await _userService.GetUserByIdAsync(userId);
-
-        //        if (user == null)
-        //            return NotFound();
-
-        //        return Ok(user);
-        //    }
-        //    catch (Exception)
-        //    {
-        //        throw;
-        //    }
-        //}
     }
 }

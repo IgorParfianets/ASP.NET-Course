@@ -39,6 +39,10 @@ namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
                 {
                     articles = articles.Where(art => art.Rate >= 0).OrderByDescending(art => art.Rate);
                 }
+                else if (request.SelectedRaiting.Equals(Raiting.All))
+                {
+                    articles = articles.OrderByDescending(art => art.Rate);
+                }
                 else
                 {
                     articles = articles.Where(art => art.Rate < 0).OrderBy(art => art.Rate);

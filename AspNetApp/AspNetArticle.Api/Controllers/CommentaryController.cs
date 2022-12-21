@@ -8,6 +8,7 @@ using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
+using System.Security.Claims;
 
 namespace AspNetArticle.Api.Controllers
 {
@@ -19,6 +20,7 @@ namespace AspNetArticle.Api.Controllers
     public class CommentaryController : ControllerBase
     {
         private readonly ICommentaryService _commentaryService;
+        private readonly IUserService _userService;
         private readonly IMapper _mapper;
 
         /// <summary>
@@ -26,10 +28,14 @@ namespace AspNetArticle.Api.Controllers
         /// </summary>
         /// <param name="commentaryService"></param>
         /// <param name="mapper"></param>
-        public CommentaryController(ICommentaryService commentaryService, IMapper mapper)
+        /// <param name="userService"></param>
+        public CommentaryController(ICommentaryService commentaryService, 
+            IMapper mapper, 
+            IUserService userService)
         {
             _commentaryService = commentaryService;
             _mapper = mapper;
+            _userService = userService;
         }
 
         /// <summary>
@@ -57,7 +63,7 @@ namespace AspNetArticle.Api.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
                 return StatusCode(500);
             }
         }
@@ -92,7 +98,7 @@ namespace AspNetArticle.Api.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
                 return StatusCode(500);
             }
         }
@@ -111,13 +117,22 @@ namespace AspNetArticle.Api.Controllers
         {
             try
             {
+                var userEmail = User.Claims.FirstOrDefault(i => i.Type == ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userEmail))
+                {
+                    Log.Warning("ClaimTypes.NameIdentifier is null");
+                    return NotFound();
+                }
+
+                var userId = (await _userService.GetUserByEmailAsync(userEmail)).Id;
+
                 var dto = _mapper.Map<CommentDto>(model);
                 if (dto == null)
                 {
-                    Log.Warning($"Model is not valid", model);
+                    Log.Warning($"Mapping failed", model);
                     return BadRequest();
                 }
-
+                dto.UserId = userId;
                 await _commentaryService.CreateCommentAsync(dto);
 
                 Log.Information("Comment successfully created");
@@ -125,7 +140,7 @@ namespace AspNetArticle.Api.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
                 return StatusCode(500);
             }
         }
@@ -144,13 +159,23 @@ namespace AspNetArticle.Api.Controllers
         {
             try
             {
+                var userEmail = User.Claims.FirstOrDefault(i => i.Type == ClaimTypes.NameIdentifier)?.Value;
+                if (string.IsNullOrEmpty(userEmail))
+                {
+                    Log.Warning("ClaimTypes.NameIdentifier is null");
+                    return NotFound();
+                }
+
+                var userId = (await _userService.GetUserByEmailAsync(userEmail)).Id;
+
                 var dto = _mapper.Map<CommentDto>(model);
 
                 if (dto == null)
                 {
-                    Log.Warning($"Model is not valid", model);
+                    Log.Warning($"Mapping is failed", model);
                     return BadRequest();
                 }
+                dto.UserId = userId;
                 await _commentaryService.UpdateCommentAsync(dto);
 
                 Log.Information("Comment successfully created");
@@ -158,7 +183,7 @@ namespace AspNetArticle.Api.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
                 return StatusCode(500);
             }
             
@@ -184,7 +209,7 @@ namespace AspNetArticle.Api.Controllers
             }
             catch (Exception e)
             {
-                Log.Error(e.Message);
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
                 return StatusCode(500);
             }
         }

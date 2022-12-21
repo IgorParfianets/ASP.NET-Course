@@ -48,12 +48,7 @@ namespace AspNetArticle.MvcApp.Controllers
                         return Redirect($"~/Article/Details/{model.ArticleId}"); 
                     }
                 }
-                ModelState.AddModelError("", "Комментарий пуст");
-
                 return Redirect($"~/Article/Details/{model.ArticleId}");
-                //var articleId = model.ArticleId;
-                //return RedirectToAction("Details", "Article", articleId);
-                //return BadRequest(); // если не валид то куда
             }
             catch (Exception e)
             {
@@ -131,7 +126,6 @@ namespace AspNetArticle.MvcApp.Controllers
                     Log.Error( $"{nameof(Delete)} article {articleId} is not exist");
                     throw new ArgumentException($"Article {articleId} is not exist");
                 }
-
                 await _commentaryService.DeleteCommentById(id);
 
                 return Redirect($"~/Article/Details/{articleId}"); 

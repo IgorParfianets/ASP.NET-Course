@@ -35,10 +35,9 @@ public class UserService : IUserService
 
         if (entity == null)
             throw new NullReferenceException($"{nameof(entity)} is null");
+
         entity.PasswordHash = CreateMd5(password);
 
-        ////await _unitOfWork.Users.AddAsync(entity);
-        ////var result = _unitOfWork.Commit();
         var result = await _mediator.Send(new AddUserCommand() { User = entity });
 
         return result;
@@ -46,12 +45,13 @@ public class UserService : IUserService
 
     public async Task<UserDto?> GetUserByIdAsync(Guid id)
     {
-        //var entity = await _unitOfWork.Users.GetByIdAsync(id);
         var entity = await _mediator.Send(new GetUserByIdQuery() { UserId = id });
+
         if (entity == null)
             throw new NullReferenceException($"{nameof(entity)} is null");
 
         var user = _mapper.Map<UserDto>(entity);
+
         if (user == null)
             throw new NullReferenceException($"{nameof(user)} is null");
 
@@ -60,8 +60,8 @@ public class UserService : IUserService
 
     public async Task<int> UpdateUserAsync(Guid id, UserDto userDto) 
     {
-        //var entity = await _unitOfWork.Users.GetByIdAsync(id);
         var entity = await _mediator.Send(new GetUserByIdQuery() { UserId = id });
+
         if (entity == null)
             throw new NullReferenceException($"{nameof(entity)} is null");
 
@@ -109,37 +109,26 @@ public class UserService : IUserService
         }
         var result = await _mediator.Send(new UpdateUserCommand() { UserId = id, PatchData = patchList });
         return result;
-        //await _unitOfWork.Users.PatchAsync(id, patchList);
-        //return await _unitOfWork.Commit();
     }
 
     public async Task<bool> CheckUserByEmailAndPasswordAsync(string email, string password)
     {
         var user = await _mediator.Send(new GetUserByEmailQuery() { Email = email });
 
-        //var user = await _unitOfWork.Users
-        //     .Get()
-        //     .FirstOrDefaultAsync(user =>
-        //     user.Email.Equals(email));
-
         if (user != null && user.PasswordHash.Equals(CreateMd5(password))) 
         {
             user.LastVisit = DateTime.Now;
-            await _unitOfWork.Commit(); //что то сделать _unitOfWork
+            await _unitOfWork.Commit(); 
             return true;
         }
         return false;
     }
 
-    public async Task<bool> IsExistUserEmailAsync(string email) // check debug
+    public async Task<bool> IsExistUserEmailAsync(string email) 
     {
         var user = await _mediator.Send(new GetUserByEmailQuery() { Email = email });
 
         return user != null;
-        //return await _unitOfWork.Users
-        //    .Get()
-        //    .AnyAsync(user => 
-        //        user.Email.Equals(email));
     }
 
     public async Task<bool> IsExistUsernameAsync(string newUsername) 
@@ -147,10 +136,6 @@ public class UserService : IUserService
         var user = await _mediator.Send(new GetUserByUsernameQuery() { Username = newUsername });
 
         return user != null;
-        //return await _unitOfWork.Users
-        //  .Get()
-        //  .AnyAsync(user =>
-        //     user.UserName.Equals(newUsername));
     }
 
     public async Task<UserDto> GetUserByEmailAsync(string email)
@@ -159,13 +144,6 @@ public class UserService : IUserService
 
         if (user == null)
             throw new NullReferenceException($"{nameof(user)} is null");
-
-
-        //var user = await _unitOfWork.Users
-        //    .FindBy(us => us.Email.Equals(email),
-        //        us => us.Role)
-        //    .Select(user => _mapper.Map<UserDto>(user))
-        //    .FirstOrDefaultAsync();
 
         return _mapper.Map<UserDto>(user);
     }
@@ -176,12 +154,6 @@ public class UserService : IUserService
 
         if (users == null)
             throw new NullReferenceException($"{nameof(users)} is null");
-
-        //var users = await _unitOfWork.Users
-        //    .Get()
-        //    .Include(dto => dto.Role)
-        //    .Select(user => _mapper.Map<UserDto>(user))
-        //    .ToListAsync();
 
         return users.Select(user => _mapper.Map<UserDto>(user));
     }
