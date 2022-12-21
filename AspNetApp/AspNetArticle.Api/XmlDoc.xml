@@ -87,12 +87,25 @@
             Favourite article resource controller
             </summary>
         </member>
-        <member name="M:AspNetArticle.Api.Controllers.FavouriteArticleController.#ctor(AspNetArticle.Core.Abstractions.IFavouriteArticleService,AutoMapper.IMapper)">
+        <member name="M:AspNetArticle.Api.Controllers.FavouriteArticleController.#ctor(AspNetArticle.Core.Abstractions.IFavouriteArticleService,AutoMapper.IMapper,AspNetArticle.Core.Abstractions.IUserService)">
             <summary>
             
             </summary>
             <param name="favouriteArticleService"></param>
             <param name="mapper"></param>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.FavouriteArticleController.GetFavouriteArticle">
+            <summary>
+            Get all user's favourite articles
+            </summary>
+            <returns>Favourite articles</returns>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.FavouriteArticleController.CreateFavouriteArticle(AspNetArticle.Api.Models.Request.AddFavouriteArticleRequestModel)">
+            <summary>
+            
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
         </member>
         <member name="T:AspNetArticle.Api.Controllers.SourceController">
             <summary>

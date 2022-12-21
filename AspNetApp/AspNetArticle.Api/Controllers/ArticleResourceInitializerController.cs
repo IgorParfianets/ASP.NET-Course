@@ -30,21 +30,21 @@ namespace AspNetArticle.Api.Controllers
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         [HttpGet]
-        public async Task<IActionResult> AddSourceArticles() //todo rework with last lecture
+        public async Task<IActionResult> AddSourceArticles() 
         {
             try
             {
                 RecurringJob.AddOrUpdate(() => _articleService.AggregateArticlesFromExternalSourcesAsync(),
-                    "35 19 * * *");
+                    "50 9,15 * * *");
 
                 RecurringJob.AddOrUpdate(() => _articleService.AddArticlesDataAsync(),
-                    "36 19 * * *");
+                    "52 9,15 * * *");
 
                 RecurringJob.AddOrUpdate(() => _articleRateService.AddRateToArticlesAsync(),
-                    "38,39,40 19 * * *");
+                    "54,36 9,15 * * *");
 
                 RecurringJob.AddOrUpdate(() => _sendMessageService.GetArticlesAndUsersForMessage(),
-                    "42 19 * * *");
+                    "56 9,15 * * *");
 
                 return Ok();
             }

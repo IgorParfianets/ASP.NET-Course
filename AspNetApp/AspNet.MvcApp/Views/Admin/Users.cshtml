@@ -38,8 +38,9 @@
                     <td>@((DateTime.Now - userWithComments.User.AccountCreated).Days)</td>
 
                     <td id="col-button">
-                        <a asp-controller="Admin" asp-action="UserDetails" asp-route-id="@userWithComments.User.Id" class="w-100 btn btn-sm btn-success me-1">Подробнее</a>
-                        <a class="btn btn-sm btn-danger ps-3 pe-3 mt-1 w-100">Заблокировать</a>
+                        <a asp-controller="Admin" asp-action="UserDetails" asp-route-id="@userWithComments.User.Id" class="w-100 btn btn-sm btn-success me-1">
+                            Подробнее
+                            </a>
                     </td>
                 </tr>
             }

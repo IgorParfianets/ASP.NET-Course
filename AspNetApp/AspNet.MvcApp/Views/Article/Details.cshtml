@@ -21,7 +21,7 @@
                 <div class=" d-flex justify-content-between mb-3">
                     <strong class="bg-warning p-1 rounded">Рейтинг: @string.Format("{0:0.00}", @Model.Article.Rate)</strong>
 
-                    @if (User.Identity.IsAuthenticated)
+                    @if (User.IsInRole("User"))
                     {
                         <form method="get" id="test" hidden>
                             <input name="@nameof(Model.Article.Id)" asp-for="Article.Id">
@@ -40,12 +40,6 @@
                 <img src="@Model.Article.ImageUrl"/>
             </div>
 
-            <!-- Button Go Back -->
-
-            @*<div class="position-fixed" style="top: 500px; right: 10%; z-index:100;">
-                <a class="btn btn-primary" href="">Вернуться назад</a>
-            </div>*@
-
             <div class="bg-light p-5 text-start" style="border-radius: 6px;">
                 <article-text article-text="@Model.Article.Text"></article-text>
             </div>
@@ -61,7 +55,7 @@
 <hr />
 
 <p>
-    <button class="btn btn-sm btn-primary mb-2 ms-5" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
+    <button class="btn btn-sm btn-secondary mb-2 ms-5" type="button" data-bs-toggle="collapse" data-bs-target="#collapseExample" aria-expanded="false" aria-controls="collapseExample">
         <h3 class="mb-0">Комментарии: <span class="badge bg-danger rounded-pill">@Model.ExistComments?.Count()</span></h3>
     </button>
 </p>
@@ -89,12 +83,6 @@
         <partial name="_CreateCommentaryPartialView" model="Model.Comment"/>
     </div>
 
-@*    @if (User.IsInRole("Admin"))
-    {
-        <div class="d-flex justify-content-center text-center w-100 mt-5">
-            <a asp-controller="Admin" class="btn btn-lg btn-danger w-75 ">Отправить новость в архив!</a>
-        </div>
-    }*@
 }
 @section Scripts{
     <script src="~/js/add-favourite-article.js"></script>

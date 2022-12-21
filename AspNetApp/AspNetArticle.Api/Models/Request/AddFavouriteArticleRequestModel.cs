@@ -5,7 +5,6 @@
     /// </summary>
     public class AddFavouriteArticleRequestModel
     {
-        public Guid UserId { get; set; }
         public bool Answer { get; set; }
         public Guid ArticleId { get; set; }
     }

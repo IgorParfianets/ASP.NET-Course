@@ -58,8 +58,7 @@ namespace AspNet.MvcApp
             builder.Services.AddScoped<IRepository<Comment>, Repository<Comment>>();
             builder.Services.AddScoped<IRepository<FavouriteArticle>, Repository<FavouriteArticle>>();
 
-            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            //------------------------------------------------------------
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();           
 
             // Authentication configuration
             builder.Services
@@ -71,13 +70,13 @@ namespace AspNet.MvcApp
                     options.AccessDeniedPath = new PathString(@"/Account/Login");
                 });
 
-            builder.Services.AddAuthorization(); // Test Remove Or Not
+            builder.Services.AddAuthorization(); 
 
             
             // Db Context
             var connectionString = builder.Configuration.GetConnectionString("Default");
             builder.Services.AddDbContext<AggregatorContext>(optionBuilder =>
-            optionBuilder.UseSqlServer(connectionString)); // For DB (connectionString in config files)
+            optionBuilder.UseSqlServer(connectionString)); 
 
             //Hangfire config
             builder.Services.AddHangfire(configuration => configuration
@@ -95,7 +94,7 @@ namespace AspNet.MvcApp
                     }));
 
             // Mapper
-            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); // For Mapping to collect all profiles
+            builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies()); 
 
             //MailKit
             builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
@@ -153,7 +152,7 @@ namespace AspNet.MvcApp
             app.UseAuthentication();
             app.UseAuthorization();
 
-            //app.UseSession(); // Check that is mean
+            //app.UseSession(); 
             app.MapHangfireDashboard("/jobs", options: new DashboardOptions()
             {
                 Authorization = new[] { new HangfireDashboardAuthorizationFilter() }

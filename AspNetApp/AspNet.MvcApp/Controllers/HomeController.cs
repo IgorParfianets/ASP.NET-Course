@@ -5,6 +5,7 @@ using AspNetArticle.Core.Abstractions;
 using AspNetArticle.MvcApp.Models;
 using AutoMapper;
 using Serilog;
+using Hangfire;
 
 namespace AspNet.MvcApp.Controllers
 {
@@ -12,14 +13,20 @@ namespace AspNet.MvcApp.Controllers
     {
         private readonly ILogger<HomeController> _logger;
         private readonly IArticleService _articleService;
+        private readonly IArticleRateService _articleRateService;
+        private readonly ISendMessageService _sendMessageService;
         private readonly IMapper _mapper;
-        public HomeController(ILogger<HomeController> logger, 
-            IArticleService articleService, 
-            IMapper mapper)
+        public HomeController(ILogger<HomeController> logger,
+            IArticleService articleService,
+            IMapper mapper,
+            IArticleRateService articleRateService,
+            ISendMessageService sendMessageService)
         {
             _logger = logger;
             _articleService = articleService;
             _mapper = mapper;
+            _articleRateService = articleRateService;
+            _sendMessageService = sendMessageService;
         }
 
         public async Task<IActionResult> Index()
@@ -27,6 +34,7 @@ namespace AspNet.MvcApp.Controllers
             try
             {
                 var articles = (await _articleService.GetAllArticlesAsync())
+               .Where(art => art.PublicationDate.AddDays(7) >= DateTime.UtcNow)
                .OrderByDescending(art => art.Rate)
                .Take(3)
                .Select(art => _mapper.Map<ArticleModel>(art))
