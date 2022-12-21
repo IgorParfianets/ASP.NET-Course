@@ -15,6 +15,12 @@ using System.Text;
 using Hangfire;
 using Hangfire.SqlServer;
 using AspNetArticle.Business.Models;
+using AsoNetArticle.Data.CQS.Commands;
+using AsoNetArticle.Data.CQS.Handers;
+using AsoNetArticle.Data.CQS.Queries;
+using MediatR;
+using AspNetSample.Data.CQS.Commands;
+using AsoNetArticle.Data.CQS.Handers.QueryHanders;
 
 namespace AspNetArticle.Api
 {
@@ -84,6 +90,49 @@ namespace AspNetArticle.Api
 
             //SendMessage
             builder.Services.Configure<MailSettings>(builder.Configuration.GetSection("MailSettings"));
+
+            //MediatR
+            builder.Services.AddMediatR(typeof(GetArticleByIdQuery).Assembly);
+            builder.Services.AddMediatR(typeof(GetAllArticlesQuery).Assembly);
+            builder.Services.AddMediatR(typeof(GetArticlesFilteredQuery).Assembly);
+            builder.Services.AddMediatR(typeof(GetArticleCategoriesQuery).Assembly);
+            builder.Services.AddMediatR(typeof(GetArticleIdByCommentIdQuery).Assembly);
+            builder.Services.AddMediatR(typeof(GetAllSourcesQuery).Assembly);
+            builder.Services.AddMediatR(typeof(GetArticlesIdWithEmptyTextQuery).Assembly);
+            builder.Services.AddMediatR(typeof(AddArticleDataFromRssFeedCommand).Assembly);
+            builder.Services.AddMediatR(typeof(UpdateArticleOnlinerCommand).Assembly);
+            builder.Services.AddMediatR(typeof(UpdateArticleDevIoCommand).Assembly);
+
+            builder.Services.AddMediatR(typeof(GetArticlesIdWithEmptyRateQuery).Assembly);
+            builder.Services.AddMediatR(typeof(UpdateArticleRateCommand).Assembly);
+            builder.Services.AddMediatR(typeof(GetCommentByIdQuery).Assembly);
+            builder.Services.AddMediatR(typeof(AddCommentCommand).Assembly);
+            builder.Services.AddMediatR(typeof(UpdateCommentCommand).Assembly);
+            builder.Services.AddMediatR(typeof(GetAllCommentsByUserIdQuery).Assembly);
+            builder.Services.AddMediatR(typeof(GetAllCommentsQuery).Assembly);
+            builder.Services.AddMediatR(typeof(GetAllCommentsWithUsersByArticleIdQuery).Assembly);
+            builder.Services.AddMediatR(typeof(DeleteCommentByIdCommand).Assembly);
+
+            builder.Services.AddMediatR(typeof(AddFavouriteArticleCommand).Assembly);
+            builder.Services.AddMediatR(typeof(GetFavouriteArticleByUserIdAndArticleIdQuery).Assembly);
+            builder.Services.AddMediatR(typeof(DeleteFavouriteArticleCommand).Assembly);
+            builder.Services.AddMediatR(typeof(GetAllFavouriteArticlesIdByUserIdQuery).Assembly);
+
+            builder.Services.AddMediatR(typeof(GetRoleIdByNameQuery).Assembly);
+
+            builder.Services.AddMediatR(typeof(GetUserEmailsForSendSpamQuery).Assembly);
+            builder.Services.AddMediatR(typeof(AddUserCommand).Assembly);
+            builder.Services.AddMediatR(typeof(GetUserByIdQuery).Assembly);
+            builder.Services.AddMediatR(typeof(UpdateUserCommand).Assembly);
+            builder.Services.AddMediatR(typeof(GetUserByEmailQuery).Assembly);
+            builder.Services.AddMediatR(typeof(GetUserByUsernameQuery).Assembly);
+            builder.Services.AddMediatR(typeof(GetAllUsersQuery).Assembly);
+
+            builder.Services.AddMediatR(typeof(AddRefreshTokenCommand).Assembly);
+            builder.Services.AddMediatR(typeof(DeleteRefreshTokenCommand).Assembly);
+            builder.Services.AddMediatR(typeof(GetUserByRefreshTokenQuery).Assembly);
+            builder.Services.AddMediatR(typeof(GetCommentsByUserIdAndArticleIdQuery).Assembly);
+            
 
             builder.Services
                 .AddAuthentication(options =>

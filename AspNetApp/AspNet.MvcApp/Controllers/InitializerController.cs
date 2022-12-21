@@ -1,6 +1,7 @@
 ﻿using AspNetArticle.Core.Abstractions;
 using Hangfire;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace AspNetArticle.MvcApp.Controllers
 {
@@ -20,19 +21,29 @@ namespace AspNetArticle.MvcApp.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> InitializedArticles()
+        public IActionResult InitializedArticles() // hangfire
         {
+            try
+            {
+                RecurringJob.AddOrUpdate(() => _articleService.AggregateArticlesFromExternalSourcesAsync(),
+                    "35 19 * * *");
 
-            RecurringJob.AddOrUpdate(() => _articleService.AggregateArticlesFromExternalSourcesAsync(),
-                "*/5 * * * *");
+                RecurringJob.AddOrUpdate(() => _articleService.AddArticlesDataAsync(),
+                    "36 19 * * *");
 
-            RecurringJob.AddOrUpdate(() => _articleService.AddArticlesDataAsync(),
-                "*/7 * * * *");
+                RecurringJob.AddOrUpdate(() => _articleRateService.AddRateToArticlesAsync(),
+                    "38,39,40 19 * * *");
 
-            RecurringJob.AddOrUpdate(() => _articleRateService.AddRateToArticlesAsync(),
-                "*/10 * * * *");
+                RecurringJob.AddOrUpdate(() => _sendMessageService.GetArticlesAndUsersForMessage(),
+                    "42 19 * * *");
 
-            return Ok();
+                return Ok();
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+                throw new Exception($"Method {nameof(InitializedArticles)} is failed, stack trace {e.StackTrace}. {e.Message}");
+            }  
         }
     }
 }

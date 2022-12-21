@@ -4,7 +4,7 @@ namespace AspNetArticle.Core.Abstractions
 {
     public interface ISourceService
     {
-        Task<List<SourceDto>> GetSourcesAsync();
+        Task<IEnumerable<SourceDto>> GetSourcesAsync();
 
         Task<SourceDto> GetSourcesByIdAsync(Guid id);
 

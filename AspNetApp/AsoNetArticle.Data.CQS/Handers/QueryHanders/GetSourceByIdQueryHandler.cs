@@ -16,7 +16,9 @@ namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
         }
         public async Task<Source?> Handle(GetSourceByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Sources.FirstOrDefaultAsync(source => source.Id.Equals(request.Id));
+            return await _context.Sources
+                .AsNoTracking()
+                .FirstOrDefaultAsync(source => source.Id.Equals(request.Id), cancellationToken);
         }
     }
 }

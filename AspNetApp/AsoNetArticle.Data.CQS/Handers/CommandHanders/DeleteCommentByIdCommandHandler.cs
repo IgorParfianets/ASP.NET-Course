@@ -21,7 +21,7 @@ namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
             if(entity != null)
             {
                 _context.Remove(entity);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(cancellationToken);
             }              
             return Unit.Value;
         }

@@ -3,15 +3,10 @@ using AspNetArticle.Database;
 using AspNetArticle.Database.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
 {
-    internal class GetFavouriteArticleByUserIdAndArticleIdQueryHandler :
+    public class GetFavouriteArticleByUserIdAndArticleIdQueryHandler :
         IRequestHandler<GetFavouriteArticleByUserIdAndArticleIdQuery, FavouriteArticle?>
     {
         private readonly AggregatorContext _context;
@@ -22,8 +17,10 @@ namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
         }
         public async Task<FavouriteArticle?> Handle(GetFavouriteArticleByUserIdAndArticleIdQuery request, CancellationToken cancellationToken)
         {
-            return await _context.FavouriteArticles.FirstOrDefaultAsync(fav => request.UserId.Equals(fav.UserId)
-                && request.ArticleId.Equals(fav.ArticleId));
+            return await _context.FavouriteArticles
+                .AsNoTracking()
+                .FirstOrDefaultAsync(fav => request.UserId.Equals(fav.UserId)
+                && request.ArticleId.Equals(fav.ArticleId), cancellationToken);
         }
     }
 }

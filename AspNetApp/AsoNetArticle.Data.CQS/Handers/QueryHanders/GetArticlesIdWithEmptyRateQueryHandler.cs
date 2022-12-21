@@ -16,9 +16,9 @@ namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
         public async Task<IEnumerable<Guid>?> Handle(GetArticlesIdWithEmptyRateQuery request, CancellationToken cancellationToken)
         {
             return await _context.Articles.Where(art => art.Rate == null && !string.IsNullOrEmpty(art.Text))
-                    .Take(20)
-                    .Select(art => art.Id)
-                    .ToArrayAsync(cancellationToken);
+                .AsNoTracking()
+                .Select(art => art.Id)
+                .ToArrayAsync(cancellationToken);
         }
     }
 }

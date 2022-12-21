@@ -20,7 +20,7 @@ namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
                 .AsNoTracking()
                 .Where(user => user.Spam)
                 .Select(user => user.Email)
-                .ToArrayAsync();
+                .ToArrayAsync(cancellationToken);
         }
     }
 }

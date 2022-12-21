@@ -1,5 +1,4 @@
-﻿using AspNetArticle.Core.DataTransferObjects;
-using AspNetArticle.Database.Entities;
+﻿using AspNetArticle.Database.Entities;
 using MediatR;
 
 namespace AsoNetArticle.Data.CQS.Commands

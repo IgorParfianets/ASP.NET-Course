@@ -1,5 +1,4 @@
-﻿
-using AsoNetArticle.Data.CQS.Commands;
+﻿using AsoNetArticle.Data.CQS.Commands;
 using AspNetArticle.Database;
 using MediatR;
 
@@ -17,7 +16,7 @@ namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
         public async Task<int> Handle(AddUserCommand request, CancellationToken cancellationToken)
         {
             await _context.Users.AddAsync(request.User);
-            return await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

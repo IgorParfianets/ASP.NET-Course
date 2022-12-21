@@ -18,6 +18,7 @@ namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
         public async Task<IEnumerable<Comment>> Handle(GetAllCommentsWithUsersByArticleIdQuery request, CancellationToken cancellationToken)
         {
             return await _context.Comments
+                .AsNoTracking()
                 .Where(com => com.ArticleId.Equals(request.ArticleId))
                 .Include(com => com.User)
                 .ToArrayAsync(cancellationToken);

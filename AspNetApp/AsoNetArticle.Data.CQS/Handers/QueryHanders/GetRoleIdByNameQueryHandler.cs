@@ -2,11 +2,6 @@
 using AspNetArticle.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
 {
@@ -19,7 +14,13 @@ namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
         }
         public async Task<Guid?> Handle(GetRoleIdByNameQuery request, CancellationToken cancellationToken)
         {
-            return (await _context.Roles.FirstOrDefaultAsync(role => request.RoleName.Equals(role.Name)))?.Id;
+            return (await _context.Roles
+                .AsNoTracking()
+                .FirstOrDefaultAsync(role => request.RoleName.Equals(role.Name), cancellationToken))?.Id;
         }
     }
 }
+////var role = await _unitOfWork.Roles
+//    .FindBy(role => 
+//        role.Name.Equals(name))
+//    .FirstOrDefaultAsync();

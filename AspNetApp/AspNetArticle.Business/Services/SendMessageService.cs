@@ -100,10 +100,10 @@ namespace AspNetArticle.Business.Services
                     await smtp.DisconnectAsync(true);
                 }    
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error(ex, $"{nameof(SendEmailAsync)} method failed with model {mailRequest}");
-                throw;
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+                throw new Exception($"Method {nameof(SendEmailAsync)} is failed, stack trace {e.StackTrace}. {e.Message}");
             }
             
         }

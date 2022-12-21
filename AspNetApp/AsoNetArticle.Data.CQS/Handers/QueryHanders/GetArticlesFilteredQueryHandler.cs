@@ -44,6 +44,12 @@ namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
                     articles = articles.Where(art => art.Rate < 0).OrderBy(art => art.Rate);
                 }
             }
+
+            if (request.SelectedRaiting.Equals(Raiting.None))
+            {
+                articles = articles.Where(art => art.Rate >= 0).OrderByDescending(art => art.Rate);
+            }
+
             return await articles.ToArrayAsync(cancellationToken);
         }
     }

@@ -17,10 +17,29 @@ namespace AspNetArticle.Database.Migrations
         {
 #pragma warning disable 612, 618
             modelBuilder
-                .HasAnnotation("ProductVersion", "6.0.9")
+                .HasAnnotation("ProductVersion", "6.0.10")
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder, 1L, 1);
+
+            modelBuilder.Entity("AspBetSample.DataBase.Entities.RefreshToken", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("Token")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<Guid>("UserId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("RefreshTokens");
+                });
 
             modelBuilder.Entity("AspNetArticle.Database.Entities.Article", b =>
                 {
@@ -196,6 +215,17 @@ namespace AspNetArticle.Database.Migrations
                     b.ToTable("Users");
                 });
 
+            modelBuilder.Entity("AspBetSample.DataBase.Entities.RefreshToken", b =>
+                {
+                    b.HasOne("AspNetArticle.Database.Entities.User", "User")
+                        .WithMany("RefreshTokens")
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("User");
+                });
+
             modelBuilder.Entity("AspNetArticle.Database.Entities.Article", b =>
                 {
                     b.HasOne("AspNetArticle.Database.Entities.Source", "Source")
@@ -274,6 +304,8 @@ namespace AspNetArticle.Database.Migrations
             modelBuilder.Entity("AspNetArticle.Database.Entities.User", b =>
                 {
                     b.Navigation("Comments");
+
+                    b.Navigation("RefreshTokens");
                 });
 #pragma warning restore 612, 618
         }

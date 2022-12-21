@@ -136,7 +136,7 @@ namespace AspNet.MvcApp
             builder.Services.AddMediatR(typeof(GetUserByEmailQuery).Assembly);
             builder.Services.AddMediatR(typeof(GetUserByUsernameQuery).Assembly);
             builder.Services.AddMediatR(typeof(GetAllUsersQuery).Assembly);
-
+            builder.Services.AddMediatR(typeof(GetCommentsByUserIdAndArticleIdQuery).Assembly);
 
             var app = builder.Build();
 

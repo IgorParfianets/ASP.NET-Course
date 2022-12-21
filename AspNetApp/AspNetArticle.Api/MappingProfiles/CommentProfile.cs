@@ -38,5 +38,7 @@ public class CommentProfile : Profile
                 opt
                     => opt.MapFrom(dto => dto.UserId));
 
+        CreateMap<UpdateCommentRequestModel, CommentDto>();
+
     }
 }

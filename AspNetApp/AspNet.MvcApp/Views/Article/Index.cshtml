@@ -9,11 +9,13 @@
     ViewData["Title"] = "Articles";
 }
 
+<div class="container text-center mb-5 pb-3">
+    <h2>Новости за неделю</h2>
+</div>
 
 @if (Model.Articles != null && Model.Articles.Any())
 {
     <div class="d-flex justify-content-end m-4 p-3">
-    
     @if (User.Identity.IsAuthenticated)
     {
             <form asp-controller="Article" asp-action="Index" method="get" class="d-flex me-3 ms-5 p-3 bg-light rounded">

@@ -1,54 +1,85 @@
-﻿using AspNetArticle.Api.Models.Request;
-using AspNetArticle.Core.Abstractions;
+﻿using AspNetArticle.Core.Abstractions;
+using AspNetArticle.Core.DataTransferObjects;
 using AutoMapper;
-using MediatR;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace AspNetArticle.Api.Controllers
 {
+    /// <summary>
+    /// Article resource controller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class ArticlesController : ControllerBase
     {
         private readonly IArticleService _articleService;
-        private readonly IMediator mediator;
-        private readonly IMapper _mapper;
-
-        public ArticlesController(IArticleService articleService, 
-            IMapper mapper, 
-            IMediator mediator)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="articleService"></param>
+        public ArticlesController(IArticleService articleService)
         {
             _articleService = articleService;
-            _mapper = mapper;
-            this.mediator = mediator;
         }
 
-        [HttpGet] 
-        public async Task<IActionResult> GetArticles([FromQuery] GetArticlesRequestModel? model) // Having injected filter by Title and Source(onliner ...)
+        /// <summary>
+        ///  Get all articles
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<ArticleDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetArticles() 
         {
-            var articles = await _articleService.GetArticlesByNameAndSourcesAsync(model?.Name, model?.SourceId); // need replace method
+            try
+            {
+                var articles = await _articleService.GetAllArticlesAsync();
 
-            return Ok(articles);
+                if (articles == null)
+                {
+                    Log.Warning("No articles in database");
+                    return NotFound();
+                }
+                Log.Information("Articles successfully received", articles);
+                return Ok(articles);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+                return StatusCode(500);
+            }
         }
 
+        /// <summary>
+        ///  Get article by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Article</returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(ArticleDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetArticleById(Guid id)
         {
-            var article = await _articleService.GetArticleByIdAsync(id);
-            if (article == null)
+            try
             {
-                return NotFound();
-            }
-            return Ok(article);
-        }
-        ////todo decide how to act with filtering by category name
+                var article = await _articleService.GetArticleByIdAsync(id);
 
-        //[HttpDelete] // todo unnecessary method use only clearing Db
-        //public async Task<IActionResult> DeleteArticlesBySourceId(Guid id)
-        //{
-        //    await _articleService.RemoveArticleByIdSourceAsync(id);
-        //    return Ok();
-        //}
+                if (article == null)
+                {
+                    Log.Warning($"Article with id {id} not found in database");
+                    return NotFound();
+                }
+                Log.Information("Article successfully received", article);
+                return Ok(article);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+                return StatusCode(500);
+            }
+        }
     }
 }

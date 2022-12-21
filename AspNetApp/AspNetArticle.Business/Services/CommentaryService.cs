@@ -49,10 +49,9 @@ namespace AspNetArticle.Business.Services
             var entity = _mapper.Map<Comment>(dto);
 
             if (entity == null)
-            {
-                throw new ArgumentException(nameof(entity));                
-            }
-            await _mediator.Send(new UpdateCommentCommand() { Comment = entity });
+                throw new ArgumentException(nameof(entity));     
+            
+            var result = await _mediator.Send(new UpdateCommentCommand() { Comment = entity });
             //_unitOfWork.Comments.Update(entity);
             //await _unitOfWork.Commit();
         }
@@ -62,7 +61,9 @@ namespace AspNetArticle.Business.Services
             var userAllComments = await _mediator.Send(new GetAllCommentsByUserIdQuery() {UserId = id});
 
             if (userAllComments != null)
-                return userAllComments.Select(com => _mapper.Map<CommentDto>(com)).ToArray();
+                return userAllComments
+                    .Select(com => _mapper.Map<CommentDto>(com))
+                    .ToArray();
 
             return Array.Empty<CommentDto>();
 
@@ -81,7 +82,9 @@ namespace AspNetArticle.Business.Services
             var comments = await _mediator.Send(new GetAllCommentsQuery());
 
             if (comments != null)
-                return comments.Select(com => _mapper.Map<CommentDto>(com)).ToArray();
+                return comments
+                    .Select(com => _mapper.Map<CommentDto>(com))
+                    .ToArray();
 
             return Array.Empty<CommentDto>();
             //return await _unitOfWork.Comments
@@ -97,7 +100,9 @@ namespace AspNetArticle.Business.Services
             var comments = await _mediator.Send(new GetAllCommentsWithUsersByArticleIdQuery() { ArticleId = id});
 
             if (comments != null)
-                return comments.Select(com => _mapper.Map<CommentaryWithUserDto>(com)).ToArray();
+                return comments
+                    .Select(com => _mapper.Map<CommentaryWithUserDto>(com))
+                    .ToArray();
 
             return Array.Empty<CommentaryWithUserDto>();
             //GetAllCommentsWithUsersByArticleIdQuery
@@ -125,18 +130,18 @@ namespace AspNetArticle.Business.Services
         }
 
         //Api Method not implemented
-        public async Task<IEnumerable<CommentDto>> GetCommentsByUserIdAndArticleId(Guid? article, Guid? user) // not implement for CQS
+        public async Task<IEnumerable<CommentDto>> GetCommentsByUserIdAndArticleId(Guid articleId, Guid userId) // not implement for CQS
         {
             var entities = _unitOfWork.Comments.Get();
 
-            if (article != null && !Guid.Empty.Equals(article))
+            if (!Guid.Empty.Equals(articleId))
             {
-                entities = entities.Where(ent => ent.ArticleId.Equals(article));
+                entities = entities.Where(ent => ent.ArticleId.Equals(articleId));
             }
 
-            if (user != null && !Guid.Empty.Equals(user))
+            if (!Guid.Empty.Equals(userId))
             {
-                entities = entities.Where(ent => ent.UserId.Equals(user));
+                entities = entities.Where(ent => ent.UserId.Equals(userId));
             }
 
             var result = (await entities.ToListAsync())

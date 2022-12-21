@@ -1,24 +1,39 @@
 ﻿using AspNetArticle.Core.Abstractions;
-using AutoMapper;
-using Microsoft.AspNetCore.Http;
+using AspNetArticle.Core.DataTransferObjects;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace AspNetArticle.Api.Controllers
 {
+    /// <summary>
+    /// Source resource controller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class SourceController : ControllerBase
     {
         private readonly ISourceService _sourceService;
-        private readonly IMapper _mapper;
-
-        public SourceController(ISourceService sourceService, IMapper mapper)
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sourceService"></param>
+        /// <param name="mapper"></param>
+        public SourceController(ISourceService sourceService)
         {
             _sourceService = sourceService;
-            _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get source by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Source</returns>
         [HttpGet("{id}")]
+        [Authorize]
+        [ProducesResponseType(typeof(SourceDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetSourceById(Guid id)
         {
             try
@@ -27,42 +42,47 @@ namespace AspNetArticle.Api.Controllers
 
                 if (source == null)
                 {
+                    Log.Warning($"Source with id {id} not found in database");
                     return NotFound();
                 }
-
+                Log.Information("Source successfully received", source);
                 return Ok(source);
             }
             catch (Exception e)
             {
-                
-                throw;
+                Log.Error(e.Message);
+                return StatusCode(500);
             }
         }
-
+        /// <summary>
+        /// Get all sources
+        /// </summary>
+        /// <returns>Sources</returns>
         [HttpGet]
+        [Authorize]
+        [ProducesResponseType(typeof(IEnumerable<SourceDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetSources()
-        {
-            var sources = await _sourceService.GetSourcesAsync();
-
-            if (sources.Any())
-            {
-                return Ok(sources);
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteSourceById(Guid id)
         {
             try
             {
-                await _sourceService.RemoveSourceById(id);
-                return Ok();
+                var sources = await _sourceService.GetSourcesAsync();
+
+                if (sources == null)
+                {
+                    Log.Warning("No sources in database");
+                    return NotFound();
+                }
+                Log.Information("Sources successfully received", sources);
+                return Ok(sources);
             }
             catch (Exception e)
             {
-                throw;
+                Log.Error(e.Message);
+                return StatusCode(500);
             }
+            
         }
     }
 }

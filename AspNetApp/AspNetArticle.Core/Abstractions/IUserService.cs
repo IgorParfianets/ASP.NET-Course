@@ -10,7 +10,7 @@ public interface IUserService
     Task<bool> IsExistUserEmailAsync(string email); // для Remote (Check Email)
     Task<bool> IsExistUsernameAsync(string newUsername); // для Remote (Check Username)
     Task<UserDto> GetUserByEmailAsync(string email);
-
+    Task<UserDto?> GetUserByRefreshTokenAsync(Guid token);
     Task<IEnumerable<UserDto>> GetAllUsersAsync(); 
 }
 

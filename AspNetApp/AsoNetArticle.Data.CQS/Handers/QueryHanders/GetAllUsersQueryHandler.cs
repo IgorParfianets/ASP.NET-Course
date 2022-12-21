@@ -20,7 +20,7 @@ namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
             return await _context.Users
                 .AsNoTracking()
                 .Include(user =>user.Role)
-                .ToArrayAsync();
+                .ToArrayAsync(cancellationToken);
         }
     }
 }

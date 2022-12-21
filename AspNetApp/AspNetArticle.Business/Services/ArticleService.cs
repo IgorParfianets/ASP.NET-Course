@@ -51,26 +51,26 @@ public class ArticleService : IArticleService
         return articleDto;
     }
 
-    public async Task<List<ArticleDto>> GetArticlesByNameAndSourcesAsync(string? name, Guid? category) // todo can remove unnecessary
-    {
-        var entities = _unitOfWork.Articles.Get();
+    //public async Task<List<ArticleDto>> GetArticlesByNameAndSourcesAsync(string? name, Guid? category) // todo can remove unnecessary
+    //{
+    //    var entities = _unitOfWork.Articles.Get();
 
-        if (!string.IsNullOrEmpty(name))
-        {
-            entities = entities.Where(ent => ent.Title.Contains(name));
-        }
+    //    if (!string.IsNullOrEmpty(name))
+    //    {
+    //        entities = entities.Where(ent => ent.Title.Contains(name));
+    //    }
 
-        if (category != null && !Guid.Empty.Equals(category))
-        {
-            entities = entities.Where(ent => ent.SourceId.Equals(category));
-        }
+    //    if (category != null && !Guid.Empty.Equals(category))
+    //    {
+    //        entities = entities.Where(ent => ent.SourceId.Equals(category));
+    //    }
 
-        var result = (await entities.ToListAsync())
-            .Select(ent => _mapper.Map<ArticleDto>(ent))
-            .ToList();
+    //    var result = (await entities.ToListAsync())
+    //        .Select(ent => _mapper.Map<ArticleDto>(ent))
+    //        .ToList();
 
-        return result;
-    }
+    //    return result;
+    //}
 
     public async Task<IEnumerable<ArticleDto>> GetFilteredArticles(string selectedCategory, Raiting selectedRaiting, string searchString)
     {
@@ -121,6 +121,9 @@ public class ArticleService : IArticleService
     public async Task<IEnumerable<string>> GetArticlesCategoryAsync()
     {
         var categories = await _mediator.Send(new GetArticleCategoriesQuery());
+
+        if(categories == null) 
+            throw new ArgumentNullException($"{nameof(categories)} reference null");
 
         return categories.ToArray();
         //var categories = await _unitOfWork.Articles
@@ -229,10 +232,10 @@ public class ArticleService : IArticleService
                 //await _unitOfWork.Commit();
             }
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Log.Error(ex, $"{nameof(GetAllArticleDataFromRssAsync)} with arguments SourceGuid {sourceId}, SourceUrl {sourceUrl}");
-            throw;
+            Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+            throw new Exception($"Method {nameof(GetAllArticleDataFromRssAsync)} is failed, stack trace {e.StackTrace}. {e.Message}");
         }
     }
 
@@ -336,10 +339,10 @@ public class ArticleService : IArticleService
                 //}
             }
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Log.Error(ex, $"{nameof(AddArticleTextToArticles)} with ArticleGuid {articleId} failed");
-            throw;
+            Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+            throw new Exception($"Method {nameof(AddArticleTextToArticles)} is failed, stack trace {e.StackTrace}. {e.Message}");
         }
     }
 }

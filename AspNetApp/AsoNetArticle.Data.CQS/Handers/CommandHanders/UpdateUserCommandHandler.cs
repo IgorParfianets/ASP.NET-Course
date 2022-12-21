@@ -1,9 +1,7 @@
 ﻿using AsoNetArticle.Data.CQS.Commands;
-using AspNetArticle.Core;
 using AspNetArticle.Database;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 
 namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
 {
@@ -29,7 +27,7 @@ namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
             dbEntityEntry.CurrentValues.SetValues(nameValuePropertiesPairs);
             dbEntityEntry.State = EntityState.Modified;
 
-            return await _context.SaveChangesAsync();
+            return await _context.SaveChangesAsync(cancellationToken);
         }
     }
 }

@@ -2,6 +2,7 @@
 
 
 /* button color #88A5BF*/
+/* Common config */
 :root {
     --textColor: #DFDFDF;
     --textLinkHover: #FFFFFF;
@@ -29,13 +30,8 @@ a:hover {
 }
 
 body {
-   /* background-image: url(../image/image2.jpg);*/
-   
-    background-color: var(--bgColorMain);
-     /*margin: 0 10rem;*/
+    background-color: #E4EBF2;
 }
-
-
 
 img {
     border-radius: 5px;
@@ -45,19 +41,15 @@ img {
     width: 100%;
 }
 
-
 input {
     color: #022255 !important;
 }
-
-
 
 p.a {
     color: black;
 }
 
-
-
+/* For Registration page */
 input[type="email"]:focus,
 input[type="password"]:focus,
 input[type="text"]:focus {
@@ -122,10 +114,9 @@ input[type="text"]:focus {
 
 .avatar {
     width: 150px;
-    height: 150px; /* Ширина и высота */
-    border-radius: 50%; /* Превращаем в круг */
-    background-size: auto 150px; /* Высота фотографии равна высоте элемента */
-   /* box-shadow: 0 0 0 .4 10px 10px;*/
+    height: 150px; 
+    border-radius: 50%; 
+    background-size: auto 150px; 
 }
 
 .comment-avatar {

@@ -18,7 +18,7 @@ namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
             if (request.FavouriteArticle != null)
             {
                 _context.Remove(request.FavouriteArticle);
-                await _context.SaveChangesAsync();
+                await _context.SaveChangesAsync(cancellationToken);
             }
             return Unit.Value;
         }

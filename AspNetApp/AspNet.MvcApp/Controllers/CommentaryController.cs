@@ -1,6 +1,5 @@
 ﻿using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Core.DataTransferObjects;
-using AspNetArticle.Database.Entities;
 using AspNetArticle.MvcApp.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authorization;
@@ -56,10 +55,10 @@ namespace AspNetArticle.MvcApp.Controllers
                 //return RedirectToAction("Details", "Article", articleId);
                 //return BadRequest(); // если не валид то куда
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error(ex, $"{nameof(Create)} with model {model} method failed");
-                return BadRequest();
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+                throw new Exception($"Method {nameof(Create)} is failed, stack trace {e.StackTrace}. {e.Message}");
             }
         }
 
@@ -75,10 +74,10 @@ namespace AspNetArticle.MvcApp.Controllers
 
                 return BadRequest();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error(ex, $"{nameof(Update)} with Guid {id} method failed");
-                return BadRequest();
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+                throw new Exception($"Method {nameof(Update)} is failed, stack trace {e.StackTrace}. {e.Message}");
             }
         }
 
@@ -113,10 +112,10 @@ namespace AspNetArticle.MvcApp.Controllers
                 return Redirect($"~/Article/Details/{model.ArticleId}");
                 //return RedirectToAction("Details", "Article", model);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error(ex, $"{nameof(Update)} with model {model} method failed");
-                return BadRequest();
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+                throw new Exception($"Method {nameof(Update)} is failed, stack trace {e.StackTrace}. {e.Message}");
             }
         }
 
@@ -137,10 +136,10 @@ namespace AspNetArticle.MvcApp.Controllers
 
                 return Redirect($"~/Article/Details/{articleId}"); 
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error(ex, $"{nameof(Delete)} with Guid {id} method failed");
-                return BadRequest();
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+                throw new Exception($"Method {nameof(Delete)} is failed, stack trace {e.StackTrace}. {e.Message}");
             }
         }
     }

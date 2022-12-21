@@ -17,7 +17,9 @@ namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
 
         public async Task<Comment?> Handle(GetCommentByIdQuery request, CancellationToken cancellationToken)
         {
-            return await _context.Comments.FirstOrDefaultAsync(com => com.Id.Equals(request.Id), cancellationToken);
+            return await _context.Comments
+                .AsNoTracking()
+                .FirstOrDefaultAsync(com => com.Id.Equals(request.Id), cancellationToken);
         }
     }
 }

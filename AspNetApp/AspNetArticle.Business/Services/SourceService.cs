@@ -17,7 +17,7 @@ namespace AspNetArticle.Business.Services
             _mapper = mapper;
         }
 
-        public async Task<List<SourceDto>> GetSourcesAsync()
+        public async Task<IEnumerable<SourceDto>> GetSourcesAsync()
         {
             return await _unitOfWork.Sources.Get()
                 .Select(source => _mapper.Map<SourceDto>(source))
@@ -34,9 +34,10 @@ namespace AspNetArticle.Business.Services
             var source = await _unitOfWork.Sources.GetByIdAsync(id);
 
             if(source != null)
+            {
                 _unitOfWork.Sources.Remove(source);
-
-            await _unitOfWork.Commit();
+                await _unitOfWork.Commit();
+            }
         }
     }
 }

@@ -71,5 +71,25 @@ public class UserProfile : Profile
             .ForMember(user => user.Password,
                 opt =>
                     opt.MapFrom(dto => dto.Password));
+
+        CreateMap<UpdateUserRequestModel, UserDto>();
+        //    .ForMember(user => user.Id,
+        //        opt =>
+        //            opt.MapFrom(dto => dto.Id))
+        //    .ForMember(user => user.Email,
+        //        opt =>
+        //            opt.MapFrom(dto => dto.Email))
+        //    .ForMember(user => user.Password,
+        //        opt =>
+        //            opt.MapFrom(dto => dto.OldPassword))
+        //    .ForMember(user => user.Spam,
+        //        opt =>
+        //            opt.MapFrom(dto => dto.Spam))
+        //    .ForMember(user => user.Email,
+        //        opt =>
+        //            opt.MapFrom(dto => dto.Email))
+        //    .ForMember(user => user.Password,
+        //        opt =>
+        //            opt.MapFrom(dto => dto.OldPassword));
     }
 }

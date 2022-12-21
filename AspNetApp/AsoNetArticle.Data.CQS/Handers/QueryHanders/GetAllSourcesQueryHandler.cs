@@ -3,11 +3,6 @@ using AspNetArticle.Database;
 using AspNetArticle.Database.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
 {
@@ -24,7 +19,7 @@ namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
         {
             return await _context.Sources
                 .AsNoTracking()
-                .ToArrayAsync();
+                .ToArrayAsync(cancellationToken);
         }
     }
 }

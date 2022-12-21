@@ -49,10 +49,10 @@ namespace AspNetArticle.Business.Services
 
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error(ex, $"{nameof(AddRateToArticlesAsync)} method failed");
-                throw;
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+                throw new Exception($"Method {nameof(AddRateToArticlesAsync)} is failed, stack trace {e.StackTrace}. {e.Message}");
             }
         }
 
@@ -63,21 +63,16 @@ namespace AspNetArticle.Business.Services
 
             if (string.IsNullOrEmpty(text))
             {
-                throw new ArgumentException($"Text with id: {articleId} doesn't exists",
+                throw new ArgumentNullException($"Text with id: {articleId} doesn't exists",
                     nameof(articleId));
             }
-
-            //var htmlDoc = new HtmlDocument();
-            //htmlDoc.LoadHtml(text);
-
-            ////var textWithoutHtml = htmlDoc.DocumentNode
-            ////    .SelectNodes("p")
-            ////    .Select(t => t.InnerText)
-            ////    .Aggregate((i, j) => i + " " + j);
 
             var textWithoutHtml = Regex.Replace(text, @"<[^>]+>|&nbsp;|\n;", " ")
                 .Trim()
                 .ToLower();
+
+            if (string.IsNullOrEmpty(textWithoutHtml))
+                throw new ArgumentNullException($"String {textWithoutHtml} invalid");
             
             return textWithoutHtml;
         }
@@ -143,10 +138,10 @@ namespace AspNetArticle.Business.Services
                     }
                 }
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error(ex, $"{nameof(RateArticleAsync)} with arguments Guid {articleId}, string {articleFixedText} method failed");
-                throw;
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+                throw new Exception($"Method {nameof(RateArticleAsync)} is failed, stack trace {e.StackTrace}. {e.Message}");
             }
         }
     }

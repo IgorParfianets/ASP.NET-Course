@@ -17,6 +17,7 @@ namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
         {
             return await _context.Articles
                 .AsNoTracking()
+                .Where(art => art.PublicationDate.AddDays(7) >= DateTime.UtcNow)
                 .Select(art => art.Category)
                 .Distinct()
                 .ToListAsync(cancellationToken);

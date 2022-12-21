@@ -1,13 +1,19 @@
 ﻿using AspNetArticle.Api.Models.Request;
+using AspNetArticle.Api.Models.Response;
 using AspNetArticle.Business.Services;
 using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Core.DataTransferObjects;
+using AspNetArticle.Database.Entities;
 using AutoMapper;
-using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Serilog;
 
 namespace AspNetArticle.Api.Controllers
 {
+    /// <summary>
+    /// Comments resource controller
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class CommentaryController : ControllerBase
@@ -15,13 +21,26 @@ namespace AspNetArticle.Api.Controllers
         private readonly ICommentaryService _commentaryService;
         private readonly IMapper _mapper;
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="commentaryService"></param>
+        /// <param name="mapper"></param>
         public CommentaryController(ICommentaryService commentaryService, IMapper mapper)
         {
             _commentaryService = commentaryService;
             _mapper = mapper;
         }
 
+        /// <summary>
+        /// Get comment by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Comment</returns>
         [HttpGet("{id}")]
+        [ProducesResponseType(typeof(CommentDto), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> GetCommentById(Guid id)
         {
             try
@@ -29,68 +48,145 @@ namespace AspNetArticle.Api.Controllers
                 var comment = await _commentaryService.GetCommentByIdAsync(id);
 
                 if (comment == null)
+                {
+                    Log.Warning($"Comment with id {id} not found");
                     return NotFound();
-
+                }
+                Log.Information("Comment successfully received", comment);
                 return Ok(comment);
             }
             catch (Exception e)
             {
-                
-                throw;
+                Log.Error(e.Message);
+                return StatusCode(500);
+            }
+        }
+        /// <summary>
+        /// Get all by user id and article id comments
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns>All comments</returns>
+        [HttpGet]
+        [ProducesResponseType(typeof(IEnumerable<CommentDto>), StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> GetAllComments([FromQuery] GetCommentsRequestModel? model) 
+        {
+            try
+            {
+                if (model == null)
+                {
+                    Log.Warning($"Model is null");
+                    return BadRequest();
+                }
+                var comments = await _commentaryService.GetCommentsByUserIdAndArticleId(model.ArticleId, model.UserId);
+
+                if (comments == null)
+                {
+                    Log.Warning($"Comments are not found in database");
+                    return NotFound();
+                }
+                Log.Information("Comments successfully received", comments);
+                return Ok(comments);
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+                return StatusCode(500);
             }
         }
 
-        [HttpGet]
-        public async Task<IActionResult> GetComments([FromQuery] GetCommentsRequestModel? model) // work like filter by user/article
-        {
-            var articles = await _commentaryService.GetCommentsByUserIdAndArticleId(model?.ArticleId, model?.UserId);
-
-            return Ok(articles);
-        }
-
+        /// <summary>
+        /// Create comment
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
         [HttpPost]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status201Created)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> CreateComment([FromBody] AddCommentRequestModel model)
         {
-            var dto = _mapper.Map<CommentDto>(model);
-            
-            if (dto == null)
-                return BadRequest();
+            try
+            {
+                var dto = _mapper.Map<CommentDto>(model);
+                if (dto == null)
+                {
+                    Log.Warning($"Model is not valid", model);
+                    return BadRequest();
+                }
 
-            var result = await _commentaryService.CreateCommentAsync(dto);
-            if (result > 0)
+                await _commentaryService.CreateCommentAsync(dto);
+
+                Log.Information("Comment successfully created");
                 return Ok();
-
-            return BadRequest(); // todo need to clarify which StatusCode
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+                return StatusCode(500);
+            }
         }
 
-        //[HttpPut("{id}")]
-        //public async Task<IActionResult> UpdateComment([FromBody] Guid commentId, AddCommentRequestModel model)
-        //{
-        //    var dto = _mapper.Map<CommentDto>(model);
+        /// <summary>
+        /// Update comment
+        /// </summary>
+        /// <param name="model"></param>
+        /// <returns></returns>
+        [HttpPut]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> UpdateComment([FromBody] UpdateCommentRequestModel model)
+        {
+            try
+            {
+                var dto = _mapper.Map<CommentDto>(model);
 
-        //    if (dto == null)
-        //        return BadRequest();
+                if (dto == null)
+                {
+                    Log.Warning($"Model is not valid", model);
+                    return BadRequest();
+                }
+                await _commentaryService.UpdateCommentAsync(dto);
 
-        //    var result = await _commentaryService.CreateCommentAsync(dto);
-        //    if (result > 0)
-        //        return Ok();
+                Log.Information("Comment successfully created");
+                return Ok(); 
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+                return StatusCode(500);
+            }
+            
+        }
 
-        //    return BadRequest(); // todo need to clarify which StatusCode
-        //}
+        /// <summary>
+        /// Deleted comment by id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns></returns>
+        [HttpDelete("{id}")]
+        [Authorize]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
+        public async Task<IActionResult> DeleteComment(Guid id)
+        {
+            try
+            {
+                await _commentaryService.DeleteCommentById(id);
 
-        //[HttpDelete("{id}")]
-        //public async Task<IActionResult> DeleteComment(Guid commentId)
-        //{
-        //    //var dto = _mapper.Map<CommentDto>(model);
-
-        //    //if (dto == null)
-        //    //    return BadRequest();
-
-        //    //var result = await _commentaryService.CreateCommentAsync(dto);
-        //    //if (result > 0)
-        //    //    return Ok();
-
-        //    return BadRequest(); // todo need to clarify which StatusCode
-        //}
+                Log.Information("Comment successfully deleted");
+                return NoContent();
+            }
+            catch (Exception e)
+            {
+                Log.Error(e.Message);
+                return StatusCode(500);
+            }
+        }
     }
 }

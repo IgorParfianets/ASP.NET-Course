@@ -1,9 +1,6 @@
 ﻿using AspNetArticle.Core.Abstractions;
-using AspNetArticle.Core.DataTransferObjects;
-using AspNetArticle.Database.Entities;
 using AspNetArticle.MvcApp.Models;
 using AutoMapper;
-using Hangfire;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Serilog;
@@ -17,20 +14,23 @@ namespace AspNetArticle.MvcApp.Controllers
         private readonly IArticleService _articleService;
         private readonly ICommentaryService _commentaryService;
         private readonly IArticleRateService _articleRateService;
+        private readonly ISendMessageService _sendMessageService;
         private readonly IMapper _mapper;
+
         public AdminController(IUserService userService,
             IArticleService articleService,
             ICommentaryService commentaryService,
             IArticleRateService articleRateService,
-            IMapper mapper)
+            IMapper mapper,
+            ISendMessageService sendMessageService)
         {
             _userService = userService;
             _articleService = articleService;
             _commentaryService = commentaryService;
             _articleRateService = articleRateService;
             _mapper = mapper;
+            _sendMessageService = sendMessageService;
         }
-
 
         [HttpGet]
         public async Task<IActionResult> Users()
@@ -59,10 +59,10 @@ namespace AspNetArticle.MvcApp.Controllers
 
                 return View();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error(ex, $"{nameof(Users)} method failed");
-                return BadRequest();
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+                throw new Exception($"Method {nameof(Users)} is failed, stack trace {e.StackTrace}. {e.Message}");
             }
         }
 
@@ -86,10 +86,10 @@ namespace AspNetArticle.MvcApp.Controllers
 
                 return View(model);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error(ex, $"{nameof(UserDetails)} with Guid {id} method failed");
-                return BadRequest();
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+                throw new Exception($"Method {nameof(UserDetails)} is failed, stack trace {e.StackTrace}. {e.Message}");
             }
         }
 
@@ -105,10 +105,10 @@ namespace AspNetArticle.MvcApp.Controllers
 
                 return View();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error(ex, $"{nameof(Articles)} method failed");
-                return BadRequest();
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+                throw new Exception($"Method {nameof(Articles)} is failed, stack trace {e.StackTrace}. {e.Message}");
             }
         }
 
@@ -124,19 +124,11 @@ namespace AspNetArticle.MvcApp.Controllers
 
                 return View();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error(ex, $"{nameof(Comments)} method failed");
-                return BadRequest();
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+                throw new Exception($"Method {nameof(Comments)} is failed, stack trace {e.StackTrace}. {e.Message}");
             }
         }
-
-        //[HttpGet]
-        //public async Task<IActionResult> RemoveArticleToArchives(Guid articleId)
-        //{
-        //    await _articleService.RemoveArticleToArchiveByIdAsync(articleId);
-
-        //}
-
     }
 }

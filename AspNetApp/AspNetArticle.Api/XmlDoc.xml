@@ -4,12 +4,132 @@
         <name>AspNetArticle.Api</name>
     </assembly>
     <members>
-        <member name="M:AspNetArticle.Api.Controllers.ArticleResourceInitializer.AddOnlinerSourceArticles">
+        <member name="M:AspNetArticle.Api.Controllers.ArticleResourceInitializerController.AddSourceArticles">
             <summary>
             Initialize Onliner and DevIo source articles
             </summary>
             <returns></returns>
             <exception cref="T:System.Exception"></exception>
+        </member>
+        <member name="T:AspNetArticle.Api.Controllers.ArticlesController">
+            <summary>
+            Article resource controller
+            </summary>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.ArticlesController.#ctor(AspNetArticle.Core.Abstractions.IArticleService)">
+            <summary>
+            
+            </summary>
+            <param name="articleService"></param>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.ArticlesController.GetArticles">
+            <summary>
+             Get all articles
+            </summary>
+            <returns></returns>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.ArticlesController.GetArticleById(System.Guid)">
+            <summary>
+             Get article by id
+            </summary>
+            <param name="id"></param>
+            <returns>Article</returns>
+        </member>
+        <member name="T:AspNetArticle.Api.Controllers.CommentaryController">
+            <summary>
+            Comments resource controller
+            </summary>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.CommentaryController.#ctor(AspNetArticle.Core.Abstractions.ICommentaryService,AutoMapper.IMapper)">
+            <summary>
+            
+            </summary>
+            <param name="commentaryService"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.CommentaryController.GetCommentById(System.Guid)">
+            <summary>
+            Get comment by id
+            </summary>
+            <param name="id"></param>
+            <returns>Comment</returns>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.CommentaryController.GetAllComments(AspNetArticle.Api.Models.Request.GetCommentsRequestModel)">
+            <summary>
+            Get all by user id and article id comments
+            </summary>
+            <param name="model"></param>
+            <returns>All comments</returns>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.CommentaryController.CreateComment(AspNetArticle.Api.Models.Request.AddCommentRequestModel)">
+            <summary>
+            Create comment
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.CommentaryController.UpdateComment(AspNetArticle.Api.Models.Request.UpdateCommentRequestModel)">
+            <summary>
+            Update comment
+            </summary>
+            <param name="model"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.CommentaryController.DeleteComment(System.Guid)">
+            <summary>
+            Deleted comment by id
+            </summary>
+            <param name="id"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AspNetArticle.Api.Controllers.FavouriteArticleController">
+            <summary>
+            Favourite article resource controller
+            </summary>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.FavouriteArticleController.#ctor(AspNetArticle.Core.Abstractions.IFavouriteArticleService,AutoMapper.IMapper)">
+            <summary>
+            
+            </summary>
+            <param name="favouriteArticleService"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="T:AspNetArticle.Api.Controllers.SourceController">
+            <summary>
+            Source resource controller
+            </summary>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.SourceController.#ctor(AspNetArticle.Core.Abstractions.ISourceService)">
+            <summary>
+            
+            </summary>
+            <param name="sourceService"></param>
+            <param name="mapper"></param>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.SourceController.GetSourceById(System.Guid)">
+            <summary>
+            Get source by id
+            </summary>
+            <param name="id"></param>
+            <returns>Source</returns>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.SourceController.GetSources">
+            <summary>
+            Get all sources
+            </summary>
+            <returns>Sources</returns>
+        </member>
+        <member name="T:AspNetArticle.Api.Controllers.TokenController">
+            <summary>
+            Token resource controller
+            </summary>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.TokenController.#ctor(AspNetArticle.Core.Abstractions.IUserService,AspNetArticle.Api.Utils.IJwtUtil)">
+            <summary>
+            
+            </summary>
+            <param name="userService"></param>
+            <param name="jwtUtil"></param>
         </member>
         <member name="M:AspNetArticle.Api.Controllers.TokenController.CreateJwtToken(AspNetArticle.Api.Models.Request.AuthenticateRequestModel)">
             <summary>
@@ -18,19 +138,139 @@
             <param name="model"></param>
             <returns></returns>
         </member>
-        <member name="M:AspNetArticle.Api.Controllers.UserController.Get">
+        <member name="M:AspNetArticle.Api.Controllers.TokenController.RefreshToken(AspNetSample.WebAPI.Models.Requests.RefreshTokenRequestModel)">
+            <summary>
+            Refresh token
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.TokenController.RevokeToken(AspNetSample.WebAPI.Models.Requests.RefreshTokenRequestModel)">
+            <summary>
+            Revoke token
+            </summary>
+            <param name="request"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AspNetArticle.Api.Controllers.UserController">
+            <summary>
+            User resource controller
+            </summary>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.UserController.#ctor(AspNetArticle.Core.Abstractions.IUserService,AspNetArticle.Core.Abstractions.IRoleService,AutoMapper.IMapper,AspNetArticle.Api.Utils.IJwtUtil,Microsoft.Extensions.Configuration.IConfiguration)">
+            <summary>
+            
+            </summary>
+            <param name="userService"></param>
+            <param name="roleService"></param>
+            <param name="mapper"></param>
+            <param name="jwtUtil"></param>
+            <param name="configuration"></param>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.UserController.GetAllUsers">
             <summary>
             Returns all users.
-            Works only for authorized users
+            Works only for Admin
             </summary>
-            <returns>List of users</returns>
+            <returns>Enumerable of users</returns>
         </member>
-        <member name="M:AspNetArticle.Api.Controllers.UserController.Create(AspNetArticle.Api.Models.Request.RegisterUserRequestModel)">
+        <member name="M:AspNetArticle.Api.Controllers.UserController.GetUserById(System.Guid)">
             <summary>
-            Register user
+            Return user by id.
+            Works only for Admin
+            </summary>
+            <param name="id">User's id</param>
+            <returns>User</returns>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.UserController.CreateUser(AspNetArticle.Api.Models.Request.RegisterUserRequestModel)">
+            <summary>
+            Register user.
+            </summary>
+            <param name="model">Registration model</param>
+            <returns>Token</returns>
+        </member>
+        <member name="M:AspNetArticle.Api.Controllers.UserController.UpdateUser(AspNetArticle.Api.Models.Request.UpdateUserRequestModel)">
+            <summary>
+            Update user's data
             </summary>
             <param name="model"></param>
             <returns></returns>
+        </member>
+        <member name="T:AspNetArticle.Api.Models.Request.AddCommentRequestModel">
+            <summary>
+            Request model for creating comment
+            </summary>
+        </member>
+        <member name="T:AspNetArticle.Api.Models.Request.AddFavouriteArticleRequestModel">
+            <summary>
+            Request model for adding favourite article
+            </summary>
+        </member>
+        <member name="T:AspNetArticle.Api.Models.Request.AuthenticateRequestModel">
+            <summary>
+            Request model for logging (authenticate) user
+            </summary>
+        </member>
+        <member name="T:AspNetArticle.Api.Models.Request.GetArticlesRequestModel">
+            <summary>
+            Request model for getting all articles from database
+            </summary>
+        </member>
+        <member name="T:AspNetArticle.Api.Models.Request.GetCommentsRequestModel">
+            <summary>
+            Request model for getting all comments for particular article page
+            </summary>
+        </member>
+        <member name="T:AspNetArticle.Api.Models.Request.RegisterUserRequestModel">
+            <summary>
+            Request model for registration user
+            </summary>
+        </member>
+        <member name="T:AspNetArticle.Api.Models.Request.UpdateCommentRequestModel">
+            <summary>
+            Request model for updating comment
+            </summary>
+        </member>
+        <member name="T:AspNetArticle.Api.Models.Request.UpdateUserRequestModel">
+            <summary>
+            Request model for updating user
+            </summary>
+        </member>
+        <member name="T:AspNetArticle.Api.Models.Response.TokenResponse">
+            <summary>
+            Responce model for token
+            </summary>
+        </member>
+        <member name="T:AspNetArticle.Api.Utils.JwtUtil">
+            <summary>
+            Jwt util for generate and refresh tokens
+            </summary>
+        </member>
+        <member name="M:AspNetArticle.Api.Utils.JwtUtil.#ctor(Microsoft.Extensions.Configuration.IConfiguration,MediatR.IMediator)">
+            <summary>
+            
+            </summary>
+            <param name="configuration"></param>
+            <param name="mediator"></param>
+        </member>
+        <member name="M:AspNetArticle.Api.Utils.JwtUtil.GenerateTokenAsync(AspNetArticle.Core.DataTransferObjects.UserDto)">
+            <summary>
+            Generate token for user
+            </summary>
+            <param name="dto"></param>
+            <returns></returns>
+        </member>
+        <member name="M:AspNetArticle.Api.Utils.JwtUtil.RemoveRefreshTokenAsync(System.Guid)">
+            <summary>
+            Remove user's token
+            </summary>
+            <param name="requestRefreshToken"></param>
+            <returns></returns>
+        </member>
+        <member name="T:AspNetSample.WebAPI.Models.Requests.RefreshTokenRequestModel">
+            <summary>
+            Request model for refresh token
+            </summary>
         </member>
     </members>
 </doc>

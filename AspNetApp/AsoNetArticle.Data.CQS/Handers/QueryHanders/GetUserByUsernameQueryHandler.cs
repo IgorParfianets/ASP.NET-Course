@@ -19,7 +19,7 @@ namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
         {
             return await _context.Users
                 .AsNoTracking()
-                .FirstOrDefaultAsync(user => request.Username.Equals(user.UserName));
+                .FirstOrDefaultAsync(user => request.Username.Equals(user.UserName), cancellationToken);
         }
     }
 }

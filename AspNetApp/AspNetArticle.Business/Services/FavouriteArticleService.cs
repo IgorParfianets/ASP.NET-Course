@@ -29,7 +29,7 @@ namespace AspNetArticle.Business.Services
             var entity = _mapper.Map<FavouriteArticle>(favouriteArticleDto);
 
             if (entity == null)
-                throw new NullReferenceException();
+                throw new NullReferenceException($"{nameof(entity)} is null");
 
             await _mediator.Send(new AddFavouriteArticleCommand() { FavouriteArticle = entity });
             //await _unitOfWork.FavouriteArticle.AddAsync(entity);
@@ -45,7 +45,7 @@ namespace AspNetArticle.Business.Services
             });
 
             if (entity == null)
-                throw new NullReferenceException();
+                throw new NullReferenceException($"{nameof(entity)} is null");
 
             await _mediator.Send(new DeleteFavouriteArticleCommand() { FavouriteArticle = entity });
             //var entity = _mapper.Map<FavouriteArticle>(await _unitOfWork.FavouriteArticle.Get()
@@ -74,17 +74,17 @@ namespace AspNetArticle.Business.Services
             //    && articleId.Equals(fav.ArticleId));
         }
 
-        public async Task<List<ArticleDto>> GetAllFavouriteArticles(Guid userId)
+        public async Task<IEnumerable<ArticleDto>> GetAllFavouriteArticles(Guid userId)
         {
             var favouriteArticles = await _mediator.Send(new GetAllFavouriteArticlesIdByUserIdQuery() { UserId = userId });
 
             var articles = await _mediator.Send(new GetAllArticlesQuery());
 
             if (favouriteArticles == null)
-                throw new NullReferenceException();
+                throw new NullReferenceException($"{nameof(favouriteArticles)} is null");
 
             if (articles == null)
-                throw new NullReferenceException();
+                throw new NullReferenceException($"{nameof(articles)} is null");
 
 
             var listArticles = new List<ArticleDto>();

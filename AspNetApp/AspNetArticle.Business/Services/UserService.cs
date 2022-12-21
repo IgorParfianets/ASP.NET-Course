@@ -7,7 +7,6 @@ using AspNetArticle.Data.Abstractions;
 using AspNetArticle.Database.Entities;
 using AutoMapper;
 using MediatR;
-using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 
 namespace AspNetArticle.Business.Services;
@@ -33,6 +32,9 @@ public class UserService : IUserService
     public async Task<int> RegisterUserAsync(UserDto userDto, string password) 
     {
         var entity = _mapper.Map<User>(userDto);
+
+        if (entity == null)
+            throw new NullReferenceException($"{nameof(entity)} is null");
         entity.PasswordHash = CreateMd5(password);
 
         ////await _unitOfWork.Users.AddAsync(entity);
@@ -46,7 +48,12 @@ public class UserService : IUserService
     {
         //var entity = await _unitOfWork.Users.GetByIdAsync(id);
         var entity = await _mediator.Send(new GetUserByIdQuery() { UserId = id });
+        if (entity == null)
+            throw new NullReferenceException($"{nameof(entity)} is null");
+
         var user = _mapper.Map<UserDto>(entity);
+        if (user == null)
+            throw new NullReferenceException($"{nameof(user)} is null");
 
         return user;
     }
@@ -55,6 +62,8 @@ public class UserService : IUserService
     {
         //var entity = await _unitOfWork.Users.GetByIdAsync(id);
         var entity = await _mediator.Send(new GetUserByIdQuery() { UserId = id });
+        if (entity == null)
+            throw new NullReferenceException($"{nameof(entity)} is null");
 
         var patchList = new List<PatchModel>();
 
@@ -107,18 +116,18 @@ public class UserService : IUserService
     public async Task<bool> CheckUserByEmailAndPasswordAsync(string email, string password)
     {
         var user = await _mediator.Send(new GetUserByEmailQuery() { Email = email });
+
         //var user = await _unitOfWork.Users
         //     .Get()
         //     .FirstOrDefaultAsync(user =>
         //     user.Email.Equals(email));
 
-        if (user != null && user.PasswordHash.Equals(CreateMd5(password)))
+        if (user != null && user.PasswordHash.Equals(CreateMd5(password))) 
         {
             user.LastVisit = DateTime.Now;
-            await _unitOfWork.Commit();
+            await _unitOfWork.Commit(); //что то сделать _unitOfWork
             return true;
         }
-
         return false;
     }
 
@@ -148,10 +157,10 @@ public class UserService : IUserService
     {
         var user = await _mediator.Send(new GetUserByEmailQuery() { Email = email });
 
-        if (user is null)
-            throw new NullReferenceException();
+        if (user == null)
+            throw new NullReferenceException($"{nameof(user)} is null");
 
-        
+
         //var user = await _unitOfWork.Users
         //    .FindBy(us => us.Email.Equals(email),
         //        us => us.Role)
@@ -165,8 +174,8 @@ public class UserService : IUserService
     {
         var users = await _mediator.Send(new GetAllUsersQuery());
 
-        if (users is null)
-            throw new NullReferenceException();
+        if (users == null)
+            throw new NullReferenceException($"{nameof(users)} is null");
 
         //var users = await _unitOfWork.Users
         //    .Get()
@@ -175,6 +184,16 @@ public class UserService : IUserService
         //    .ToListAsync();
 
         return users.Select(user => _mapper.Map<UserDto>(user));
+    }
+
+    public async Task<UserDto?> GetUserByRefreshTokenAsync(Guid token)
+    {
+        var user = await _mediator.Send(new GetUserByRefreshTokenQuery() { RefreshToken = token });
+
+        if (user == null)
+            throw new NullReferenceException($"{nameof(user)} is null");
+
+        return _mapper.Map<UserDto>(user);
     }
 
     private string CreateMd5(string password)

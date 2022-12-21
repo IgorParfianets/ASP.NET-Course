@@ -13,6 +13,6 @@ namespace AspNetArticle.Core.Abstractions
         Task DeleteCommentById(Guid id);
 
         //specific methods
-        Task<IEnumerable<CommentDto>> GetCommentsByUserIdAndArticleId(Guid? article, Guid? user);
+        Task<IEnumerable<CommentDto>> GetCommentsByUserIdAndArticleId(Guid article, Guid user);
     }
 }

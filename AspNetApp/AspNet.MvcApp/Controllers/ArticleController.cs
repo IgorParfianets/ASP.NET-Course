@@ -1,12 +1,9 @@
 ﻿using AspNetArticle.Core;
 using AspNetArticle.Core.Abstractions;
-using AspNetArticle.Database.Entities;
 using AspNetArticle.MvcApp.Models;
 using AutoMapper;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
 using Serilog;
 
 namespace AspNetArticle.MvcApp.Controllers
@@ -36,8 +33,9 @@ namespace AspNetArticle.MvcApp.Controllers
 
                 var searchingArticles =
                     (await _articleService.GetFilteredArticles(selectedCategory, selectedRaiting, searchString))
+                    .Where(art => art.PublicationDate.AddDays(7) >= DateTime.UtcNow)
                     .Select(dto => _mapper.Map<ArticleModel>(dto))
-                    .ToList();
+                    .ToArray();
 
                 var existCategories = (await _articleService.GetArticlesCategoryAsync())
                     .ToList();
@@ -80,10 +78,10 @@ namespace AspNetArticle.MvcApp.Controllers
                 }
                 return View(model);
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error(ex, $"{nameof(Index)} with arguments {selectedCategory}, {searchString} method failed");
-                return BadRequest();
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+                throw new Exception($"Method {nameof(Index)} is failed, stack trace {e.StackTrace}. {e.Message}");
             }
         }
 
@@ -125,10 +123,10 @@ namespace AspNetArticle.MvcApp.Controllers
                 }
                 return View();
             }
-            catch (Exception ex)
+            catch (Exception e)
             {
-                Log.Error(ex, $"{nameof(Details)} with arguments {model} and Guid {id} method failed");
-                return BadRequest();
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+                throw new Exception($"Method {nameof(Details)} is failed, stack trace {e.StackTrace}. {e.Message}");
             }
         }
     }

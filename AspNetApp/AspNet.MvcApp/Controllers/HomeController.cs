@@ -4,6 +4,7 @@ using System.Diagnostics;
 using AspNetArticle.Core.Abstractions;
 using AspNetArticle.MvcApp.Models;
 using AutoMapper;
+using Serilog;
 
 namespace AspNet.MvcApp.Controllers
 {
@@ -23,13 +24,21 @@ namespace AspNet.MvcApp.Controllers
 
         public async Task<IActionResult> Index()
         {
-            var articles = (await _articleService.GetAllArticlesAsync())
-                .OrderByDescending(art => art.Rate)
-                .Take(3)
-                .Select(art => _mapper.Map<ArticleModel>(art))
-                .ToArray();
-            
-            return View(articles);
+            try
+            {
+                var articles = (await _articleService.GetAllArticlesAsync())
+               .OrderByDescending(art => art.Rate)
+               .Take(3)
+               .Select(art => _mapper.Map<ArticleModel>(art))
+               .ToArray();
+
+                return View(articles);
+            }
+            catch (Exception e)
+            {
+                Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+                throw new Exception($"Method {nameof(Index)} is failed, stack trace {e.StackTrace}. {e.Message}");
+            }
         }
 
         public IActionResult Privacy()
@@ -41,6 +50,11 @@ namespace AspNet.MvcApp.Controllers
         public IActionResult Error()
         {
             return View(new ErrorViewModel { RequestId = Activity.Current?.Id ?? HttpContext.TraceIdentifier });
+        }
+
+        public IActionResult AboutProject()
+        {
+            return View();
         }
     }
 }

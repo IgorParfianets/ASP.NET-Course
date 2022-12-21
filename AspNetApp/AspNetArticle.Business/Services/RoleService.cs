@@ -1,6 +1,7 @@
 ﻿using AsoNetArticle.Data.CQS.Queries;
 using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Data.Abstractions;
+using AspNetArticle.Database.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -39,7 +40,9 @@ namespace AspNetArticle.Business.Services
             //        role.Name.Equals(name))
             //    .FirstOrDefaultAsync();
 
-            return roleId;
+            return roleId != null
+                ? roleId
+                : Guid.Empty;
         }
     }
 }

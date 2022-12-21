@@ -20,7 +20,7 @@ namespace AsoNetArticle.Data.CQS.Handers.QueryHanders
                 .AsNoTracking()
                 .Include(com => com.User)
                 .Include(com => com.Article)
-                .ToArrayAsync();
+                .ToArrayAsync(cancellationToken);
         }
     }
 }

@@ -1,4 +1,6 @@
-﻿namespace AspNetArticle.Database.Entities;
+﻿using AspBetSample.DataBase.Entities;
+
+namespace AspNetArticle.Database.Entities;
 
 public class User : IBaseEntity
 {
@@ -15,5 +17,6 @@ public class User : IBaseEntity
     public DateTime AccountCreated { get; set; }
     public DateTime LastVisit { get;set; }
 
-    public List<Comment> Comments { get; set; } 
+    public List<Comment> Comments { get; set; }
+    public List<RefreshToken> RefreshTokens { get; set; }
 }

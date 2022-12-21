@@ -1,6 +1,5 @@
 ﻿using AsoNetArticle.Data.CQS.Commands;
 using AspNetArticle.Database;
-using AspNetArticle.Database.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
 using System.Text.RegularExpressions;
@@ -22,12 +21,12 @@ namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
             if(article != null)
             {
                 if (!string.IsNullOrEmpty(request.Text))
-                    request.Text = Regex.Replace(request.Text, @"<a([^>]+)>(.+?)<\/a>", " ");
+                    article.Text = Regex.Replace(request.Text, @"<a([^>]+)>(.+?)<\/a>", " ");
 
                 if (!string.IsNullOrEmpty(request.ImageUrl))
                     article.ImageUrl = request.ImageUrl;
 
-               await _context.SaveChangesAsync();
+               await _context.SaveChangesAsync(cancellationToken);
             } 
             return Unit.Value;
         }

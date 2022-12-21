@@ -1,4 +1,5 @@
-﻿using AspNetArticle.Database.Entities;
+﻿using AspBetSample.DataBase.Entities;
+using AspNetArticle.Database.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace AspNetArticle.Database;
@@ -11,6 +12,7 @@ public class AggregatorContext : DbContext
     public DbSet<Comment> Comments { get; set; }
     public DbSet<Role> Roles { get; set; }
     public DbSet<FavouriteArticle> FavouriteArticles { get; set; }
+    public DbSet<RefreshToken> RefreshTokens { get; set; }
 
     public AggregatorContext(DbContextOptions<AggregatorContext> options) : base(options)
     {

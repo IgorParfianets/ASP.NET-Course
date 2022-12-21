@@ -3,7 +3,6 @@ using AspNetArticle.Database;
 using AspNetArticle.Database.Entities;
 using MediatR;
 using Microsoft.EntityFrameworkCore;
-using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace AsoNetArticle.Data.CQS.Handers.CommandHanders
 {

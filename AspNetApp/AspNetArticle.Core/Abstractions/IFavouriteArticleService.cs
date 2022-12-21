@@ -9,6 +9,6 @@ namespace AspNetArticle.Core.Abstractions
 
         Task<bool> CheckFavouriteArticle(Guid userId, Guid articleId);
 
-        Task<List<ArticleDto>> GetAllFavouriteArticles(Guid userId);
+        Task<IEnumerable<ArticleDto>> GetAllFavouriteArticles(Guid userId);
     }
 }

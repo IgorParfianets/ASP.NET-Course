@@ -1,20 +1,13 @@
 ﻿using System.Security.Claims;
 using AspNetArticle.Core.Abstractions;
 using AspNetArticle.Core.DataTransferObjects;
-using AspNetArticle.Database.Entities;
 using AspNetArticle.MvcApp.Models;
-using AspNetSample.Business.Models;
 using AutoMapper;
 using Microsoft.AspNetCore.Authentication;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.CodeAnalysis.VisualBasic.Syntax;
-using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using Newtonsoft.Json;
-using NuGet.Protocol;
-using Org.BouncyCastle.Asn1.Ocsp;
 using Serilog;
 
 namespace AspNetArticle.MvcApp.Controllers;
@@ -64,15 +57,15 @@ public class AccountController : Controller
             }
             return View(loginModel);
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Log.Error(ex, $"{nameof(Login)} method failed");
-            return BadRequest();
+            Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+            throw new Exception($"Method {nameof(Login)} is failed, stack trace {e.StackTrace}. {e.Message}");
         }
     }
 
     [HttpGet]
-    public async Task<IActionResult> Registration()
+    public IActionResult Registration()
     {
         return View();
     }
@@ -102,10 +95,10 @@ public class AccountController : Controller
             }
             return View(user);
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Log.Error(ex, $"{nameof(Registration)} method failed");
-            return BadRequest();
+            Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+            throw new Exception($"Method {nameof(Registration)} is failed, stack trace {e.StackTrace}. {e.Message}");
         }
     }
 
@@ -130,10 +123,10 @@ public class AccountController : Controller
             }
             return Ok(true);
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Log.Error(ex, $"{nameof(CheckEmailRegistrationAccount)} method failed");
-            return BadRequest();
+            Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+            throw new Exception($"Method {nameof(CheckEmailRegistrationAccount)} is failed, stack trace {e.StackTrace}. {e.Message}");
         }
     }
 
@@ -164,10 +157,10 @@ public class AccountController : Controller
             }
             return Ok(true);
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Log.Error(ex, $"{nameof(CheckUsername)} with username {username} method failed");
-            return BadRequest();
+            Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+            throw new Exception($"Method {nameof(CheckUsername)} is failed, stack trace {e.StackTrace}. {e.Message}");
         }
     }
 
@@ -188,10 +181,10 @@ public class AccountController : Controller
 
             return View(user);
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Log.Error(ex, $"{nameof(Edit)} method failed");
-            return BadRequest();
+            Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+            throw new Exception($"Method {nameof(Edit)} is failed, stack trace {e.StackTrace}. {e.Message}");
         }
     }
 
@@ -226,10 +219,10 @@ public class AccountController : Controller
             }
             return View(model);
         }
-        catch (Exception ex)
+        catch (Exception e)
         {
-            Log.Error(ex, $"{nameof(Edit)} method with model {model} failed");
-            return BadRequest();
+            Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+            throw new Exception($"Method {nameof(Edit)} is failed, stack trace {e.StackTrace}. {e.Message}");
         }
     }
 
@@ -266,15 +259,16 @@ public class AccountController : Controller
 
             return View(model);
         }
-        catch (Exception)
+        catch (Exception e)
         {
-            throw;
+            Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+            throw new Exception($"Method {nameof(FavouriteArticles)} is failed, stack trace {e.StackTrace}. {e.Message}");
         }
     }
 
     [Authorize]
     [HttpPost]
-    public async Task<IActionResult> AddFavourite([FromBody]FavouriteArticleModel favouriteArticle)
+    public async Task<IActionResult> AddFavourite([FromBody]FavouriteArticleModel favouriteArticle) // FromForm
     {
         try
         {
@@ -315,10 +309,10 @@ public class AccountController : Controller
             }
             return BadRequest();
         }
-        catch (Exception)
+        catch (Exception e)
         {
-
-            throw;
+            Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+            throw new Exception($"Method {nameof(AddFavourite)} is failed, stack trace {e.StackTrace}. {e.Message}");
         }
     }
 
@@ -326,17 +320,25 @@ public class AccountController : Controller
     [HttpPost]
     public async Task<string> CheckFavourite([FromBody] FavouriteArticleModel favouriteArticle) // User.Identities.Any(identity => identity.IsAuthenticated)
     {
-        var userEmail = User.Identity?.Name;
-        if (userEmail == null)
-            throw new ArgumentNullException();
+        try
+        {
+            var userEmail = User.Identity?.Name;
+            if (userEmail == null)
+                throw new ArgumentNullException("User is not authorized", userEmail);
 
-        var userId = (await _userService.GetUserByEmailAsync(userEmail)).Id;
+            var userId = (await _userService.GetUserByEmailAsync(userEmail)).Id;
 
-        bool isExist = await _favouriteArticleService.CheckFavouriteArticle(userId, favouriteArticle.ArticleId);
-        var dictionary = new Dictionary<string, bool>() { { "exist", isExist } };
-        var json = JsonConvert.SerializeObject(dictionary);
+            bool isExist = await _favouriteArticleService.CheckFavouriteArticle(userId, favouriteArticle.ArticleId);
+            var dictionary = new Dictionary<string, bool>() { { "exist", isExist } };
+            var json = JsonConvert.SerializeObject(dictionary);
 
-        return json;
+            return json;
+        }
+        catch (Exception e)
+        {
+            Log.Error($"Error: {e.Message}. StackTrace: {e.StackTrace}, Source: {e.Source}");
+            throw new Exception($"Method {nameof(CheckFavourite)} is failed, stack trace {e.StackTrace}. {e.Message}");
+        }
     }
 
     private async Task Authenticate(string email)

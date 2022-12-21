@@ -9,12 +9,12 @@ namespace AspNetArticle.Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class ArticleResourceInitializer : ControllerBase
+    public class ArticleResourceInitializerController : ControllerBase
     {
         private readonly IArticleService _articleService;
         private readonly IArticleRateService _articleRateService;
         private readonly ISendMessageService _sendMessageService;
-        public ArticleResourceInitializer(IArticleService articleService,
+        public ArticleResourceInitializerController(IArticleService articleService,
             IArticleRateService articleRateService,
             ISendMessageService sendMessageService)
 
@@ -30,22 +30,21 @@ namespace AspNetArticle.Api.Controllers
         /// <returns></returns>
         /// <exception cref="Exception"></exception>
         [HttpGet]
-        public async Task<IActionResult> AddOnlinerSourceArticles() //todo rework with last lecture
+        public async Task<IActionResult> AddSourceArticles() //todo rework with last lecture
         {
             try
             {
-                await _articleRateService.AddRateToArticlesAsync();
-                //RecurringJob.AddOrUpdate(() => _articleService.AggregateArticlesFromExternalSourcesAsync(),
-                //    "0 21 * * *");
+                RecurringJob.AddOrUpdate(() => _articleService.AggregateArticlesFromExternalSourcesAsync(),
+                    "35 19 * * *");
 
-                //RecurringJob.AddOrUpdate(() => _articleService.AddArticlesDataAsync(),
-                //    "1 21 * * *");
+                RecurringJob.AddOrUpdate(() => _articleService.AddArticlesDataAsync(),
+                    "36 19 * * *");
 
-                //RecurringJob.AddOrUpdate(() => _articleRateService.AddRateToArticlesAsync(),
-                //    "2,3,4,5,6,7 21 * * *");
+                RecurringJob.AddOrUpdate(() => _articleRateService.AddRateToArticlesAsync(),
+                    "38,39,40 19 * * *");
 
-                //RecurringJob.AddOrUpdate(() => _sendMessageService.GetArticlesAndUsersForMessage(),
-                //    "8 21 * * *");
+                RecurringJob.AddOrUpdate(() => _sendMessageService.GetArticlesAndUsersForMessage(),
+                    "42 19 * * *");
 
                 return Ok();
             }
